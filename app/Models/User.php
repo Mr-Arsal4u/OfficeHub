@@ -14,10 +14,7 @@ class User extends Authenticatable
 
     protected $fillable = ['name', 'email', 'password'];
 
-    public function attendances() {
-        return $this->hasMany(Attendance::class);
-    }
-
+   
     public function financialTransactions() {
         return $this->hasMany(FinancialTransaction::class);
     }

@@ -10,39 +10,32 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header d-inline-flex mt-50">
-                            <h4 class="card-title">Employees</h4>
+                            <h4 class="card-title">Attendance Records</h4>
                             <button class="dt-button add-new btn btn-primary" type="button" data-bs-toggle="modal"
-                                data-bs-target="#modals-slide-in" onclick="clearModalForm()">Add New Employee</button>
+                                data-bs-target="#attendance-modal" onclick="clearModalForm()">Add Attendance Record</button>
                         </div>
-                        <div class="card-body "></div>
+                        <div class="card-body"></div>
                         <div class="table-responsive">
                             <table class="table table-striped">
                                 <thead>
                                     <tr>
-                                        <th>First Name</th>
-                                        <th>Last Name</th>
-                                        <th>Email</th>
-                                        <th>Phone</th>
-                                        <th>Position</th>
-                                        <th>Department</th>
-                                        <th>Salary</th>
-                                        <th>Hire Date</th>
-                                        <th>User</th>
+                                        <th>Employee</th>
+                                        <th>Date</th>
+                                        <th>Status</th>
+                                        <th>Check In</th>
+                                        <th>Check Out</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($employees as $employee)
+                                    @forelse ($attendances as $attendance)
                                         <tr>
-                                            <td>{{ $employee->first_name ?? 'N/A' }}</td>
-                                            <td>{{ $employee->last_name ?? 'N/A' }}</td>
-                                            <td>{{ $employee->email ?? 'N/A' }}</td>
-                                            <td>{{ $employee->phone ?? 'N/A' }}</td>
-                                            <td>{{ $employee->position ?? 'N/A' }}</td>
-                                            <td>{{ $employee->department ?? 'N/A' }}</td>
-                                            <td>{{ $employee->salary ?? 'N/A' }}</td>
-                                            <td>{{ $employee->hire_date ?? 'N/A' }}</td>
-                                            <td>{{ optional($employee->user)->name ?? 'No User' }}</td>
+                                            <td>{{ optional($attendance->employee)->first_name ?? 'N/A' }}
+                                                {{ optional($attendance->employee)->last_name ?? 'N/A' }}</td>
+                                            <td>{{ $attendance->date }}</td>
+                                            <td>{{ $attendance->status ?? 'N/A' }}</td>
+                                            <td>{{ $attendance->check_in_time ?? 'N/A' }}</td>
+                                            <td>{{ $attendance->check_out_time ?? 'N/A' }}</td>
                                             <td>
                                                 <div class="dropdown">
                                                     <button type="button"
@@ -59,8 +52,8 @@
                                                     </button>
                                                     <div class="dropdown-menu dropdown-menu-end">
                                                         <a class="dropdown-item" href="javascript:void(0)"
-                                                            data-bs-toggle="modal" data-bs-target="#modals-slide-in"
-                                                            onclick="editEmployee({{ $employee }})">
+                                                            data-bs-toggle="modal" data-bs-target="#attendance-modal"
+                                                            onclick="editAttendance({{ $attendance }})">
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="14"
                                                                 height="14" viewBox="0 0 24 24" fill="none"
                                                                 stroke="currentColor" stroke-width="2"
@@ -72,7 +65,7 @@
                                                             </svg>
                                                             <span>Edit</span>
                                                         </a>
-                                                        <form action="{{ route('employees.delete', $employee->id) }}"
+                                                        <form action="{{ route('attendance.delete', $attendance->id) }}"
                                                             method="POST" style="display:inline;">
                                                             @csrf
                                                             @method('DELETE')
@@ -94,8 +87,12 @@
                                                 </div>
                                             </td>
                                         </tr>
-                                    @endforeach
-                                </tbody>                                
+                                    @empty
+                                        <tr>
+                                            <td colspan="6" class="text-center">No attendance records found.</td>
+                                        </tr>
+                                    @endforelse
+                                </tbody>
                             </table>
                         </div>
                     </div>
@@ -104,75 +101,53 @@
         </div>
     </div>
 
-    <!-- Modal for Adding and Editing Employee -->
-    <div class="modal modal-slide-in new-user-modal fade" id="modals-slide-in" data-bs-backdrop="static"
+    <!-- Modal for Adding and Editing Attendance -->
+    <div class="modal modal-slide-in new-attendance-modal fade" id="attendance-modal" data-bs-backdrop="static"
         data-bs-keyboard="false">
         <div class="modal-dialog">
-            <form id="employee-form" method="POST" class="add-new-employee modal-content pt-0" novalidate="novalidate">
+            <form id="attendance-form" method="POST" class="add-new-attendance modal-content pt-0" novalidate="novalidate">
                 @csrf
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">×</button>
                 <div class="modal-header mb-1">
-                    <h5 class="modal-title" id="exampleModalLabel">Add New Employee</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Add Attendance Record</h5>
                 </div>
                 <div class="modal-body flex-grow-1">
-                    <!-- First Name -->
+                    <!-- Employee -->
                     <div class="mb-1">
-                        <label class="form-label" for="first_name">First Name</label>
-                        <input type="text" class="form-control" id="first_name" name="first_name" required>
-                    </div>
-
-                    <!-- Last Name -->
-                    <div class="mb-1">
-                        <label class="form-label" for="last_name">Last Name</label>
-                        <input type="text" class="form-control" id="last_name" name="last_name" required>
-                    </div>
-
-                    <!-- Email -->
-                    <div class="mb-1">
-                        <label class="form-label" for="email">Email</label>
-                        <input type="email" class="form-control" id="email" name="email" required>
-                    </div>
-
-                    <!-- Phone -->
-                    <div class="mb-1">
-                        <label class="form-label" for="phone">Phone</label>
-                        <input type="text" class="form-control" id="phone" name="phone" required>
-                    </div>
-
-                    <!-- Position -->
-                    <div class="mb-1">
-                        <label class="form-label" for="position">Position</label>
-                        <input type="text" class="form-control" id="position" name="position" required>
-                    </div>
-
-                    <!-- Department -->
-                    <div class="mb-1">
-                        <label class="form-label" for="department">Department</label>
-                        <input type="text" class="form-control" id="department" name="department" required>
-                    </div>
-
-                    <!-- Salary -->
-                    <div class="mb-1">
-                        <label class="form-label" for="salary">Salary</label>
-                        <input type="number" class="form-control" id="salary" name="salary" required>
-                    </div>
-
-                    <!-- Hire Date -->
-                    <div class="mb-1">
-                        <label class="form-label" for="hire_date">Hire Date</label>
-                        <input type="date" class="form-control" id="hire_date" name="hire_date" required>
-                    </div>
-
-                    <!-- User -->
-                    <div class="mb-1">
-                        <label class="form-label" for="user_id">Assign User</label>
-                        <select class="form-control" id="user_id" name="user_id" required>
-                            <option value="" selected disabled>Select User</option>
-                            <option value="">Not a User</option>
-                            @foreach ($users as $user)
-                                <option value="{{ $user->id }}">{{ $user->name }}</option>
+                        <label class="form-label" for="employee_id">Employee</label>
+                        <select class="form-control" id="employee_id" name="employee_id" required>
+                            <option value="" selected disabled>Select Employee</option>
+                            @foreach ($employees as $employee)
+                                <option value="{{ $employee->id }}">{{ $employee->first_name }} {{ $employee->last_name }}
+                                </option>
                             @endforeach
                         </select>
+                    </div>
+
+                    <!-- Date -->
+                    <div class="mb-1">
+                        <label class="form-label" for="date">Date</label>
+                        <input type="date" class="form-control" id="date" name="date" required>
+                    </div>
+
+                    <!-- Status -->
+                    <div class="mb-1">
+                        <label class="form-label" for="status">Status</label>
+                        <select class="form-control" id="status" name="status" required>
+                            <option value="present">Present</option>
+                            <option value="absent">Absent</option>
+                            <option value="leave">Leave</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-1 check_in">
+                        <label class="form-label" for="check_in_time">Check In Time</label>
+                        <input type="time" class="form-control" id="check_in_time" name="check_in_time" required>
+                    </div>
+
+                    <div class="mb-1 check_out">
+                        <label class="form-label" for="check_out_time">Check Out Time</label>
+                        <input type="time" class="form-control" id="check_out_time" name="check_out_time" required>
                     </div>
 
                     <button type="submit"
@@ -185,6 +160,6 @@
     </div>
 
     @push('scripts')
-        <script src="{{ asset('files/js/employee.js') }}"></script>
+        <script src="{{ asset('files/js/attendance.js') }}"></script>
     @endpush
 @endsection

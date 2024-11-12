@@ -74,7 +74,7 @@
             <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather="folder"></i><span
                         class="menu-title text-truncate" data-i18n="Documentation">User Management</span></a>
             </li>
-            <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i
+            <li class=" nav-item"><a class="d-flex align-items-center" href="{{route('attendance.index')}}"><i
                         data-feather="life-buoy"></i><span class="menu-title text-truncate"
                         data-i18n="Raise Support">Attendance</span></a>
             </li>

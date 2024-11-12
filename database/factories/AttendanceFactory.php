@@ -18,9 +18,11 @@ class AttendanceFactory extends Factory
     public function definition(): array
     {
         return [
-            'employee_id' => Employee::factory(), // link to Employee factory
+            'employee_id' => Employee::first(), // link to Employee factory
             'date' => $this->faker->date,
-            'status' => $this->faker->randomElement(['Present', 'Absent', 'On Leave']),
+            'status' => $this->faker->randomElement(['Present']),
+            'check_in_time' => $this->faker->time(),
+            'check_out_time' => $this->faker->time(),
         ];
     }
 }

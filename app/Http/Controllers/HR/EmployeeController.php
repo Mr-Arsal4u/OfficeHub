@@ -25,7 +25,8 @@ class EmployeeController extends Controller
     public function store(EmployeeRequest $request)
     {
         Employee::create($request->all());
-        return redirect()->route('employees.index')->with('success', 'Employee created successfully.');
+        return response()->json(['success' => 'Employee created successfully.']);
+        // return redirect()->route('employees.index')->with('success', 'Employee created successfully.');
     }
 
     public function edit(Employee $employee)
@@ -36,7 +37,8 @@ class EmployeeController extends Controller
     public function update(EmployeeRequest $request, Employee $employee)
     {
         $employee->update($request->all());
-        return redirect()->route('employees.index')->with('success', 'Employee updated successfully.');
+        return response()->json(['success' => 'Employee Updated successfully.']);
+        // return redirect()->route('employees.index')->with('success', 'Employee updated successfully.');
     }
 
     public function destroy(Employee $employee)

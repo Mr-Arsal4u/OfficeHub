@@ -34,10 +34,6 @@ class Employee extends Model
      * Define a relationship with the Attendance model.
      * An employee can have multiple attendance records.
      */
-    public function attendanceRecords()
-    {
-        return $this->hasMany(Attendance::class);
-    }
 
     /**
      * Define a relationship with the Sale model.
@@ -47,4 +43,9 @@ class Employee extends Model
     {
         return $this->hasMany(SalesRecord::class);
     }
+
+    public function attendances() {
+        return $this->hasMany(Attendance::class);
+    }
+
 }
