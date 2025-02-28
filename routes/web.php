@@ -3,8 +3,11 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\HR\EmployeeController;
 use App\Http\Controllers\HR\AttendanceController;
+use App\Http\Controllers\Accounts\SalaryController;
+use App\Http\Controllers\Accounts\ExpenseController;
 
 Route::get('/', [AuthController::class, 'login'])->name('login');
 Route::get('/dashboard', [AuthController::class, 'dashboard'])->middleware(['auth'])->name('dashboard');
@@ -17,14 +20,27 @@ Route::middleware('auth')->group(function () {
 
 Route::get('employees', [EmployeeController::class, 'index'])->name('employees.index');
 // Route::get('employees/create', [EmployeeController::class, 'create'])->name('employees.create');
-Route::post('employees/store', [EmployeeController::class, 'store'])->name('employees.store');
+Route::post('employee/store', [EmployeeController::class, 'store'])->name('employee.store');
 // Route::get('employees/{employee}', [EmployeeController::class, 'show'])->name('employees.show');
 // Route::get('employees/{employee}/edit', [EmployeeController::class, 'edit'])->name('employees.edit');
-Route::put('employees/{employee}', [EmployeeController::class, 'update'])->name('employees.update');
-Route::delete('employees/{employee}', [EmployeeController::class, 'destroy'])->name('employees.delete');
+Route::put('employee/{employee}', [EmployeeController::class, 'update'])->name('employee.update');
+Route::delete('employee/{employee}', [EmployeeController::class, 'destroy'])->name('employee.delete');
 
 Route::get('attendance', [AttendanceController::class, 'index'])->name('attendance.index');
 Route::post('attendance/store', [AttendanceController::class, 'store'])->name('attendance.store');
 Route::put('attendance/{attendance}', [AttendanceController::class, 'update'])->name('attendance.update');
 Route::delete('attendance/{attendance}', [AttendanceController::class, 'destroy'])->name('attendance.delete');
+
+Route::get('salaries', [SalaryController::class, 'index'])->name('salary.index');
+Route::post('salary/store', [SalaryController::class, 'store'])->name('salary.store');
+Route::put('salary/{salary}', [SalaryController::class, 'update'])->name('salary.update');
+Route::delete('salary/{salary}', [SalaryController::class, 'destroy'])->name('salary.delete');
+
+Route::get('expenses', [ExpenseController::class, 'index'])->name('expense.index');
+Route::post('expense/store', [ExpenseController::class, 'store'])->name('expense.store');
+Route::put('expense/{expense}', [ExpenseController::class, 'update'])->name('expense.update');
+Route::delete('expense/{expense}', [ExpenseController::class, 'destroy'])->name('expense.delete');
+    
+Route::get('users', [UserController::class, 'index'])->name('users.index');
+
 require __DIR__ . '/auth.php';

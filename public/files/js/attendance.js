@@ -32,8 +32,8 @@ function editAttendance(attendance) {
     } else {
         $(".check_in, .check_out").show();
     }
-    // console.log(attendance);
-    // console.log('hello u');
+
+
     $('.modal-title').text('Edit Attendance');
 }
 
@@ -58,16 +58,15 @@ $('#attendance-form').on('submit', function (e) {
         data: formData,
         success: function (response) {
             if (response.success) {
-                // alert('Attendance saved successfully!');
                 $('#attendance-modal').modal('hide');
-                // location.reload();  
+                showToast("success", response.success);
             } else {
-                // alert('Error saving attendance!');
+                showToast("error", response.error);
             }
         },
         error: function (xhr, status, error) {
-            console.error(error);
-            alert('Something went wrong!');
+            // console.log(error);
+            showToast("error", error);  
         }
     });
 });

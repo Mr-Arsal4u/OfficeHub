@@ -1,6 +1,6 @@
 
 function editEmployee(employee) {
-    $('#employee-form').attr('action', '/employees/' + employee.id); 
+    $('#employee-form').attr('action', '/employee/' + employee.id); 
     $('#employee-form').attr('method', 'PUT'); 
     $('#first_name').val(employee.first_name);
     $('#last_name').val(employee.last_name);
@@ -18,7 +18,7 @@ function editEmployee(employee) {
 
 function clearModalForm() {
     $('#employee-form').trigger('reset');
-    $('#employee-form').attr('action', '/employees/store');
+    $('#employee-form').attr('action', '/employee/store');
     $('#employee-form').attr('method', 'POST');
     $('.modal-title').text('Add New Employee');
 }
@@ -35,16 +35,13 @@ $('#employee-form').on('submit', function (e) {
         data: formData,
         success: function (response) {
             if (response.success) {
-                // alert('Employee saved successfully!');
-                $('#modals-slide-in').modal('hide'); 
-                // location.reload(); 
+                showToast("success", response.success); 
             } else {
-                // alert('Error saving employee!');
+                showToast("error", response.error);
             }
         },
         error: function (xhr, status, error) {
-            console.error(error);
-            alert('Something went wrong!');
+            showToast("error", error);
         }
     });
 });

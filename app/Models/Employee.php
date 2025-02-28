@@ -29,16 +29,11 @@ class Employee extends Model
     {
         return $this->belongsTo(User::class);
     }
+    public function salary()
+    {
+        return $this->hasOne(Salary::class);
+    }
 
-    /**
-     * Define a relationship with the Attendance model.
-     * An employee can have multiple attendance records.
-     */
-
-    /**
-     * Define a relationship with the Sale model.
-     * An employee can have multiple sales records.
-     */
     public function sales()
     {
         return $this->hasMany(SalesRecord::class);

@@ -10,39 +10,31 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header d-inline-flex mt-50">
-                            <h4 class="card-title">Employees</h4>
+                            <h4 class="card-title">Salary Records</h4>
                             <button class="dt-button add-new btn btn-primary" type="button" data-bs-toggle="modal"
-                                data-bs-target="#modals-slide-in" onclick="clearModalForm()">Add New Employee</button>
+                                data-bs-target="#salary-modal" onclick="clearModalForm()">Add Salary Record</button>
                         </div>
-                        <div class="card-body "></div>
+                        <div class="card-body"></div>
                         <div class="table-responsive">
                             <table class="table table-striped">
                                 <thead>
                                     <tr>
-                                        <th>First Name</th>
-                                        <th>Last Name</th>
-                                        <th>Email</th>
-                                        <th>Phone</th>
-                                        <th>Position</th>
-                                        <th>Department</th>
-                                        <th>Salary</th>
-                                        <th>Hire Date</th>
-                                        <th>User</th>
+                                        <th>Employee</th>
+                                        <th>Date</th>
+                                        <th>Salary Amount</th>
+                                        <th>Description</th>
+                                        {{-- <th>Bonus</th> --}}
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($employees as $employee)
+                                    @forelse ($salaries as $salary)
                                         <tr>
-                                            <td>{{ $employee->first_name ?? 'N/A' }}</td>
-                                            <td>{{ $employee->last_name ?? 'N/A' }}</td>
-                                            <td>{{ $employee->email ?? 'N/A' }}</td>
-                                            <td>{{ $employee->phone ?? 'N/A' }}</td>
-                                            <td>{{ $employee->position ?? 'N/A' }}</td>
-                                            <td>{{ $employee->department ?? 'N/A' }}</td>
-                                            <td>{{ $employee->salary ?? 'N/A' }}</td>
-                                            <td>{{ $employee->hire_date ?? 'N/A' }}</td>
-                                            <td>{{ optional($employee->user)->name ?? 'No User' }}</td>
+                                            <td>{{ optional($salary->employee)->first_name ?? 'N/A' }} {{ optional($salary->employee)->last_name ?? 'N/A' }}</td>
+                                            <td>{{ $salary->date }}</td>
+                                            <td>{{ $salary->amount }}</td>
+                                            <td>{{$salary->description}}</td>
+                                            {{-- <td>{{ $salary->bonus ?? 'N/A' }}</td> --}}
                                             <td>
                                                 <div class="dropdown">
                                                     <button type="button"
@@ -59,8 +51,8 @@
                                                     </button>
                                                     <div class="dropdown-menu dropdown-menu-end">
                                                         <a class="dropdown-item" href="javascript:void(0)"
-                                                            data-bs-toggle="modal" data-bs-target="#modals-slide-in"
-                                                            onclick="editEmployee({{ $employee }})">
+                                                            data-bs-toggle="modal" data-bs-target="#salary-modal"
+                                                            onclick="editSalary({{ $salary }})">
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="14"
                                                                 height="14" viewBox="0 0 24 24" fill="none"
                                                                 stroke="currentColor" stroke-width="2"
@@ -72,7 +64,7 @@
                                                             </svg>
                                                             <span>Edit</span>
                                                         </a>
-                                                        <form action="{{ route('employee.delete', $employee->id) }}"
+                                                        <form action="{{ route('salary.delete', $salary->id) }}"
                                                             method="POST" style="display:inline;">
                                                             @csrf
                                                             @method('DELETE')
@@ -94,8 +86,12 @@
                                                 </div>
                                             </td>
                                         </tr>
-                                    @endforeach
-                                </tbody>                                
+                                    @empty
+                                        <tr>
+                                            <td colspan="5" class="text-center">No salary records found.</td>
+                                        </tr>
+                                    @endforelse
+                                </tbody>
                             </table>
                         </div>
                     </div>
@@ -104,87 +100,46 @@
         </div>
     </div>
 
-    <!-- Modal for Adding and Editing Employee -->
-    <div class="modal modal-slide-in new-user-modal fade" id="modals-slide-in" data-bs-backdrop="static"
-        data-bs-keyboard="false">
+    <!-- Modal for Adding and Editing Salary -->
+    <div class="modal modal-slide-in new-salary-modal fade" id="salary-modal" data-bs-backdrop="static" data-bs-keyboard="false">
         <div class="modal-dialog">
-            <form id="employee-form" method="POST" class="add-new-employee modal-content pt-0" novalidate="novalidate">
+            <form id="salary-form" method="POST" class="add-new-salary modal-content pt-0" novalidate="novalidate">
                 @csrf
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">×</button>
                 <div class="modal-header mb-1">
-                    <h5 class="modal-title" id="exampleModalLabel">Add New Employee</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Add Salary Record</h5>
                 </div>
                 <div class="modal-body flex-grow-1">
-                    <!-- First Name -->
                     <div class="mb-1">
-                        <label class="form-label" for="first_name">First Name</label>
-                        <input type="text" class="form-control" id="first_name" name="first_name" required>
-                    </div>
-
-                    <!-- Last Name -->
-                    <div class="mb-1">
-                        <label class="form-label" for="last_name">Last Name</label>
-                        <input type="text" class="form-control" id="last_name" name="last_name" required>
-                    </div>
-
-                    <!-- Email -->
-                    <div class="mb-1">
-                        <label class="form-label" for="email">Email</label>
-                        <input type="email" class="form-control" id="email" name="email" required>
-                    </div>
-
-                    <!-- Phone -->
-                    <div class="mb-1">
-                        <label class="form-label" for="phone">Phone</label>
-                        <input type="text" class="form-control" id="phone" name="phone" required>
-                    </div>
-
-                    <!-- Position -->
-                    <div class="mb-1">
-                        <label class="form-label" for="position">Position</label>
-                        <input type="text" class="form-control" id="position" name="position" required>
-                    </div>
-
-                    <!-- Department -->
-                    <div class="mb-1">
-                        <label class="form-label" for="department">Department</label>
-                        <input type="text" class="form-control" id="department" name="department" required>
-                    </div>
-
-                    <!-- Salary -->
-                    <div class="mb-1">
-                        <label class="form-label" for="salary">Salary</label>
-                        <input type="number" class="form-control" id="salary" name="salary" required>
-                    </div>
-
-                    <!-- Hire Date -->
-                    <div class="mb-1">
-                        <label class="form-label" for="hire_date">Hire Date</label>
-                        <input type="date" class="form-control" id="hire_date" name="hire_date" required>
-                    </div>
-
-                    <!-- User -->
-                    <div class="mb-1">
-                        <label class="form-label" for="user_id">Assign User</label>
-                        <select class="form-control" id="user_id" name="user_id" required>
-                            <option value="" selected disabled>Select User</option>
-                            <option value="">Not a User</option>
-                            @foreach ($users as $user)
-                                <option value="{{ $user->id }}">{{ $user->name }}</option>
+                        <label class="form-label" for="employee_id">Employee</label>
+                        <select class="form-control" id="employee_id" name="employee_id" required>
+                            <option value="" selected disabled>Select Employee</option>
+                            @foreach ($employees as $employee)
+                                <option value="{{ $employee->id }}">{{ $employee->first_name }} {{ $employee->last_name }}</option>
                             @endforeach
                         </select>
                     </div>
-
-                    <button type="submit"
-                        class="btn btn-primary me-1 data-submit waves-effect waves-float waves-light">Submit</button>
-                    <button type="reset" class="btn btn-outline-secondary waves-effect"
-                        data-bs-dismiss="modal">Cancel</button>
+                    <div class="mb-1">
+                        <label class="form-label" for="date">Date</label>
+                        <input type="date" class="form-control" id="date" name="date" required>
+                    </div>
+                    <div class="mb-1">
+                        <label class="form-label" for="amount">Salary Amount</label>
+                        <input type="number" class="form-control" id="amount" name="amount" required>
+                    </div>
+                    <div class="mb-1">
+                        <label class="form-label" for="bonus">Description</label>
+                        {{-- <input type="textrea" class="form-control" id="bonus" name="bonus"> --}}
+                    <textarea name="description" class="form-control" id="description" cols="10" rows="5"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary me-1">Submit</button>
+                    <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
                 </div>
             </form>
         </div>
     </div>
 
     @push('scripts')
-        <script src="{{ asset('files/js/employee.js') }}"></script>
+        <script src="{{ asset('files/js/salary.js') }}"></script>
     @endpush
 @endsection

@@ -11,16 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('financial_transactions', function (Blueprint $table) {
+        Schema::create('salaries', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('employee_id')->constrained()->onDelete('cascade');
             $table->date('date');
-            $table->enum('type', ['debit', 'credit']);
             $table->decimal('amount', 10, 2);
             $table->string('description')->nullable();
-            $table->string('category')->nullable();
             $table->timestamps();
         });
+        
     }
 
     /**
@@ -28,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('financial_transactions');
+        Schema::dropIfExists('salaries');
     }
 };

@@ -39,9 +39,7 @@ class AttendanceController extends Controller
         try {
             // dd('here');
             $data = $this->attendanceService->excludeDates($request->all());
-            // dd($data);
             $attendance = $this->attendanceService->store($data);
-
             return response()->json(['success' => 'Attendance created successfully', 201]);
         } catch (\Exception $exception) {
             $message = $exception->getMessage();

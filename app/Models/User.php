@@ -15,9 +15,9 @@ class User extends Authenticatable
     protected $fillable = ['name', 'email', 'password'];
 
    
-    public function financialTransactions() {
-        return $this->hasMany(FinancialTransaction::class);
-    }
+    // public function financialTransactions() {
+    //     return $this->hasMany(FinancialTransaction::class);
+    // }
 
     public function salesRecords() {
         return $this->hasMany(SalesRecord::class);

@@ -28,7 +28,7 @@
         href="{{ asset('admin-panel/app-assets/css/core/menu/menu-types/vertical-menu.css') }}">
     <link rel="stylesheet" type="text/css"
         href="{{ asset('admin-panel/app-assets/css/plugins/extensions/ext-component-toastr.css') }}">
-
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <script>
         var currentLocalStorageLayout = localStorage.getItem('light-layout-current-skin') || 'light-layout';
         console.log(currentLocalStorageLayout);
@@ -180,6 +180,7 @@
     <script src="{{ asset('admin-panel/app-assets/js/core/app-menu.js') }}"></script>
     <script src="{{ asset('admin-panel/app-assets/js/core/app.js') }}"></script>
     <script src="{{ asset('admin-panel/app-assets/js/scripts/pages/dashboard-ecommerce.js') }}"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 
     <script>
         $(window).on('load', function() {
@@ -191,7 +192,27 @@
             }
         })
     </script>
+
     @stack('scripts')
+
+    <script>
+        function showToast(type, message) {
+            Toastify({
+                text: message,
+                duration: 3000,
+                close: true,
+                gravity: "top", // `top` or `bottom`
+                position: "right", // `left`, `center`, or `right`
+                stopOnFocus: true, // Prevents dismissing of toast on hover
+                style: {
+                    background: type === "success" ?
+                        "linear-gradient(to right, #00b09b, #96c93d)" :
+                        "linear-gradient(to right, #ff5f6d, #ffc371)"
+                },
+                onClick: function() {} // Callback after click
+            }).showToast();
+        }
+    </script>
 </body>
 
 </html>

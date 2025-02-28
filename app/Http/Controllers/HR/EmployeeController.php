@@ -4,7 +4,6 @@ namespace App\Http\Controllers\HR;
 
 use App\Models\User;
 use App\Models\Employee;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\EmployeeRequest;
 
@@ -25,7 +24,7 @@ class EmployeeController extends Controller
     public function store(EmployeeRequest $request)
     {
         Employee::create($request->all());
-        return response()->json(['success' => 'Employee created successfully.']);
+        return response()->json(['success' => 'Employee created successfully.'],201);
         // return redirect()->route('employees.index')->with('success', 'Employee created successfully.');
     }
 
@@ -37,7 +36,7 @@ class EmployeeController extends Controller
     public function update(EmployeeRequest $request, Employee $employee)
     {
         $employee->update($request->all());
-        return response()->json(['success' => 'Employee Updated successfully.']);
+        return response()->json(['success' => 'Employee Updated successfully.'],201);
         // return redirect()->route('employees.index')->with('success', 'Employee updated successfully.');
     }
 
