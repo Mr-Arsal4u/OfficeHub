@@ -165,12 +165,11 @@
 
                     <!-- User -->
                     <div class="mb-1">
-                        <label class="form-label" for="user_id">Assign User</label>
+                        <label class="form-label" for="user_id">Assign Role</label>
                         <select class="form-control" id="user_id" name="user_id" required>
-                            <option value="" selected disabled>Select User</option>
-                            <option value="">Not a User</option>
-                            @foreach ($users as $user)
-                                <option value="{{ $user->id }}">{{ $user->name }}</option>
+                            <option value="" selected disabled>Select Role</option>
+                            @foreach ($roles as $role)
+                                <option value="{{ $role->id }}">{{ $role->name }}</option>
                             @endforeach
                         </select>
                     </div>

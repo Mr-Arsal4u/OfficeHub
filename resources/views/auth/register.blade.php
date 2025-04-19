@@ -1,52 +1,90 @@
-<x-guest-layout>
-    <form method="POST" action="{{ route('register') }}">
-        @csrf
+@extends('layouts.guest')
+@section('content')
+@section('title', 'Register')
 
-        <!-- Name -->
-        <div>
-            <x-input-label for="name" :value="__('Name')" />
-            <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
-            <x-input-error :messages="$errors->get('name')" class="mt-2" />
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6 text-center mb-5">
+            <h2 class="heading-section">Register</h2>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+
+        <div class="col-lg-12 col-lg-4">
+            <div class="login-wrap p-0">
+                <h3 class="mb-4 text-center">Create Account Now</h3>
+                <form method="POST" action="{{ route('register') }}" class="signin-form">
+                    @csrf
+
+                    <div class="form-row justify-content-center">
+                        <!-- 1. Name -->
+                        <div class="form-group col-md-5">
+                            <input type="text" name="name" value="{{ old('name') }}"
+                                class="form-control form-control-sm" placeholder="Name" required>
+                        </div>
+                        @error('name')
+                            <div class="invalid-feedback d-block text-center">{{ $message }}</div>
+                        @enderror
+                        <!-- 2. Email -->
+                        <div class="form-group col-md-5">
+                            <input type="email" name="email" value="{{ old('email') }}"
+                                class="form-control form-control-sm" placeholder="Email" required autofocus>
+                        </div>
+                    </div>
+
+                    @error('email')
+                        <div class="invalid-feedback d-block text-center">{{ $message }}</div>
+                    @enderror
+
+                    <div class="form-row justify-content-center">
+                        <!-- 3. Password -->
+                        <div class="form-group col-md-5 position-relative">
+                            <input id="password-field" name="password" type="password"
+                                class="form-control form-control-sm" placeholder="Password" required>
+                            <span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password"
+                                style="position: absolute; top: 50%; right: 10px; cursor: pointer;"></span>
+                        </div>
+
+                        <!-- 4. Confirm Password -->
+                        <div class="form-group col-md-5 position-relative">
+                            <input id="confirm-password-field" type="password" name="password_confirmation"
+                                class="form-control form-control-sm" placeholder="Confirm Password" required>
+                            <span toggle="#confirm-password-field" class="fa fa-fw fa-eye field-icon toggle-password"
+                                style="position: absolute; top: 50%; right: 10px; cursor: pointer;"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group col-md-4 mx-auto">
+                        <button type="submit" class="form-control btn btn-primary submit px-3 btn-sm">Sign Up</button>
+                    </div>
+                </form>
+
+                <p class="w-100 text-center">&mdash; Already Have An Account?
+                    <a href="{{ route('login') }}">Login Now</a>
+                    &mdash;
+                </p>
+            </div>
         </div>
 
-        <!-- Email Address -->
-        <div class="mt-4">
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
-        </div>
 
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
+    </div>
+</div>
 
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="new-password" />
+@endsection
 
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-        </div>
+@push('scripts')
+<script>
+    document.querySelectorAll('.toggle-password').forEach(function(toggle) {
+        console.log('here');
 
-        <!-- Confirm Password -->
-        <div class="mt-4">
-            <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
+        toggle.addEventListener('click', function() {
+            const input = document.querySelector(this.getAttribute('toggle'));
+            const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
+            input.setAttribute('type', type);
 
-            <x-text-input id="password_confirmation" class="block mt-1 w-full"
-                            type="password"
-                            name="password_confirmation" required autocomplete="new-password" />
-
-            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
-        </div>
-
-        <div class="flex items-center justify-end mt-4">
-            <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('login') }}">
-                {{ __('Already registered?') }}
-            </a>
-
-            <x-primary-button class="ms-4">
-                {{ __('Register') }}
-            </x-primary-button>
-        </div>
-    </form>
-</x-guest-layout>
+            this.classList.toggle('fa-eye');
+            this.classList.toggle('fa-eye-slash');
+        });
+    });
+</script>
+@endpush

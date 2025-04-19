@@ -52,10 +52,10 @@
                         </a>
                     </li>
                     <li>
-                        <a class="d-flex align-items-center" href="{{ route('users.index') }}">
+                        {{-- <a class="d-flex align-items-center" href="{{ route('users.index') }}">
                             <i data-feather="users"></i>
                             <span class="menu-item text-truncate" data-i18n="Users">Users</span>
-                        </a>
+                        </a> --}}
                     </li>
                     <li>
                         <a class="d-flex align-items-center" href="{{ route('attendance.index') }}">
@@ -103,13 +103,40 @@
                 </ul>
             </li>
 
+            <li class="nav-item has-sub" style="">
+                <a class="d-flex align-items-center" href="#">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" class="feather feather-file-text">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        <polyline points="14 2 14 8 20 8"></polyline>
+                        <line x1="16" y1="13" x2="8" y2="13"></line>
+                        <line x1="16" y1="17" x2="8" y2="17"></line>
+                        <polyline points="10 9 9 9 8 9"></polyline>
+                    </svg>
+                    <span class="menu-title text-truncate" data-i18n="Manage Finance">Reports</span>
+                </a>
+                <ul class="menu-content">
+                    <li><a class="d-flex align-items-center" href="{{ route('reports.index') }}"><svg
+                                xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="feather feather-circle">
+                                <circle cx="12" cy="12" r="10"></circle>
+                            </svg><span class="menu-item text-truncate" data-i18n="Expenses">Reports</span></a></li>
+                    <li><a class="d-flex align-items-center" href="{{ route('reports.ai') }}"><svg
+                                xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="feather feather-circle">
+                                <circle cx="12" cy="12" r="10"></circle>
+                            </svg><span class="menu-item text-truncate" data-i18n="Salaries">Ask Ai</span></a></li>
+                </ul>
+            </li>
+
             <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i
                         data-feather="life-buoy"></i><span class="menu-title text-truncate"
                         data-i18n="Raise Support">Sales Management</span></a>
             </li>
-            <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i
-                        data-feather="life-buoy"></i><span class="menu-title text-truncate"
-                        data-i18n="Raise Support">Reports</span></a>
+       
             </li>
             <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i
                         data-feather="life-buoy"></i><span class="menu-title text-truncate"

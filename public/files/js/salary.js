@@ -1,5 +1,4 @@
 function editSalary(salary) {
-    console.log(salary);
     $('#salary-form').attr('action', '/salary/' + salary.id);
     $('#salary-form').attr('method', 'PUT');
     $('#employee_id').val(salary.employee_id);
@@ -31,6 +30,7 @@ $('#salary-form').on('submit', function (e) {
             if (response.success) {
                 $('#salary-modal').modal('hide');
                 showToast('success', response.success);
+                window.location.reload();
             } else {
                 showToast("error", response.error);
 

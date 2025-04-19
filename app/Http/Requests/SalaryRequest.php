@@ -11,7 +11,7 @@ class SalaryRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -21,8 +21,13 @@ class SalaryRequest extends FormRequest
      */
     public function rules(): array
     {
+        // dd($this->all());
         return [
-            //
+            'employee_id' => 'required|exists:employees,id',
+            'amount' => 'required|numeric',
+            'date' => 'required|string|max:255',
+            'bonus' => 'nullable|numeric',
+            'description' => 'nullable',
         ];
     }
 }

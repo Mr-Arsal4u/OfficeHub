@@ -45,6 +45,8 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
+        $user->assignRole('admin');
+
         return redirect(route('dashboard', absolute: false));
     }
 }

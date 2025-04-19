@@ -99,7 +99,8 @@
     </div>
 
     <!-- Modal for Adding and Editing Expense -->
-    <div class="modal modal-slide-in new-expense-modal fade" id="expense-modal" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal modal-slide-in new-expense-modal fade" id="expense-modal" data-bs-backdrop="static"
+        data-bs-keyboard="false">
         <div class="modal-dialog">
             <form id="expense-form" method="POST" class="add-new-expense modal-content pt-0" novalidate="novalidate">
                 @csrf
@@ -110,7 +111,13 @@
                 <div class="modal-body flex-grow-1">
                     <div class="mb-1">
                         <label class="form-label" for="type">Expense Type</label>
-                        <input type="text" class="form-control" id="category" name="category" required>
+                    <select class="form-select" id="category" name="category" required>
+                            <option value="" disabled selected>Select Expense Type</option>
+                            @foreach ($expenseCategories as $category)
+                                <option value="{{ $category->value }}">{{ $category->label() }}</option>
+                            @endforeach
+                        </select>
+
                     </div>
                     <div class="mb-1">
                         <label class="form-label" for="date">Date</label>

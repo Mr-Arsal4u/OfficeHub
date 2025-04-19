@@ -35,7 +35,9 @@ $('#employee-form').on('submit', function (e) {
         data: formData,
         success: function (response) {
             if (response.success) {
+                $('#modals-slide-in').modal('hide');
                 showToast("success", response.success); 
+                window.location.reload();
             } else {
                 showToast("error", response.error);
             }

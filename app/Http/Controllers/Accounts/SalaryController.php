@@ -31,7 +31,6 @@ class SalaryController extends Controller
     public function store(SalaryRequest $request)
     {
         try {
-            // dd('congracts');
             $this->salaryService->storeSalary($request->all());
             return response()->json(['success' => 'Salary created successfully']);
             // return back()->with('success', 'Salary created successfully');

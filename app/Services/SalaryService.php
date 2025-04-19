@@ -18,9 +18,17 @@ class SalaryService
         return Employee::get();
     }
 
-    public function storeSalary($data)
+    public function storeSalary($data) 
     {
-        return Salary::create($data);
+        return Salary::updateOrCreate(
+            ['employee_id' => $data['employee_id']],
+            [
+                'amount' => $data['amount'],
+                'date' => $data['date'],
+                'bonus' => $data['bonus'],
+                'description' => $data['description'],
+            ]
+        );
     }
 
     public function updateSalary($data, $id)

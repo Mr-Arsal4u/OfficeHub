@@ -5,11 +5,13 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\HR\EmployeeController;
+use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\HR\AttendanceController;
 use App\Http\Controllers\Accounts\SalaryController;
 use App\Http\Controllers\Accounts\ExpenseController;
 
 Route::get('/', [AuthController::class, 'login'])->name('login');
+Route::get('register', [AuthController::class, 'register'])->name('register');
 Route::get('/dashboard', [AuthController::class, 'dashboard'])->middleware(['auth'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
@@ -40,7 +42,9 @@ Route::get('expenses', [ExpenseController::class, 'index'])->name('expense.index
 Route::post('expense/store', [ExpenseController::class, 'store'])->name('expense.store');
 Route::put('expense/{expense}', [ExpenseController::class, 'update'])->name('expense.update');
 Route::delete('expense/{expense}', [ExpenseController::class, 'destroy'])->name('expense.delete');
-    
-Route::get('users', [UserController::class, 'index'])->name('users.index');
+
+Route::resource('reports', ReportController::class);
+Route::get('/reports/ai', [ReportController::class, 'ai'])->name('reports.ai');
+
 
 require __DIR__ . '/auth.php';

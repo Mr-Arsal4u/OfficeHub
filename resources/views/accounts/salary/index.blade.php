@@ -23,7 +23,7 @@
                                         <th>Date</th>
                                         <th>Salary Amount</th>
                                         <th>Description</th>
-                                        {{-- <th>Bonus</th> --}}
+                                        <th>Bonus</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
@@ -88,7 +88,7 @@
                                         </tr>
                                     @empty
                                         <tr>
-                                            <td colspan="5" class="text-center">No salary records found.</td>
+                                            <td colspan="7" class="text-center">No salary records found.</td>
                                         </tr>
                                     @endforelse
                                 </tbody>

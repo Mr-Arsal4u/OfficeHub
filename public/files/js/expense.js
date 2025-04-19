@@ -29,6 +29,7 @@ $('#expense-form').on('submit', function (e) {
             if (response.success) {
                 $('#expense-modal').modal('hide');
                 showToast('success', response.success);
+                window.location.reload();
 
             } else {
                 showToast("error", response.error);

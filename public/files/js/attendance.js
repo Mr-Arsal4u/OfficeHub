@@ -60,6 +60,7 @@ $('#attendance-form').on('submit', function (e) {
             if (response.success) {
                 $('#attendance-modal').modal('hide');
                 showToast("success", response.success);
+                window.location.reload();
             } else {
                 showToast("error", response.error);
             }

@@ -6,14 +6,15 @@ use App\Models\User;
 use App\Models\Employee;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\EmployeeRequest;
+use Spatie\Permission\Models\Role;
 
 class EmployeeController extends Controller
 {
     public function index()
     {
         $employees = Employee::all();
-        $users = User::all();
-        return view('hr.employee.index', compact('employees','users'));
+        $roles = Role::all();
+        return view('hr.employee.index', compact('employees','roles'));
     }
 
     public function create()
@@ -24,6 +25,12 @@ class EmployeeController extends Controller
     public function store(EmployeeRequest $request)
     {
         Employee::create($request->all());
+        $user = User::create([
+            'name' => $request->first_name,
+            'email' => $request->email,
+            'password' => bcrypt('password'),
+        ]);
+        $user->assignRole($request->role);
         return response()->json(['success' => 'Employee created successfully.'],201);
         // return redirect()->route('employees.index')->with('success', 'Employee created successfully.');
     }
