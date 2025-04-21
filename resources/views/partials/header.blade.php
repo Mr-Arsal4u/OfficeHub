@@ -6,7 +6,7 @@
                 <li class="nav-item"><a class="nav-link menu-toggle" href="#"><i class="ficon"
                             data-feather="menu"></i></a></li>
             </ul>
-            <ul class="nav navbar-nav bookmark-icons">
+            {{-- <ul class="nav navbar-nav bookmark-icons">
                 <li class="nav-item d-none d-lg-block"><a class="nav-link" href="app-email.html"
                         data-bs-toggle="tooltip" data-bs-placement="bottom" title="Email"><i class="ficon"
                             data-feather="mail"></i></a></li>
@@ -19,30 +19,21 @@
                 <li class="nav-item d-none d-lg-block"><a class="nav-link" href="app-todo.html" data-bs-toggle="tooltip"
                         data-bs-placement="bottom" title="Todo"><i class="ficon" data-feather="check-square"></i></a>
                 </li>
-            </ul>
+            </ul> --}}
             <ul class="nav navbar-nav">
-                <li class="nav-item d-none d-lg-block"><a class="nav-link bookmark-star"><i class="ficon text-warning"
-                            data-feather="star"></i></a>
+                {{-- <li class="nav-item d-none d-lg-block"><a class="nav-link bookmark-star"><i class="ficon text-warning"
+                            data-feather="star"></i></a> --}}
                     <div class="bookmark-input search-input">
-                        <div class="bookmark-input-icon"><i data-feather="search"></i></div>
+                        {{-- <div class="bookmark-input-icon"><i data-feather="search"></i></div>
                         <input class="form-control input" type="text" placeholder="Bookmark" tabindex="0"
-                            data-search="search">
-                        <ul class="search-list search-list-bookmark"></ul>
+                            data-search="search"> --}}
+                        {{-- <ul class="search-list search-list-bookmark"></ul> --}}
                     </div>
                 </li>
             </ul>
         </div>
         <ul class="nav navbar-nav align-items-center ms-auto">
-            <li class="nav-item dropdown dropdown-language"><a class="nav-link dropdown-toggle" id="dropdown-flag"
-                    href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i
-                        class="flag-icon flag-icon-us"></i><span class="selected-language">English</span></a>
-                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-flag"><a class="dropdown-item"
-                        href="#" data-language="en"><i class="flag-icon flag-icon-us"></i>
-                        English</a><a class="dropdown-item" href="#" data-language="fr"><i
-                            class="flag-icon flag-icon-fr"></i> French</a><a class="dropdown-item" href="#"
-                        data-language="de"><i class="flag-icon flag-icon-de"></i> German</a><a class="dropdown-item"
-                        href="#" data-language="pt"><i class="flag-icon flag-icon-pt"></i> Portuguese</a></div>
-            </li>
+          
             <li class="nav-item d-none d-lg-block"><a class="nav-link nav-link-style"><i class="ficon"
                         data-feather="moon"></i></a></li>
             <li class="nav-item nav-search"><a class="nav-link nav-link-search"><i class="ficon"

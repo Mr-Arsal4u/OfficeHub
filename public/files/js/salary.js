@@ -21,7 +21,7 @@ $('#salary-form').on('submit', function (e) {
     e.preventDefault();
 
     let formData = $(this).serialize();
-
+    console.log(formData);
     $.ajax({
         url: $(this).attr('action'),
         method: $(this).attr('method'),

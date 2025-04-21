@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Carbon\Carbon;
 use App\Models\Employee;
+use App\Models\Attendance;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -17,7 +19,7 @@ class ReportController extends Controller
         return view('admin.report.index', compact('employees'));
     }
 
-      /**
+    /**
      * Display a listing of the resource.
      */
     public function ai()
@@ -46,7 +48,21 @@ class ReportController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $employee = Employee::where('id', $id)->first();
+
+        $startDate = request()->start_date ?? Carbon::now()->startOfMonth();
+        $endDate = request()->end_date ?? Carbon::now()->endOfMonth();
+
+        $attendanceSummary = Attendance::where('employee_id', $employee->id)
+            ->whereBetween('date', [$startDate, $endDate])
+            ->selectRaw("
+        SUM(CASE WHEN status = 'present' THEN 1 ELSE 0 END) as present_days,
+        SUM(CASE WHEN status = 'absent' THEN 1 ELSE 0 END) as absent_days,
+        SUM(CASE WHEN status = 'leave' THEN 1 ELSE 0 END) as leave_days
+    ")
+            ->first();
+
+        return view('admin.report.details', compact('employee', 'startDate', 'endDate', 'attendanceSummary'));
     }
 
     /**
