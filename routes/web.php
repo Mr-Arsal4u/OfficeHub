@@ -32,6 +32,10 @@ Route::get('attendance', [AttendanceController::class, 'index'])->name('attendan
 Route::post('attendance/store', [AttendanceController::class, 'store'])->name('attendance.store');
 Route::put('attendance/{attendance}', [AttendanceController::class, 'update'])->name('attendance.update');
 Route::delete('attendance/{attendance}', [AttendanceController::class, 'destroy'])->name('attendance.delete');
+Route::post('attendance/update/ajax', [AttendanceController::class, 'updateAjax'])->name('attendance.update.ajax');
+Route::get('/attendance/filter-by-date', [AttendanceController::class, 'filterByDate'])->name('attendance.filter.by.date');
+// Route::get('/attendance/mark-attendance', [AttendanceController::class, 'markAttendance'])->name('attendance.mark');
+Route::post('/attendance/update-all', [AttendanceController::class, 'updateAll'])->name('attendance.update.all');
 
 Route::get('salaries', [SalaryController::class, 'index'])->name('salary.index');
 Route::post('salary/store', [SalaryController::class, 'store'])->name('salary.store');

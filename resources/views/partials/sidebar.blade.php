@@ -123,28 +123,18 @@
                                 stroke-linejoin="round" class="feather feather-circle">
                                 <circle cx="12" cy="12" r="10"></circle>
                             </svg><span class="menu-item text-truncate" data-i18n="Expenses">Reports</span></a></li>
-                    <li><a class="d-flex align-items-center" href="{{ route('reports.ai') }}"><svg
-                                xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" class="feather feather-circle">
-                                <circle cx="12" cy="12" r="10"></circle>
-                            </svg><span class="menu-item text-truncate" data-i18n="Salaries">Ask Ai</span></a></li>
                 </ul>
             </li>
 
-            <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i
+            <li class="nav-item"><a class="d-flex align-items-center" href="#"><i
                         data-feather="life-buoy"></i><span class="menu-title text-truncate"
-                        data-i18n="Raise Support">Sales Management</span></a>
+                        data-i18n="Raise Support">Loan</span></a>
             </li>
        
             </li>
-            <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i
+            <li class="nav-item"><a class="d-flex align-items-center" href="#"><i
                         data-feather="life-buoy"></i><span class="menu-title text-truncate"
-                        data-i18n="Raise Support">Roles and Permissions </span></a>
-            </li>
-            <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i
-                        data-feather="life-buoy"></i><span class="menu-title text-truncate"
-                        data-i18n="Raise Support">Settings</span></a>
+                        data-i18n="Raise Support">Advance</span></a>
             </li>
         </ul>
     </div>

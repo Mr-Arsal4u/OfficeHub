@@ -12,7 +12,8 @@
             content="admin template, Vuexy admin template, dashboard template, flat admin template, responsive admin template, web app">
         <meta name="author" content="PIXINVENT">
         <title>Dashboard - OfficeNexus</title>
-
+        <meta name="csrf-token" content="{{ csrf_token() }}">
+        
         <link rel="apple-touch-icon" href="{{ asset('admin-panel/app-assets/images/ico/apple-icon-120.png') }}">
         <link rel="shortcut icon" type="image/x-icon"
             href="{{ asset('admin-panel/app-assets/images/ico/favicon.ico') }}">

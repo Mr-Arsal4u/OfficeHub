@@ -12,4 +12,6 @@ class Expense extends Model
     protected $casts = [
         'category' => ExpenseType::class,
     ];
+
+    
 }
