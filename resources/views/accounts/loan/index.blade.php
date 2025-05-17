@@ -10,9 +10,9 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header d-inline-flex mt-50">
-                            <h4 class="card-title">Salary Records</h4>
+                            <h4 class="card-title">Payment Requests</h4>
                             <button class="dt-button add-new btn btn-primary" type="button" data-bs-toggle="modal"
-                                data-bs-target="#salary-modal" onclick="clearModalForm()">Add Salary Record</button>
+                                data-bs-target="#salary-modal" onclick="clearModalForm()">Add Payment request</button>
                         </div>
                         <div class="card-body"></div>
                         <div class="table-responsive">
@@ -20,21 +20,36 @@
                                 <thead>
                                     <tr>
                                         <th>Employee</th>
-                                        <th>Date</th>
                                         <th>Salary Amount</th>
-                                        <th>Description</th>
+                                        <th>Request Type</th>
+                                        <th>Amount Requested</th>
+                                        <th>Requested Date</th>
+                                        <th>Is Approved</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @forelse ($salaries as $salary)
+                                    @forelse ($requests as $request)
                                         <tr>
-                                            <td>{{ optional($salary->employee)->first_name ?? 'N/A' }}
-                                                {{ optional($salary->employee)->last_name ?? 'N/A' }}</td>
-                                            <td>{{ $salary->date }}</td>
-                                            <td>{{ $salary->amount }}</td>
-                                            <td>{{ $salary->description }}</td>
-                                            {{-- <td>{{ $salary->bonus ?? 'N/A' }}</td> --}}
+                                            <td>
+                                                {{ $request?->employee?->first_name }}
+                                                {{ $request?->employee?->last_name }}
+                                            </td>
+                                            <td>
+                                                {{ $request?->employee?->salary?->amount ?? 'N/A' }}
+                                            </td>
+                                            <td>
+                                                {{ $request?->type?->label() ?? 'N/A' }}
+                                            </td>
+                                            <td>
+                                                {{ $request?->amount ?? 'N/A' }}
+                                            </td>
+                                            <td>
+                                                {{ $request?->created_at->format('d M Y') ?? 'N/A' }}
+                                            </td>
+                                            <td>
+                                                {{ $request?->is_approved->label() ?? 'N/A' }}
+                                            </td>
                                             <td>
                                                 <div class="dropdown">
                                                     <button type="button"
@@ -52,7 +67,7 @@
                                                     <div class="dropdown-menu dropdown-menu-end">
                                                         <a class="dropdown-item" href="javascript:void(0)"
                                                             data-bs-toggle="modal" data-bs-target="#salary-modal"
-                                                            onclick="editSalary({{ $salary }})">
+                                                            onclick="editSalary({{ $request }})">
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="14"
                                                                 height="14" viewBox="0 0 24 24" fill="none"
                                                                 stroke="currentColor" stroke-width="2"
@@ -64,7 +79,53 @@
                                                             </svg>
                                                             <span>Edit</span>
                                                         </a>
-                                                        <form action="{{ route('salary.delete', $salary->id) }}"
+
+                                                        @if (auth()->user() && auth()->user()->hasRole('admin'))
+                                                            @if ($request->is_approved?->value == \App\Enum\RequestIsApproved::NO->value)
+                                                                <form
+                                                                    action="{{ route('request.payment.status.update', $request->id) }}"
+                                                                    method="POST" style="display:inline;">
+                                                                    @csrf
+                                                                    <button class="dropdown-item" type="submit">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                                                            width="14" height="14"
+                                                                            viewBox="0 0 24 24" fill="none"
+                                                                            stroke="currentColor" stroke-width="2"
+                                                                            stroke-linecap="round" stroke-linejoin="round"
+                                                                            class="feather feather-check-circle me-50">
+                                                                            <path d="M9 11l3 3L22 4"></path>
+                                                                            <circle cx="12" cy="12" r="10">
+                                                                            </circle>
+                                                                        </svg>
+                                                                        <span>Approve</span>
+                                                                    </button>
+                                                                </form>
+                                                            @else
+                                                                <form
+                                                                    action="{{ route('request.payment.status.update', $request->id) }}"
+                                                                    method="POST" style="display:inline;">
+                                                                    @csrf
+                                                                    <button class="dropdown-item" type="submit">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                                                            width="14" height="14"
+                                                                            viewBox="0 0 24 24" fill="none"
+                                                                            stroke="currentColor" stroke-width="2"
+                                                                            stroke-linecap="round" stroke-linejoin="round"
+                                                                            class="feather feather-x-circle me-50">
+                                                                            <circle cx="12" cy="12" r="10">
+                                                                            </circle>
+                                                                            <line x1="15" y1="9"
+                                                                                x2="9" y2="15"></line>
+                                                                            <line x1="9" y1="9"
+                                                                                x2="15" y2="15"></line>
+                                                                        </svg>
+                                                                        <span>Reject</span>
+                                                                    </button>
+                                                                </form>
+                                                            @endif
+                                                        @endif
+
+                                                        <form action="{{ route('request.payment.delete', $request->id) }}"
                                                             method="POST" style="display:inline;">
                                                             @csrf
                                                             @method('DELETE')
@@ -85,10 +146,11 @@
                                                     </div>
                                                 </div>
                                             </td>
+
                                         </tr>
                                     @empty
                                         <tr>
-                                            <td colspan="7" class="text-center">No salary records found.</td>
+                                            <td colspan="7" class="text-center">No records found.</td>
                                         </tr>
                                     @endforelse
                                 </tbody>
@@ -104,36 +166,40 @@
     <div class="modal modal-slide-in new-salary-modal fade" id="salary-modal" data-bs-backdrop="static"
         data-bs-keyboard="false">
         <div class="modal-dialog">
-            <form id="salary-form" method="POST" class="add-new-salary modal-content pt-0" novalidate="novalidate">
+            <form id="salary-form" method="POST" class="add-new-salary modal-content pt-0" novalidate>
                 @csrf
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">×</button>
                 <div class="modal-header mb-1">
-                    <h5 class="modal-title" id="exampleModalLabel">Add Salary Record</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Add Payment Request</h5>
                 </div>
                 <div class="modal-body flex-grow-1">
                     <div class="mb-1">
                         <label class="form-label" for="employee_id">Employee</label>
                         <select class="form-control" id="employee_id" name="employee_id" required>
                             <option value="" selected disabled>Select Employee</option>
-                            @foreach ($employees as $employee)
-                                <option value="{{ $employee->id }}">{{ $employee->first_name }} {{ $employee->last_name }}
+                            @foreach ($allUsers as $user)
+                                <option value="{{ $user->id }}">{{ $user->first_name }} {{ $user->last_name }}
                                 </option>
                             @endforeach
                         </select>
                     </div>
+
                     <div class="mb-1">
-                        <label class="form-label" for="date">Date</label>
-                        <input type="date" class="form-control" id="date" name="date" required>
-                    </div>
-                    <div class="mb-1">
-                        <label class="form-label" for="amount">Salary Amount</label>
+                        <label class="form-label" for="amount">Amount</label>
                         <input type="number" class="form-control" id="amount" name="amount" required>
                     </div>
+
                     <div class="mb-1">
-                        <label class="form-label" for="bonus">Description</label>
-                        {{-- <input type="textrea" class="form-control" id="bonus" name="bonus"> --}}
-                        <textarea name="description" class="form-control" id="description" cols="10" rows="5"></textarea>
+                        <label class="form-label" for="type">Type</label>
+                        {{-- If type has fixed options, replace with a select dropdown like below --}}
+                        <select class="form-control" id="type" name="type" required>
+                            <option value="" disabled selected>Select Type</option>
+                            @foreach ($types as $type)
+                                <option value="{{ $type?->value }}">{{ $type?->label() }}</option>
+                            @endforeach
+                        </select>
                     </div>
+
                     <button type="submit" class="btn btn-primary me-1">Submit</button>
                     <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
                 </div>
@@ -142,6 +208,6 @@
     </div>
 
     @push('scripts')
-        <script src="{{ asset('files/js/salary.js') }}"></script>
+        <script src="{{ asset('files/js/loan.js') }}"></script>
     @endpush
 @endsection

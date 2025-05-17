@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\HR;
 
 use Carbon\Carbon;
-use App\Models\Employee;
+use App\Models\User;
 use App\Models\Attendance;
 use Illuminate\Http\Request;
 use App\Services\AttendanceService;
@@ -29,7 +29,7 @@ class AttendanceController extends Controller
 
             $today = Carbon::today()->toDateString();
 
-            $employees = Employee::with(['attendances' => function ($query) use ($today) {
+            $employees = User::with(['attendances' => function ($query) use ($today) {
                 $query->whereDate('date', $today);
             }])->get();
 
@@ -109,7 +109,7 @@ class AttendanceController extends Controller
     public function filterByDate(Request $request)
     {
         $date = $request->date;
-        $employees = Employee::with(['attendances' => function ($query) use ($date) {
+        $employees = User::with(['attendances' => function ($query) use ($date) {
             $query->whereDate('date', $date);
         }])->get();
 
@@ -121,7 +121,7 @@ class AttendanceController extends Controller
         $status = $request->input('status');
         $today = Carbon::today()->toDateString();
 
-        $employees = Employee::all();
+        $employees = User::all();
 
         foreach ($employees as $employee) {
             Attendance::updateOrCreate(

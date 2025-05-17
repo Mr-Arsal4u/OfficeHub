@@ -126,15 +126,11 @@
                 </ul>
             </li>
 
-            <li class="nav-item"><a class="d-flex align-items-center" href="#"><i
+            <li class="nav-item"><a class="d-flex align-items-center" href="{{ route('request.payment') }}"><i
                         data-feather="life-buoy"></i><span class="menu-title text-truncate"
-                        data-i18n="Raise Support">Loan</span></a>
+                        data-i18n="Raise Support">Payment Requests</span></a>
             </li>
-       
-            </li>
-            <li class="nav-item"><a class="d-flex align-items-center" href="#"><i
-                        data-feather="life-buoy"></i><span class="menu-title text-truncate"
-                        data-i18n="Raise Support">Advance</span></a>
+
             </li>
         </ul>
     </div>

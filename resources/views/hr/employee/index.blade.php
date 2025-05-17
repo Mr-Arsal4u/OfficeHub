@@ -151,12 +151,6 @@
                         <input type="text" class="form-control" id="department" name="department" required>
                     </div>
 
-                    <!-- Salary -->
-                    <div class="mb-1">
-                        <label class="form-label" for="salary">Salary</label>
-                        <input type="number" class="form-control" id="salary" name="salary" required>
-                    </div>
-
                     <!-- Hire Date -->
                     <div class="mb-1">
                         <label class="form-label" for="hire_date">Hire Date</label>

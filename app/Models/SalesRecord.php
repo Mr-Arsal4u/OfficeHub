@@ -9,7 +9,7 @@ class SalesRecord extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'date', 'client_name', 'product', 'amount', 'quota'];
+    protected $fillable = ['employee_id', 'date', 'client_name', 'product', 'amount', 'quota'];
 
     public function user() {
         return $this->belongsTo(User::class);

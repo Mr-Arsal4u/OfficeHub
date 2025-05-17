@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Accounts;
 
+use App\Models\Salary;
+use Illuminate\Http\Request;
+use App\Services\SalaryService;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SalaryRequest;
-use App\Services\SalaryService;
-use Illuminate\Http\Request;
 
 class SalaryController extends Controller
 {
@@ -22,21 +24,26 @@ class SalaryController extends Controller
         try {
             $salaries = $this->salaryService->getSalaries();
             $employees = $this->salaryService->getEmployees();
-            return view('accounts.salary.index', compact('salaries','employees'));
+            return view('accounts.salary.index', compact('salaries', 'employees'));
         } catch (\Exception $e) {
             return back()->with('error', 'Error: ' . $e->getMessage());
         }
     }
 
-    public function store(SalaryRequest $request)
+    public function store(Request $request)
     {
         try {
-            $this->salaryService->storeSalary($request->all());
-            return response()->json(['success' => 'Salary created successfully']);
-            // return back()->with('success', 'Salary created successfully');
+            Salary::updateOrCreate(
+                ['employee_id' => $request->employee_id],
+                [
+                    'amount' => $request->amount ?? null,
+                    'date' => $request->date ?? null,
+                    'description' => $request->description ?? null,
+                ]
+            );
+            return response()->json(['success' => 'Salary created successfully.'], 201);
         } catch (\Exception $e) {
-            dump($e->getMessage());
-            // return back()->with('error', 'Error: ' . $e->getMessage());
+            Log::error($e->getMessage());
         }
     }
 
@@ -61,6 +68,4 @@ class SalaryController extends Controller
             return back()->with('error', 'Error: ' . $e->getMessage());
         }
     }
-
-
 }

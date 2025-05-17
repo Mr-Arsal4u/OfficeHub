@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('sales_records', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->unsignedBigInteger('employee_id');
+            $table->foreign('employee_id')->references('id')->on('users');
             $table->date('date');
             $table->string('client_name');
             $table->string('product');

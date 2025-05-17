@@ -7,6 +7,7 @@ use App\Models\Employee;
 use App\Models\Attendance;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\User;
 
 class ReportController extends Controller
 {
@@ -15,7 +16,7 @@ class ReportController extends Controller
      */
     public function index()
     {
-        $employees = Employee::all();
+        $employees = User::all();
         return view('admin.report.index', compact('employees'));
     }
 
@@ -48,7 +49,7 @@ class ReportController extends Controller
      */
     public function show(string $id)
     {
-        $employee = Employee::where('id', $id)->first();
+        $employee = User::where('id', $id)->first();
 
         $startDate = request()->start_date ?? Carbon::now()->startOfMonth();
         $endDate = request()->end_date ?? Carbon::now()->endOfMonth();

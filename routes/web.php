@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\HR\AttendanceController;
 use App\Http\Controllers\Accounts\SalaryController;
 use App\Http\Controllers\Accounts\ExpenseController;
+use App\Http\Controllers\RequestController;
 
 Route::get('/', [AuthController::class, 'login'])->name('login');
 Route::get('register', [AuthController::class, 'register'])->name('register');
@@ -49,6 +50,12 @@ Route::delete('expense/{expense}', [ExpenseController::class, 'destroy'])->name(
 
 Route::resource('reports', ReportController::class);
 Route::get('/reports/ai', [ReportController::class, 'ai'])->name('reports.ai');
+
+Route::get('request/payment', [RequestController::class, 'index'])->name('request.payment');
+Route::delete('request/payment/{request}', [RequestController::class, 'destroy'])->name('request.payment.delete');
+Route::post('request/payment/store', [RequestController::class, 'store'])->name('request.payment.store');
+Route::put('request/payment/{request}', [RequestController::class, 'update'])->name('request.payment.update');
+Route::post('/request/payment/update/status/{id}', [RequestController::class, 'updateStatus'])->name('request.payment.status.update');
 
 
 require __DIR__ . '/auth.php';

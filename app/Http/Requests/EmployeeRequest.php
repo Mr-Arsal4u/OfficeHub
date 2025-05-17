@@ -28,7 +28,6 @@ class EmployeeRequest extends FormRequest
             'phone' => 'required',
             'position' => 'required',
             'department' => 'required',
-            'salary' => 'required',
             'hire_date' => 'required|date',
             // 'user_id' => 'required|int',
         ];
