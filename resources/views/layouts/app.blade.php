@@ -12,8 +12,14 @@
             content="Admin template, OfficeNexus Admin template, dashboard template, flat Admin template, responsive Admin template, web app">
         <meta name="author" content="PIXINVENT">
         <title>Dashboard - OfficeNexus</title>
+<<<<<<< HEAD
 
         <link rel="apple-touch-icon" href="{{ asset('Admin-panel/app-assets/images/ico/apple-icon-120.png') }}">
+=======
+        <meta name="csrf-token" content="{{ csrf_token() }}">
+        
+        <link rel="apple-touch-icon" href="{{ asset('admin-panel/app-assets/images/ico/apple-icon-120.png') }}">
+>>>>>>> 4ef0da928cdd35586dcfe0bbaa15378a438aa57b
         <link rel="shortcut icon" type="image/x-icon"
             href="{{ asset('Admin-panel/app-assets/images/ico/favicon.ico') }}">
         <link

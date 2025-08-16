@@ -9,11 +9,24 @@
             <div class="row" id="table-striped">
                 <div class="col-12">
                     <div class="card">
-                        <div class="card-header d-inline-flex mt-50">
-                            <h4 class="card-title">Attendance Records</h4>
-                            <button class="dt-button add-new btn btn-primary" type="button" data-bs-toggle="modal"
-                                data-bs-target="#attendance-modal" onclick="clearModalForm()">Add Attendance Record</button>
+                        <div class="card-header d-flex flex-wrap align-items-center justify-content-between mt-50">
+                            <h4 class="card-title mb-2">Attendance Records</h4>
+
+                            <div class="d-flex flex-wrap gap-2">
+                                <!-- Filter Buttons -->
+                                <button class="btn btn-success" onclick="setStatus('present')">
+                                    All Present
+                                </button>
+
+                                <button class="btn btn-danger" onclick="setStatus('absent')">
+                                    All Absent
+                                </button>
+
+                                <!-- Date Filter -->
+                                <input type="date" class="form-control" id="attendance-date-filter">
+                            </div>
                         </div>
+
                         <div class="card-body"></div>
                         <div class="table-responsive">
                             <table class="table table-striped">
@@ -24,74 +37,10 @@
                                         <th>Status</th>
                                         <th>Check In</th>
                                         <th>Check Out</th>
-                                        <th>Actions</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    @forelse ($attendances as $attendance)
-                                        <tr>
-                                            <td>{{ optional($attendance->employee)->first_name ?? 'N/A' }}
-                                                {{ optional($attendance->employee)->last_name ?? 'N/A' }}</td>
-                                            <td>{{ $attendance->date }}</td>
-                                            <td>{{ $attendance->status ?? 'N/A' }}</td>
-                                            <td>{{ $attendance->check_in_time ?? 'N/A' }}</td>
-                                            <td>{{ $attendance->check_out_time ?? 'N/A' }}</td>
-                                            <td>
-                                                <div class="dropdown">
-                                                    <button type="button"
-                                                        class="btn btn-sm dropdown-toggle hide-arrow py-0 waves-effect waves-float waves-light"
-                                                        data-bs-toggle="dropdown">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="14"
-                                                            height="14" viewBox="0 0 24 24" fill="none"
-                                                            stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                                            stroke-linejoin="round" class="feather feather-more-vertical">
-                                                            <circle cx="12" cy="12" r="1"></circle>
-                                                            <circle cx="12" cy="5" r="1"></circle>
-                                                            <circle cx="12" cy="19" r="1"></circle>
-                                                        </svg>
-                                                    </button>
-                                                    <div class="dropdown-menu dropdown-menu-end">
-                                                        <a class="dropdown-item" href="javascript:void(0)"
-                                                            data-bs-toggle="modal" data-bs-target="#attendance-modal"
-                                                            onclick="editAttendance({{ $attendance }})">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="14"
-                                                                height="14" viewBox="0 0 24 24" fill="none"
-                                                                stroke="currentColor" stroke-width="2"
-                                                                stroke-linecap="round" stroke-linejoin="round"
-                                                                class="feather feather-edit-2 me-50">
-                                                                <path
-                                                                    d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z">
-                                                                </path>
-                                                            </svg>
-                                                            <span>Edit</span>
-                                                        </a>
-                                                        <form action="{{ route('attendance.delete', $attendance->id) }}"
-                                                            method="POST" style="display:inline;">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button class="dropdown-item" type="submit">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" width="14"
-                                                                    height="14" viewBox="0 0 24 24" fill="none"
-                                                                    stroke="currentColor" stroke-width="2"
-                                                                    stroke-linecap="round" stroke-linejoin="round"
-                                                                    class="feather feather-trash me-50">
-                                                                    <polyline points="3 6 5 6 21 6"></polyline>
-                                                                    <path
-                                                                        d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
-                                                                    </path>
-                                                                </svg>
-                                                                <span>Delete</span>
-                                                            </button>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    @empty
-                                        <tr>
-                                            <td colspan="6" class="text-center">No attendance records found.</td>
-                                        </tr>
-                                    @endforelse
+                                <tbody id="attendance-table">
+                                    @include('hr.attendance.attendance_table', ['employees' => $employees])
                                 </tbody>
                             </table>
                         </div>
@@ -118,7 +67,8 @@
                         <select class="form-control" id="employee_id" name="employee_id" required>
                             <option value="" selected disabled>Select Employee</option>
                             @foreach ($employees as $employee)
-                                <option value="{{ $employee->id }}">{{ $employee->first_name }} {{ $employee->last_name }}
+                                <option value="{{ $employee->id }}">{{ $employee->first_name }}
+                                    {{ $employee->last_name }}
                                 </option>
                             @endforeach
                         </select>

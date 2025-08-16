@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\HR;
 
 use App\Models\User;
-use App\Models\Employee;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\EmployeeRequest;
 use Spatie\Permission\Models\Role;
@@ -12,9 +11,9 @@ class EmployeeController extends Controller
 {
     public function index()
     {
-        $employees = Employee::all();
+        $employees = User::latest()->get();
         $roles = Role::all();
-        return view('hr.employee.index', compact('employees','roles'));
+        return view('hr.employee.index', compact('employees', 'roles'));
     }
 
     public function create()
@@ -24,33 +23,27 @@ class EmployeeController extends Controller
 
     public function store(EmployeeRequest $request)
     {
-        Employee::create($request->all());
-        $user = User::create([
-            'name' => $request->first_name,
-            'email' => $request->email,
-            'password' => bcrypt('password'),
-        ]);
-        $user->assignRole($request->role);
-        return response()->json(['success' => 'Employee created successfully.'],201);
-        // return redirect()->route('employees.index')->with('success', 'Employee created successfully.');
+        $user =  User::create($request->all());
+        $user->assignRole($request?->role);
+        return response()->json(['success' => 'User created successfully.'], 201);
+        // return redirect()->route('employees.index')->with('success', 'User created successfully.');
     }
 
-    public function edit(Employee $employee)
+    public function edit(User $User)
     {
-        return view('employees.edit', compact('employee'));
+        return view('employees.edit', compact('User'));
     }
 
-    public function update(EmployeeRequest $request, Employee $employee)
+    public function update(EmployeeRequest $request, User $User)
     {
-        $employee->update($request->all());
-        return response()->json(['success' => 'Employee Updated successfully.'],201);
-        // return redirect()->route('employees.index')->with('success', 'Employee updated successfully.');
+        $User->update($request->all());
+        return response()->json(['success' => 'User Updated successfully.'], 201);
+        // return redirect()->route('employees.index')->with('success', 'User updated successfully.');
     }
 
-    public function destroy(Employee $employee)
+    public function destroy(User $User)
     {
-        $employee->delete();
-        return redirect()->route('employees.index')->with('success', 'Employee deleted successfully.');
+        $User->delete();
+        return redirect()->route('employees.index')->with('success', 'User deleted successfully.');
     }
 }
-

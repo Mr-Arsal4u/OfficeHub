@@ -2,8 +2,9 @@
 
 namespace App\Services;
 
-use App\Models\Employee;
+use App\Models\User;
 use App\Models\Salary;
+use Exception;
 
 class SalaryService
 {
@@ -15,10 +16,10 @@ class SalaryService
 
     public function getEmployees()
     {
-        return Employee::get();
+        return User::doesntHave('salary')->get();
     }
 
-    public function storeSalary($data) 
+    public function storeSalary($data)
     {
         // dd($data);   
         return Salary::updateOrCreate(

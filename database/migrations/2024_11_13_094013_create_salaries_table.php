@@ -13,12 +13,14 @@ return new class extends Migration
     {
         Schema::create('salaries', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('employee_id')->constrained()->onDelete('cascade');
-            $table->decimal('amount', 10, 2)->nullable();
+            // $table->foreignId('employee_id')->constrained()->onDelete('cascade');
+            $table->unsignedBigInteger('employee_id');
+            $table->foreign('employee_id')->references('id')->on('users');
+            $table->date('date');
+            $table->decimal('amount', 10, 2);
             $table->string('description')->nullable();
             $table->timestamps();
         });
-        
     }
 
     /**

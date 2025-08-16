@@ -21,12 +21,10 @@ class SalaryRequest extends FormRequest
      */
     public function rules(): array
     {
-        // dd($this->all());
         return [
-            'employee_id' => 'required|exists:employees,id',
+            'employee_id' => 'required|exists:users,id',
             'amount' => 'required|numeric',
-            // 'date' => 'required|string|max:255',
-            'bonus' => 'nullable|numeric',
+            'date' => 'required|string|max:255',
             'description' => 'nullable',
         ];
     }

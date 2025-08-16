@@ -1,19 +1,18 @@
 function editSalary(salary) {
-    $('#salary-form').attr('action', '/salary/' + salary.id);
+    $('#salary-form').attr('action', '/request/payment/' + salary.id);
     $('#salary-form').attr('method', 'PUT');
     $('#employee_id').val(salary.employee_id);
     $('#amount').val(salary.amount);
-    $("#description").val(salary.description);
-    $("#date").val(salary.date);
-    $('.modal-title').text('Edit Salary');
+    $("#type").val(salary.type);
+    $('.modal-title').text('Edit Request');
 
 }
 
 function clearModalForm() {
     $('#salary-form').trigger('reset');
-    $('#salary-form').attr('action', '/salary/store');
+    $('#salary-form').attr('action', '/request/payment/store');
     $('#salary-form').attr('method', 'POST');
-    $('.modal-title').text('Create New Salary');
+    $('.modal-title').text('Create New Request');
 }
 
 
@@ -27,7 +26,6 @@ $('#salary-form').on('submit', function (e) {
         method: $(this).attr('method'),
         data: formData,
         success: function (response) {
-            console.log('here');
             if (response.success) {
                 $('#salary-modal').modal('hide');
                 showToast('success', response.success);

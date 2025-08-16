@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers\HR;
 
-use App\Models\Employee;
+use Carbon\Carbon;
+use App\Models\User;
 use App\Models\Attendance;
 use Illuminate\Http\Request;
 use App\Services\AttendanceService;
@@ -24,7 +25,14 @@ class AttendanceController extends Controller
     {
         try {
             $attendances = $this->attendanceService->getAttendance();
-            $employees = $this->attendanceService->getEmployees();
+            // $employees = $this->attendanceService->getEmployees();
+
+            $today = Carbon::today()->toDateString();
+
+            $employees = User::with(['attendances' => function ($query) use ($today) {
+                $query->whereDate('date', $today);
+            }])->get();
+
             return view('hr.attendance.index', compact('attendances', 'employees'));
         } catch (\Exception $exception) {
             $message = $exception->getMessage();
@@ -37,7 +45,6 @@ class AttendanceController extends Controller
     {
 
         try {
-            // dd('here');
             $data = $this->attendanceService->excludeDates($request->all());
             $attendance = $this->attendanceService->store($data);
             return response()->json(['success' => 'Attendance created successfully', 201]);
@@ -51,9 +58,7 @@ class AttendanceController extends Controller
     public function update(AttendanceRequest $request, Attendance $attendance)
     {
         try {
-            // dd('here');
             $data = $this->attendanceService->excludeDates($request->all());
-            // dd($attendance, $data);
             $attendance = $this->attendanceService->update($data, $attendance);
             return response()->json(['success' => 'Attendance updated successfully', 200]);
         } catch (\Exception $exception) {
@@ -69,12 +74,67 @@ class AttendanceController extends Controller
         return response()->json(['success' => 'Attendance deleted successfully', 204]);
     }
 
-    // public function excludeDates($values)
-    // {
-    //     // dd($values);
-    //     unset($values['check_in_time']);
-    //     unset($values['check_out_time']);
-    //     // dd($values);
-    //     return $values;
-    // }
+    public function updateAjax(Request $request)
+    {
+        $date = $request->date ?? now()->toDateString();
+        $carbonDate = Carbon::parse($date);
+
+        // Check if Sunday
+        if ($carbonDate->isSunday()) {
+            return response()->json(['error' => 'Attendance cannot be added on Sunday.'], 422);
+        }
+
+        $data = [
+            'date' => $date,
+        ];
+
+        if ($request->has('status')) {
+            $data['status'] = $request->status;
+        }
+        if ($request->has('check_in_time')) {
+            $data['check_in_time'] = $request->check_in_time;
+        }
+        if ($request->has('check_out_time')) {
+            $data['check_out_time'] = $request->check_out_time;
+        }
+
+        Attendance::updateOrCreate(
+            ['employee_id' => $request->employee_id, 'date' => $date],
+            $data
+        );
+
+        return response()->json(['success' => 'Attendance updated']);
+    }
+
+    public function filterByDate(Request $request)
+    {
+        $date = $request->date;
+        $employees = User::with(['attendances' => function ($query) use ($date) {
+            $query->whereDate('date', $date);
+        }])->get();
+
+        return view('hr.attendance.attendance_table', compact('employees', 'date'));
+    }
+
+    public function updateAll(Request $request)
+    {
+        $status = $request->input('status');
+        $today = Carbon::today()->toDateString();
+
+        $employees = User::all();
+
+        foreach ($employees as $employee) {
+            Attendance::updateOrCreate(
+                [
+                    'employee_id' => $employee->id,
+                    'date' => $today
+                ],
+                [
+                    'status' => $status
+                ]
+            );
+        }
+
+        return response()->json(['message' => 'Attendance updated successfully.']);
+    }
 }

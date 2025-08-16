@@ -9,37 +9,7 @@ class SalesRecord extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'user_id', 
-        'customer_name', 
-        'product', 
-        'quantity', 
-        'unit_price', 
-        'total_price', 
-        'status', 
-        'date'
-    ];
-
-    protected $casts = [
-        'date' => 'date',
-        'quantity' => 'integer',
-        'unit_price' => 'decimal:2',
-        'total_price' => 'decimal:2',
-    ];
-
-    // Status constants
-    const STATUS_PENDING = 'pending';
-    const STATUS_COMPLETED = 'completed';
-    const STATUS_CANCELLED = 'cancelled';
-
-    public static function getStatuses()
-    {
-        return [
-            self::STATUS_PENDING => 'Pending',
-            self::STATUS_COMPLETED => 'Completed',
-            self::STATUS_CANCELLED => 'Cancelled',
-        ];
-    }
+    protected $fillable = ['employee_id', 'date', 'client_name', 'product', 'amount', 'quota'];
 
     public function user() {
         return $this->belongsTo(User::class);
