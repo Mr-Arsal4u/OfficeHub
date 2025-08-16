@@ -48,39 +48,8 @@ $(document).ready(function () {
         $('.modal-title').text('Add New Attendance');
     }
 
-    $('#attendance-form').on('submit', function (e) {
-        e.preventDefault();
-
-        let formData = $(this).serialize();
-
-        $.ajax({
-            url: $(this).attr('action'),
-            method: $(this).attr('method'),
-            data: formData,
-            success: function (response) {
-                if (response.success) {
-                    $('#attendance-modal').modal('hide');
-                    showToast("success", response.success);
-                    window.location.reload();
-                } else {
-                    showToast("error", response.error);
-                }
-            },
-            error: function (xhr, status, error) {
-                if (xhr.status === 422) {
-                    // Validation errors
-                    var errors = xhr.responseJSON.errors;
-                    var errorMessage = '';
-                    for (var field in errors) {
-                        errorMessage += errors[field][0] + '\n';
-                    }
-                    showToast("error", errorMessage);
-                } else {
-                    showToast("error", "An error occurred while processing your request.");
-                }
-            }
-        });
-    });
+    // Form submission is now handled by crud-utils.js
+    // This file now only contains attendance-specific functionality
 
     $('#attendance-date-filter').on('change', function () {
         let selectedDate = $(this).val();
@@ -98,24 +67,6 @@ $(document).ready(function () {
             });
         }
     });
-
-    function setStatus(status) {
-        $.ajax({
-            url: '/attendance/update-all',
-            type: "POST",
-            data: {
-                _token: $('meta[name="csrf-token"]').attr('content'),
-                status: status
-            },
-            success: function (response) {
-                window.location.reload();
-                showToast("success", response.success);
-            },
-            error: function (xhr) {
-                alert('Something went wrong');
-            }
-        });
-    }
 
     $('.status-dropdown').on('change', function () {
         let employeeId = $(this).data('employee-id');
@@ -189,3 +140,52 @@ $(document).ready(function () {
         });
     }
 });
+
+// Global function for showing toast notifications
+function showToast(type, message) {
+    if (typeof toastr !== 'undefined') {
+        toastr[type](message);
+    } else {
+        // Fallback to alert if toastr is not available
+        alert(message);
+    }
+}
+
+// Global function for setting status for all employees
+function setStatus(status) {
+    if (confirm('Are you sure you want to set all employees to ' + status + '?')) {
+        let selectedDate = $('#attendance-date-filter').val() || new Date().toISOString().split('T')[0];
+        
+        // Disable buttons and show loading state
+        $('button[onclick*="setStatus"]').prop('disabled', true).html('<i class="fas fa-spinner fa-spin me-1"></i> Updating...');
+        
+        $.ajax({
+            url: '/attendance/update-all',
+            type: "POST",
+            data: {
+                _token: $('meta[name="csrf-token"]').attr('content'),
+                status: status,
+                date: selectedDate
+            },
+            success: function (response) {
+                showToast("success", response.success || 'Attendance updated successfully');
+                setTimeout(function() {
+                    window.location.reload();
+                }, 1000);
+            },
+            error: function (xhr) {
+                let errorMessage = 'Something went wrong. Please try again.';
+                if (xhr.responseJSON && xhr.responseJSON.error) {
+                    errorMessage = xhr.responseJSON.error;
+                }
+                showToast("error", errorMessage);
+                console.error('Error updating attendance:', xhr);
+                
+                // Re-enable buttons
+                $('button[onclick*="setStatus(\'present\')"]').prop('disabled', false).html('<i class="fas fa-check-circle me-1"></i> All Present');
+                $('button[onclick*="setStatus(\'absent\')"]').prop('disabled', false).html('<i class="fas fa-times-circle me-1"></i> All Absent');
+                $('button[onclick*="setStatus(\'leave\')"]').prop('disabled', false).html('<i class="fas fa-calendar-minus me-1"></i> All Leave');
+            }
+        });
+    }
+}

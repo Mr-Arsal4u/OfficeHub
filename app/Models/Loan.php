@@ -13,6 +13,7 @@ class Loan extends Model
         'amount',
         'type',
         'is_approved',
+        'description',
     ];
 
     protected $casts = [
@@ -23,5 +24,21 @@ class Loan extends Model
     public function employee()
     {
         return $this->belongsTo(User::class, 'employee_id');
+    }
+
+    public function salaryPayments()
+    {
+        return $this->hasMany(SalaryPayment::class);
+    }
+
+    public function getStatusBadgeAttribute()
+    {
+        $badges = [
+            RequestIsApproved::NO->value => 'badge-danger',
+            RequestIsApproved::YES->value => 'badge-success'
+        ];
+
+        $status = $this->is_approved->value ? 'Approved' : 'Pending';
+        return '<span class="badge ' . ($badges[$this->is_approved->value] ?? 'badge-secondary') . '">' . $status . '</span>';
     }
 }

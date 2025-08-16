@@ -62,24 +62,20 @@
                                                             </svg>
                                                             <span>Edit</span>
                                                         </a>
-                                                        <form action="{{ route('expense.delete', $expense->id) }}"
-                                                            method="POST" style="display:inline;">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button class="dropdown-item" type="submit">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" width="14"
-                                                                    height="14" viewBox="0 0 24 24" fill="none"
-                                                                    stroke="currentColor" stroke-width="2"
-                                                                    stroke-linecap="round" stroke-linejoin="round"
-                                                                    class="feather feather-trash me-50">
-                                                                    <polyline points="3 6 5 6 21 6"></polyline>
-                                                                    <path
-                                                                        d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
-                                                                    </path>
-                                                                </svg>
-                                                                <span>Delete</span>
-                                                            </button>
-                                                        </form>
+                                                        <button class="dropdown-item" type="button" 
+                                                            onclick="deleteItem('{{ route('expense.delete', $expense->id) }}', 'expense')">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="14"
+                                                                height="14" viewBox="0 0 24 24" fill="none"
+                                                                stroke="currentColor" stroke-width="2"
+                                                                stroke-linecap="round" stroke-linejoin="round"
+                                                                class="feather feather-trash me-50">
+                                                                <polyline points="3 6 5 6 21 6"></polyline>
+                                                                <path
+                                                                    d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
+                                                                </path>
+                                                            </svg>
+                                                            <span>Delete</span>
+                                                        </button>
                                                     </div>
                                                 </div>
                                             </td>
@@ -102,7 +98,7 @@
     <div class="modal modal-slide-in new-expense-modal fade" id="expense-modal" data-bs-backdrop="static"
         data-bs-keyboard="false">
         <div class="modal-dialog">
-            <form id="expense-form" method="POST" class="add-new-expense modal-content pt-0" novalidate="novalidate">
+            <form id="expense-form" method="POST" action="{{ route('expense.store') }}" class="add-new-expense modal-content pt-0" novalidate="novalidate">
                 @csrf
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">×</button>
                 <div class="modal-header mb-1">
@@ -110,21 +106,20 @@
                 </div>
                 <div class="modal-body flex-grow-1">
                     <div class="mb-1">
-                        <label class="form-label" for="type">Expense Type</label>
-                    <select class="form-select" id="category" name="category" required>
+                        <label class="form-label" for="category">Expense Type <span class="text-danger">*</span></label>
+                        <select class="form-select" id="category" name="category" required>
                             <option value="" disabled selected>Select Expense Type</option>
                             @foreach ($expenseCategories as $category)
                                 <option value="{{ $category->value }}">{{ $category->label() }}</option>
                             @endforeach
                         </select>
-
                     </div>
                     <div class="mb-1">
-                        <label class="form-label" for="date">Date</label>
+                        <label class="form-label" for="date">Date <span class="text-danger">*</span></label>
                         <input type="date" class="form-control" id="date" name="date" required>
                     </div>
                     <div class="mb-1">
-                        <label class="form-label" for="amount">Amount</label>
+                        <label class="form-label" for="amount">Amount <span class="text-danger">*</span></label>
                         <input type="number" class="form-control" id="amount" name="amount" required>
                     </div>
                     <div class="mb-1">
@@ -139,6 +134,7 @@
     </div>
 
     @push('scripts')
+        <script src="{{ asset('files/js/crud-utils.js') }}"></script>
         <script src="{{ asset('files/js/expense.js') }}"></script>
     @endpush
 @endsection

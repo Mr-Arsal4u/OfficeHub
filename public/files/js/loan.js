@@ -1,41 +1,91 @@
-function editSalary(salary) {
-    $('#salary-form').attr('action', '/request/payment/' + salary.id);
-    $('#salary-form').attr('method', 'PUT');
-    $('#employee_id').val(salary.employee_id);
-    $('#amount').val(salary.amount);
-    $("#type").val(salary.type);
-    $('.modal-title').text('Edit Request');
-
+// Global function for showing toast notifications
+function showToast(type, message) {
+    if (typeof toastr !== 'undefined') {
+        toastr[type](message);
+    } else {
+        // Fallback to alert if toastr is not available
+        alert(message);
+    }
 }
 
-function clearModalForm() {
-    $('#salary-form').trigger('reset');
-    $('#salary-form').attr('action', '/request/payment/store');
-    $('#salary-form').attr('method', 'POST');
-    $('.modal-title').text('Create New Request');
-}
+// Initialize payment request form functionality
+function initializePaymentRequestForm() {
+    // Disable submit button after click to prevent double submission
+    $('#payment-request-form').on('submit', function() {
+        const submitBtn = $('#submit-btn');
+        const originalText = submitBtn.html();
+        
+        submitBtn.prop('disabled', true);
+        submitBtn.html('<i class="fas fa-spinner fa-spin me-1"></i> Submitting...');
+        
+        // Re-enable after 5 seconds if form submission fails
+        setTimeout(function() {
+            submitBtn.prop('disabled', false);
+            submitBtn.html(originalText);
+        }, 5000);
+    });
 
+    // Form validation
+    $('#payment-request-form').on('submit', function(e) {
+        const employeeId = $('#employee_id').val();
+        const type = $('#type').val();
+        const amount = $('#amount').val();
 
-$('#salary-form').on('submit', function (e) {
-    e.preventDefault();
+        if (!employeeId || !type || !amount) {
+            e.preventDefault();
+            showToast('error', 'Please fill in all required fields.');
+            return false;
+        }
 
-    let formData = $(this).serialize();
-
-    $.ajax({
-        url: $(this).attr('action'),
-        method: $(this).attr('method'),
-        data: formData,
-        success: function (response) {
-            if (response.success) {
-                $('#salary-modal').modal('hide');
-                showToast('success', response.success);
-                window.location.reload();
-            } else {
-                showToast("error", response.error);
-            }
-        },
-        error: function (xhr, status, error) {
-            showToast("error", error);
+        if (parseFloat(amount) <= 0) {
+            e.preventDefault();
+            showToast('error', 'Amount must be greater than zero.');
+            return false;
         }
     });
+
+    // Real-time validation feedback
+    $('#amount').on('input', function() {
+        const amount = parseFloat($(this).val());
+        const submitBtn = $('#submit-btn');
+        
+        if (amount <= 0) {
+            $(this).addClass('is-invalid');
+            submitBtn.prop('disabled', true);
+        } else {
+            $(this).removeClass('is-invalid');
+            submitBtn.prop('disabled', false);
+        }
+    });
+
+    // Employee selection validation
+    $('#employee_id').on('change', function() {
+        const employeeId = $(this).val();
+        const submitBtn = $('#submit-btn');
+        
+        if (!employeeId) {
+            submitBtn.prop('disabled', true);
+        } else {
+            submitBtn.prop('disabled', false);
+        }
+    });
+
+    // Type selection validation
+    $('#type').on('change', function() {
+        const type = $(this).val();
+        const submitBtn = $('#submit-btn');
+        
+        if (!type) {
+            submitBtn.prop('disabled', true);
+        } else {
+            submitBtn.prop('disabled', false);
+        }
+    });
+}
+
+// Initialize form when document is ready
+$(document).ready(function() {
+    if ($('#payment-request-form').length) {
+        initializePaymentRequestForm();
+    }
 });

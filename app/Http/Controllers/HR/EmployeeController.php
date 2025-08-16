@@ -6,12 +6,14 @@ use App\Models\User;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\EmployeeRequest;
 use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Auth;
 
 class EmployeeController extends Controller
 {
     public function index()
     {
-        $employees = User::latest()->get();
+        // Get all employees except the authenticated user
+        $employees = User::where('id', '!=', Auth::id())->latest()->get();
         $roles = Role::all();
         return view('hr.employee.index', compact('employees', 'roles'));
     }
@@ -23,10 +25,13 @@ class EmployeeController extends Controller
 
     public function store(EmployeeRequest $request)
     {
-        $user =  User::create($request->all());
-        $user->assignRole($request?->role);
-        return response()->json(['success' => 'User created successfully.'], 201);
-        // return redirect()->route('employees.index')->with('success', 'User created successfully.');
+        try {
+            $user = User::create($request->all());
+            $user->assignRole($request?->role);
+            return response()->json(['success' => 'User created successfully.'], 201);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'An error occurred while creating the user.'], 500);
+        }
     }
 
     public function edit(User $User)
@@ -36,14 +41,31 @@ class EmployeeController extends Controller
 
     public function update(EmployeeRequest $request, User $User)
     {
-        $User->update($request->all());
-        return response()->json(['success' => 'User Updated successfully.'], 201);
-        // return redirect()->route('employees.index')->with('success', 'User updated successfully.');
+        try {
+            // Prevent editing admin users
+            if ($User->hasRole('admin')) {
+                return response()->json(['error' => 'Admin users cannot be edited.'], 403);
+            }
+            
+            $User->update($request->all());
+            return response()->json(['success' => 'User updated successfully.'], 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'An error occurred while updating the user.'], 500);
+        }
     }
 
     public function destroy(User $User)
     {
-        $User->delete();
-        return redirect()->route('employees.index')->with('success', 'User deleted successfully.');
+        try {
+            // Prevent deleting admin users
+            if ($User->hasRole('admin')) {
+                return response()->json(['error' => 'Admin users cannot be deleted.'], 403);
+            }
+            
+            $User->delete();
+            return response()->json(['success' => 'User deleted successfully.'], 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'An error occurred while deleting the user.'], 500);
+        }
     }
 }

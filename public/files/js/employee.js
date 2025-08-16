@@ -24,26 +24,10 @@ function clearModalForm() {
 }
 
 
-$('#employee-form').on('submit', function (e) {
-    e.preventDefault();
+// Form submission is now handled by crud-utils.js
+// This file now only contains employee-specific functionality
 
-    let formData = $(this).serialize(); 
-
-    $.ajax({
-        url: $(this).attr('action'),
-        method: $(this).attr('method'),
-        data: formData,
-        success: function (response) {
-            if (response.success) {
-                $('#modals-slide-in').modal('hide');
-                showToast("success", response.success); 
-                window.location.reload();
-            } else {
-                showToast("error", response.error);
-            }
-        },
-        error: function (xhr, status, error) {
-            showToast("error", error);
-        }
-    });
+// Clear modal form when modal is hidden
+$('#modals-slide-in').on('hidden.bs.modal', function () {
+    clearModalForm();
 });

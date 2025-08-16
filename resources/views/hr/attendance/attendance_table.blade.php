@@ -17,29 +17,48 @@
             @endif
         </td>
         <td>
-            <select class="form-control status-dropdown" data-employee-id="{{ $employee->id }}">
-                <option value="">-- Select --</option>
-                <option value="present" {{ isset($attendance) && $attendance->status == 'present' ? 'selected' : '' }}>
-                    Present</option>
-                <option value="absent" {{ isset($attendance) && $attendance->status == 'absent' ? 'selected' : '' }}>
-                    Absent</option>
-                <option value="leave" {{ isset($attendance) && $attendance->status == 'leave' ? 'selected' : '' }}>Leave
-                </option>
-            </select>
-
-        </td>
-        <td>
-            @if ($attendance && $attendance->check_in_time)
-                <span>{{ \Carbon\Carbon::parse($attendance->check_in_time)->format('h:i A') }}</span>
+            @if ($employee->hasRole('admin'))
+                <span class="badge bg-secondary">Admin - Read Only</span>
             @else
-                <input type="time" class="form-control check-in-input" data-employee-id="{{ $employee->id }}">
+                <select class="form-control status-dropdown" data-employee-id="{{ $employee->id }}">
+                    <option value="">-- Select --</option>
+                    <option value="present" {{ isset($attendance) && $attendance->status == 'present' ? 'selected' : '' }}>
+                        Present</option>
+                    <option value="absent" {{ isset($attendance) && $attendance->status == 'absent' ? 'selected' : '' }}>
+                        Absent</option>
+                    <option value="leave" {{ isset($attendance) && $attendance->status == 'leave' ? 'selected' : '' }}>Leave
+                    </option>
+                </select>
             @endif
         </td>
         <td>
-            @if ($attendance && $attendance->check_out_time)
-                <span>{{ \Carbon\Carbon::parse($attendance->check_out_time)->format('h:i A') }}</span>
+            @if ($employee->hasRole('admin'))
+                @if ($attendance && $attendance->check_in_time)
+                    <span>{{ \Carbon\Carbon::parse($attendance->check_in_time)->format('h:i A') }}</span>
+                @else
+                    <span class="text-muted">-</span>
+                @endif
             @else
-                <input type="time" class="form-control check-out-input" data-employee-id="{{ $employee->id }}">
+                @if ($attendance && $attendance->check_in_time)
+                    <span>{{ \Carbon\Carbon::parse($attendance->check_in_time)->format('h:i A') }}</span>
+                @else
+                    <input type="time" class="form-control check-in-input" data-employee-id="{{ $employee->id }}">
+                @endif
+            @endif
+        </td>
+        <td>
+            @if ($employee->hasRole('admin'))
+                @if ($attendance && $attendance->check_out_time)
+                    <span>{{ \Carbon\Carbon::parse($attendance->check_out_time)->format('h:i A') }}</span>
+                @else
+                    <span class="text-muted">-</span>
+                @endif
+            @else
+                @if ($attendance && $attendance->check_out_time)
+                    <span>{{ \Carbon\Carbon::parse($attendance->check_out_time)->format('h:i A') }}</span>
+                @else
+                    <input type="time" class="form-control check-out-input" data-employee-id="{{ $employee->id }}">
+                @endif
             @endif
         </td>
 
