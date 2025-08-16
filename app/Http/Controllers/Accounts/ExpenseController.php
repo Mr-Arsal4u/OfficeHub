@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Services\ExpenseService;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ExpenseRequest;
+use Illuminate\Support\Facades\Auth;
 
 class ExpenseController extends Controller
 {
@@ -33,21 +34,19 @@ class ExpenseController extends Controller
     {
         try {
             $this->expenseService->storeExpense($request->all());
-            return response()->json(['success' => 'Expense created successfully.']);
+            return response()->json(['success' => 'Expense created successfully.'], 201);
         } catch (\Exception $e) {
-            return response()->json(['error' => 'Error: ' . $e->getMessage()]);
+            return response()->json(['error' => 'An error occurred while creating the expense.'], 500);
         }
     }
 
     public function update(ExpenseRequest $request, $id)
     {
         try {
-            $this->expenseService->updateExpense($request->validated(), $id);
-            return response()->json(['success' => 'Expense updated successfully.']);
-            // return back()->with('success', 'Expense updated successfully.');
+            $this->expenseService->updateExpense($request->all(), $id);
+            return response()->json(['success' => 'Expense updated successfully.'], 200);
         } catch (\Exception $e) {
-            return response()->json(['error' => 'Error: ' . $e->getMessage()]);
-            // return back()->with('error', 'Error: ' . $e->getMessage());
+            return response()->json(['error' => 'An error occurred while updating the expense.'], 500);
         }
     }
 
@@ -55,11 +54,9 @@ class ExpenseController extends Controller
     {
         try {
             $this->expenseService->deleteExpense($id);
-            return redirect()->back()->with('success', 'Expense deleted successfully.');
-            // return response()->json(['success' => 'Expense deleted successfully.']);
+            return response()->json(['success' => 'Expense deleted successfully.'], 200);
         } catch (\Exception $e) {
-            return response()->json(['error' => 'Error: ' . $e->getMessage()]);
-            return redirect()->back()->with('error', 'An Issue Occured.');
+            return response()->json(['error' => 'An error occurred while deleting the expense.'], 500);
         }
     }
 }

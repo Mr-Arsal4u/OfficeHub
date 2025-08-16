@@ -58,25 +58,23 @@
                                                         </svg>
                                                     </button>
                                                     <div class="dropdown-menu dropdown-menu-end">
-                                                        <a class="dropdown-item" href="javascript:void(0)"
-                                                            data-bs-toggle="modal" data-bs-target="#modals-slide-in"
-                                                            onclick="editEmployee({{ $employee }})">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="14"
-                                                                height="14" viewBox="0 0 24 24" fill="none"
-                                                                stroke="currentColor" stroke-width="2"
-                                                                stroke-linecap="round" stroke-linejoin="round"
-                                                                class="feather feather-edit-2 me-50">
-                                                                <path
-                                                                    d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z">
-                                                                </path>
-                                                            </svg>
-                                                            <span>Edit</span>
-                                                        </a>
-                                                        <form action="{{ route('employee.delete', $employee->id) }}"
-                                                            method="POST" style="display:inline;">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button class="dropdown-item" type="submit">
+                                                        @if (!$employee->hasRole('admin'))
+                                                            <a class="dropdown-item" href="javascript:void(0)"
+                                                                data-bs-toggle="modal" data-bs-target="#modals-slide-in"
+                                                                onclick="editEmployee({{ $employee }})">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="14"
+                                                                    height="14" viewBox="0 0 24 24" fill="none"
+                                                                    stroke="currentColor" stroke-width="2"
+                                                                    stroke-linecap="round" stroke-linejoin="round"
+                                                                    class="feather feather-edit-2 me-50">
+                                                                    <path
+                                                                        d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z">
+                                                                    </path>
+                                                                </svg>
+                                                                <span>Edit</span>
+                                                            </a>
+                                                            <button class="dropdown-item" type="button" 
+                                                                onclick="deleteItem('{{ route('employee.delete', $employee->id) }}', 'employee')">
                                                                 <svg xmlns="http://www.w3.org/2000/svg" width="14"
                                                                     height="14" viewBox="0 0 24 24" fill="none"
                                                                     stroke="currentColor" stroke-width="2"
@@ -89,7 +87,18 @@
                                                                 </svg>
                                                                 <span>Delete</span>
                                                             </button>
-                                                        </form>
+                                                        @else
+                                                            <span class="dropdown-item text-muted">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="14"
+                                                                    height="14" viewBox="0 0 24 24" fill="none"
+                                                                    stroke="currentColor" stroke-width="2"
+                                                                    stroke-linecap="round" stroke-linejoin="round"
+                                                                    class="feather feather-shield me-50">
+                                                                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                                                                </svg>
+                                                                <span>Admin - Read Only</span>
+                                                            </span>
+                                                        @endif
                                                     </div>
                                                 </div>
                                             </td>
@@ -117,49 +126,49 @@
                 <div class="modal-body flex-grow-1">
                     <!-- First Name -->
                     <div class="mb-1">
-                        <label class="form-label" for="first_name">First Name</label>
+                        <label class="form-label" for="first_name">First Name <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" id="first_name" name="first_name" required>
                     </div>
 
                     <!-- Last Name -->
                     <div class="mb-1">
-                        <label class="form-label" for="last_name">Last Name</label>
+                        <label class="form-label" for="last_name">Last Name <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" id="last_name" name="last_name" required>
                     </div>
 
                     <!-- Email -->
                     <div class="mb-1">
-                        <label class="form-label" for="email">Email</label>
+                        <label class="form-label" for="email">Email <span class="text-danger">*</span></label>
                         <input type="email" class="form-control" id="email" name="email" required>
                     </div>
 
                     <!-- Phone -->
                     <div class="mb-1">
-                        <label class="form-label" for="phone">Phone</label>
+                        <label class="form-label" for="phone">Phone <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" id="phone" name="phone" required>
                     </div>
 
                     <!-- Position -->
                     <div class="mb-1">
-                        <label class="form-label" for="position">Position</label>
+                        <label class="form-label" for="position">Position <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" id="position" name="position" required>
                     </div>
 
                     <!-- Department -->
                     <div class="mb-1">
-                        <label class="form-label" for="department">Department</label>
+                        <label class="form-label" for="department">Department <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" id="department" name="department" required>
                     </div>
 
                     <!-- Hire Date -->
                     <div class="mb-1">
-                        <label class="form-label" for="hire_date">Hire Date</label>
+                        <label class="form-label" for="hire_date">Hire Date <span class="text-danger">*</span></label>
                         <input type="date" class="form-control" id="hire_date" name="hire_date" required>
                     </div>
 
                     <!-- User -->
                     <div class="mb-1">
-                        <label class="form-label" for="user_id">Assign Role</label>
+                        <label class="form-label" for="user_id">Assign Role <span class="text-danger">*</span></label>
                         <select class="form-control" id="user_id" name="user_id" required>
                             <option value="" selected disabled>Select Role</option>
                             @foreach ($roles as $role)
@@ -178,6 +187,7 @@
     </div>
 
     @push('scripts')
+        <script src="{{ asset('files/js/crud-utils.js') }}"></script>
         <script src="{{ asset('files/js/employee.js') }}"></script>
     @endpush
 @endsection

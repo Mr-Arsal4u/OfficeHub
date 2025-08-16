@@ -35,6 +35,7 @@
         <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
         <link rel="stylesheet" type="text/css" href="{{ asset('admin-panel/app-assets/css') }}/apages/modal-create-app.css">
         <link rel="stylesheet" type="text/css" href="{{ asset('files/css/sidebar-active.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ asset('files/css/crud-validation.css') }}">
     {{-- <link rel="stylesheet" type="text/css" href="{{ asset('admin-panel/app-assets/css') }}/assets/css/style.css"> --}}
 
         <script>

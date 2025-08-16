@@ -5,85 +5,182 @@
         <div class="content-overlay"></div>
         <div class="header-navbar-shadow"></div>
         <div class="content-wrapper container-xxl p-0">
-            <div class="content-header row"></div>
+            <div class="content-header row">
+                <div class="content-header-left col-md-9 col-12 mb-2">
+                    <div class="row breadcrumbs-top">
+                        <div class="col-12">
+                            <h2 class="content-header-title float-start mb-0">Salary Management</h2>
+                            <div class="breadcrumb-wrapper">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
+                                    <li class="breadcrumb-item active">Salaries</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="content-header-right col-md-3 col-12 d-md-block d-none">
+                    <div class="mb-1">
+                        <a href="{{ route('salary.create') }}" class="btn btn-primary">
+                            <i data-feather="plus" class="me-1"></i> Add Salary
+                        </a>
+                    </div>
+                </div>
+            </div>
+
             <div class="row" id="table-striped">
                 <div class="col-12">
                     <div class="card">
-                        <div class="card-header d-inline-flex mt-50">
+                        <div class="card-header d-flex justify-content-between align-items-center mt-50">
                             <h4 class="card-title">Salary Records</h4>
-                            <button class="dt-button add-new btn btn-primary" type="button" data-bs-toggle="modal"
-                                data-bs-target="#salary-modal" onclick="clearModalForm()">Add Salary Record</button>
+
                         </div>
-                        <div class="card-body"></div>
+                        <div class="card-body">
+                            <!-- Summary Statistics -->
+                            <div class="row mb-3">
+                                <div class="col-md-3">
+                                    <div class="card bg-light-primary">
+                                        <div class="card-body">
+                                            <div class="d-flex align-items-center">
+                                                <div class="avatar bg-primary rounded me-2">
+                                                    <div class="avatar-content">
+                                                        <i data-feather="dollar-sign" class="text-white"></i>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <h4 class="mb-0">{{ $salaries->count() }}</h4>
+                                                    <small class="text-muted">Total Records</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="card bg-light-success">
+                                        <div class="card-body">
+                                            <div class="d-flex align-items-center">
+                                                <div class="avatar bg-success rounded me-2">
+                                                    <div class="avatar-content">
+                                                        <i data-feather="check-circle" class="text-white"></i>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <h4 class="mb-0">{{ $salaries->where('status', 'paid')->count() }}</h4>
+                                                    <small class="text-muted">Paid Salaries</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="card bg-light-warning">
+                                        <div class="card-body">
+                                            <div class="d-flex align-items-center">
+                                                <div class="avatar bg-warning rounded me-2">
+                                                    <div class="avatar-content">
+                                                        <i data-feather="clock" class="text-white"></i>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <h4 class="mb-0">{{ $salaries->where('status', 'pending')->count() }}</h4>
+                                                    <small class="text-muted">Pending Salaries</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="card bg-light-info">
+                                        <div class="card-body">
+                                            <div class="d-flex align-items-center">
+                                                <div class="avatar bg-info rounded me-2">
+                                                    <div class="avatar-content">
+                                                        <i data-feather="trending-up" class="text-white"></i>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <h4 class="mb-0">${{ number_format($salaries->sum('final_amount'), 0) }}</h4>
+                                                    <small class="text-muted">Total Amount</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="table-responsive">
-                            <table class="table table-striped">
+                            <table class="table table-striped" id="salary-table">
                                 <thead>
                                     <tr>
                                         <th>Employee</th>
-                                        <th>Salary Amount</th>
-                                        <th>Description</th>
+                                        <th>Period</th>
+                                        <th>Base Amount</th>
+                                        <th>Final Amount</th>
+                                        <th>Status</th>
+                                        <th>Payment Date</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @forelse ($salaries as $salary)
                                         <tr>
-                                            <td>{{ optional($salary->employee)->first_name ?? 'N/A' }} {{ optional($salary->employee)->last_name ?? 'N/A' }}</td>
-                                            <td>{{ $salary->amount }}</td>
-                                            <td>{{$salary->description}}</td>
-                                            <td>{{ optional($salary->employee)->first_name ?? 'N/A' }}
-                                                {{ optional($salary->employee)->last_name ?? 'N/A' }}</td>
-                                            <td>{{ $salary->date }}</td>
-                                            <td>{{ $salary->amount }}</td>
-                                            <td>{{ $salary->description }}</td>
-                                            {{-- <td>{{ $salary->bonus ?? 'N/A' }}</td> --}}
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    <div class="avatar rounded me-2">
+                                                        <div class="avatar-content">
+                                                            <i data-feather="user" class="font-medium-3"></i>
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <div class="fw-bolder">{{ optional($salary->employee)->first_name ?? 'N/A' }} {{ optional($salary->employee)->last_name ?? 'N/A' }}</div>
+                                                        <small class="text-muted">{{ optional($salary->employee)->email ?? 'N/A' }}</small>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <span class="badge bg-light-primary">{{ $salary->formatted_period }}</span>
+                                            </td>
+                                            <td>
+                                                <span class="text-success fw-bolder">${{ number_format($salary->base_amount, 2) }}</span>
+                                            </td>
+                                            <td>
+                                                <span class="text-primary fw-bolder">${{ number_format($salary->final_amount, 2) }}</span>
+                                            </td>
+                                            <td>
+                                                {!! $salary->status_badge !!}
+                                            </td>
+                                            <td>
+                                                @if($salary->payment_date)
+                                                    <span class="text-muted">{{ $salary->payment_date->format('M d, Y') }}</span>
+                                                @else
+                                                    <span class="text-muted">Not Paid</span>
+                                                @endif
+                                            </td>
                                             <td>
                                                 <div class="dropdown">
-                                                    <button type="button"
-                                                        class="btn btn-sm dropdown-toggle hide-arrow py-0 waves-effect waves-float waves-light"
-                                                        data-bs-toggle="dropdown">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="14"
-                                                            height="14" viewBox="0 0 24 24" fill="none"
-                                                            stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                                            stroke-linejoin="round" class="feather feather-more-vertical">
-                                                            <circle cx="12" cy="12" r="1"></circle>
-                                                            <circle cx="12" cy="5" r="1"></circle>
-                                                            <circle cx="12" cy="19" r="1"></circle>
-                                                        </svg>
+                                                    <button type="button" class="btn btn-sm dropdown-toggle hide-arrow py-0 waves-effect waves-float waves-light" data-bs-toggle="dropdown">
+                                                        <i data-feather="more-vertical" class="font-medium-3"></i>
                                                     </button>
                                                     <div class="dropdown-menu dropdown-menu-end">
-                                                        <a class="dropdown-item" href="javascript:void(0)"
-                                                            data-bs-toggle="modal" data-bs-target="#salary-modal"
-                                                            onclick="editSalary({{ $salary }})">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="14"
-                                                                height="14" viewBox="0 0 24 24" fill="none"
-                                                                stroke="currentColor" stroke-width="2"
-                                                                stroke-linecap="round" stroke-linejoin="round"
-                                                                class="feather feather-edit-2 me-50">
-                                                                <path
-                                                                    d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z">
-                                                                </path>
-                                                            </svg>
+                                                        <a href="{{ route('salary.show', $salary->id) }}" class="dropdown-item">
+                                                            <i data-feather="eye" class="me-50"></i>
+                                                            <span>View Details</span>
+                                                        </a>
+                                                        <a href="{{ route('salary.edit', $salary->id) }}" class="dropdown-item">
+                                                            <i data-feather="edit" class="me-50"></i>
                                                             <span>Edit</span>
                                                         </a>
-                                                        <form action="{{ route('salary.delete', $salary->id) }}"
-                                                            method="POST" style="display:inline;">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button class="dropdown-item" type="submit">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" width="14"
-                                                                    height="14" viewBox="0 0 24 24" fill="none"
-                                                                    stroke="currentColor" stroke-width="2"
-                                                                    stroke-linecap="round" stroke-linejoin="round"
-                                                                    class="feather feather-trash me-50">
-                                                                    <polyline points="3 6 5 6 21 6"></polyline>
-                                                                    <path
-                                                                        d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
-                                                                    </path>
-                                                                </svg>
-                                                                <span>Delete</span>
-                                                            </button>
-                                                        </form>
+                                                        @if($salary->status === 'pending')
+                                                        <a href="#" class="dropdown-item mark-paid-btn" data-salary-id="{{ $salary->id }}">
+                                                            <i data-feather="check-circle" class="me-50"></i>
+                                                            <span>Mark as Paid</span>
+                                                        </a>
+                                                        @endif
+                                                        <div class="dropdown-divider"></div>
+                                                        <a href="#" class="dropdown-item text-danger delete-salary-btn" data-salary-id="{{ $salary->id }}">
+                                                            <i data-feather="trash-2" class="me-50"></i>
+                                                            <span>Delete</span>
+                                                        </a>
                                                     </div>
                                                 </div>
                                             </td>
@@ -101,45 +198,91 @@
             </div>
         </div>
     </div>
-
-    <!-- Modal for Adding and Editing Salary -->
-    <div class="modal modal-slide-in new-salary-modal fade" id="salary-modal" data-bs-backdrop="static"
-        data-bs-keyboard="false">
-        <div class="modal-dialog">
-            <form id="salary-form" method="POST" class="add-new-salary modal-content pt-0" novalidate="novalidate">
-                @csrf
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">×</button>
-                <div class="modal-header mb-1">
-                    <h5 class="modal-title" id="exampleModalLabel">Add Salary Record</h5>
-                </div>
-                <div class="modal-body flex-grow-1">
-                    <div class="mb-1">
-                        <label class="form-label" for="employee_id">Employee</label>
-                        <select class="form-control" id="employee_id" name="employee_id" required>
-                            <option value="" selected disabled>Select Employee</option>
-                            @foreach ($employees as $employee)
-                                <option value="{{ $employee->id }}">{{ $employee->first_name }} {{ $employee->last_name }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="mb-1">
-                        <label class="form-label" for="amount">Salary Amount</label>
-                        <input type="number" class="form-control" id="amount" name="amount" required>
-                    </div>
-                    <div class="mb-1">
-                        <label class="form-label" for="bonus">Description</label>
-                        {{-- <input type="textrea" class="form-control" id="bonus" name="bonus"> --}}
-                        <textarea name="description" class="form-control" id="description" cols="10" rows="5"></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-primary me-1">Submit</button>
-                    <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    @push('scripts')
-        <script src="{{ asset('files/js/salary.js') }}"></script>
-    @endpush
 @endsection
+
+@push('scripts')
+<script>
+function exportToExcel() {
+    // Implementation for Excel export
+    alert('Excel export functionality will be implemented here');
+}
+
+function exportToPDF() {
+    // Implementation for PDF export
+    alert('PDF export functionality will be implemented here');
+}
+
+// Initialize DataTable
+$(document).ready(function() {
+    $('#salary-table').DataTable({
+        pageLength: 25,
+        order: [[1, 'desc']], // Sort by period descending
+        responsive: true,
+        dom: 'Bfrtip',
+        buttons: [
+            'copy', 'csv', 'excel', 'pdf', 'print'
+        ]
+    });
+
+    // Delete salary functionality
+    $('.delete-salary-btn').on('click', function(e) {
+        e.preventDefault();
+        const salaryId = $(this).data('salary-id');
+        
+        if (confirm('Are you sure you want to delete this salary record? This action cannot be undone.')) {
+            $.ajax({
+                url: `/salary/${salaryId}`,
+                method: 'DELETE',
+                data: {
+                    _token: $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(response) {
+                    showToast('success', response.success);
+                    setTimeout(function() {
+                        window.location.reload();
+                    }, 1000);
+                },
+                error: function(xhr) {
+                    showToast('error', xhr.responseJSON?.error || 'An error occurred while deleting the salary.');
+                }
+            });
+        }
+    });
+
+    // Mark as paid functionality
+    $('.mark-paid-btn').on('click', function(e) {
+        e.preventDefault();
+        const salaryId = $(this).data('salary-id');
+        
+        if (confirm('Are you sure you want to mark this salary as paid?')) {
+            $.ajax({
+                url: `/salary/${salaryId}/mark-paid`,
+                method: 'POST',
+                data: {
+                    _token: $('meta[name="csrf-token"]').attr('content'),
+                    payment_date: new Date().toISOString().split('T')[0]
+                },
+                success: function(response) {
+                    showToast('success', response.success);
+                    setTimeout(function() {
+                        window.location.reload();
+                    }, 1000);
+                },
+                error: function(xhr) {
+                    showToast('error', xhr.responseJSON?.error || 'An error occurred while marking salary as paid.');
+                }
+            });
+        }
+    });
+});
+
+// Toast notification function
+function showToast(type, message) {
+    if (typeof toastr !== 'undefined') {
+        toastr[type](message);
+    } else {
+        alert(message);
+    }
+}
+</script>
+@endpush

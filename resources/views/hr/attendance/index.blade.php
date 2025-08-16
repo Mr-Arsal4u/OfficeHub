@@ -14,16 +14,23 @@
 
                             <div class="d-flex flex-wrap gap-2">
                                 <!-- Filter Buttons -->
-                                <button class="btn btn-success" onclick="setStatus('present')">
-                                    All Present
+                                <button class="btn btn-success" onclick="setStatus('present')" title="Mark all employees as present for the selected date">
+                                    <i class="fas fa-check-circle me-1"></i> All Present
                                 </button>
 
-                                <button class="btn btn-danger" onclick="setStatus('absent')">
-                                    All Absent
+                                <button class="btn btn-danger" onclick="setStatus('absent')" title="Mark all employees as absent for the selected date">
+                                    <i class="fas fa-times-circle me-1"></i> All Absent
+                                </button>
+
+                                <button class="btn btn-warning" onclick="setStatus('leave')" title="Mark all employees as on leave for the selected date">
+                                    <i class="fas fa-calendar-minus me-1"></i> All Leave
                                 </button>
 
                                 <!-- Date Filter -->
-                                <input type="date" class="form-control" id="attendance-date-filter">
+                                <div class="d-flex align-items-center">
+                                    <label for="attendance-date-filter" class="form-label me-2 mb-0">Date:</label>
+                                    <input type="date" class="form-control" id="attendance-date-filter" value="{{ date('Y-m-d') }}">
+                                </div>
                             </div>
                         </div>
 
@@ -63,7 +70,7 @@
                 <div class="modal-body flex-grow-1">
                     <!-- Employee -->
                     <div class="mb-1">
-                        <label class="form-label" for="employee_id">Employee</label>
+                        <label class="form-label" for="employee_id">Employee <span class="text-danger">*</span></label>
                         <select class="form-control" id="employee_id" name="employee_id" required>
                             <option value="" selected disabled>Select Employee</option>
                             @foreach ($employees as $employee)
@@ -76,13 +83,13 @@
 
                     <!-- Date -->
                     <div class="mb-1">
-                        <label class="form-label" for="date">Date</label>
+                        <label class="form-label" for="date">Date <span class="text-danger">*</span></label>
                         <input type="date" class="form-control" id="date" name="date" required>
                     </div>
 
                     <!-- Status -->
                     <div class="mb-1">
-                        <label class="form-label" for="status">Status</label>
+                        <label class="form-label" for="status">Status <span class="text-danger">*</span></label>
                         <select class="form-control" id="status" name="status" required>
                             <option value="present">Present</option>
                             <option value="absent">Absent</option>
@@ -91,12 +98,12 @@
                     </div>
 
                     <div class="mb-1 check_in">
-                        <label class="form-label" for="check_in_time">Check In Time</label>
+                        <label class="form-label" for="check_in_time">Check In Time <span class="text-danger">*</span></label>
                         <input type="time" class="form-control" id="check_in_time" name="check_in_time" required>
                     </div>
 
                     <div class="mb-1 check_out">
-                        <label class="form-label" for="check_out_time">Check Out Time</label>
+                        <label class="form-label" for="check_out_time">Check Out Time <span class="text-danger">*</span></label>
                         <input type="time" class="form-control" id="check_out_time" name="check_out_time" required>
                     </div>
 
@@ -110,6 +117,7 @@
     </div>
 
     @push('scripts')
+        <script src="{{ asset('files/js/crud-utils.js') }}"></script>
         <script src="{{ asset('files/js/attendance.js') }}"></script>
     @endpush
 @endsection

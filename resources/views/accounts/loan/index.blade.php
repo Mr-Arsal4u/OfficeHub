@@ -5,26 +5,125 @@
         <div class="content-overlay"></div>
         <div class="header-navbar-shadow"></div>
         <div class="content-wrapper container-xxl p-0">
-            <div class="content-header row"></div>
+            <div class="content-header row">
+                <div class="content-header-left col-md-9 col-12 mb-2">
+                    <div class="row breadcrumbs-top">
+                        <div class="col-12">
+                            <h2 class="content-header-title float-start mb-0">Payment Requests</h2>
+                            <div class="breadcrumb-wrapper">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
+                                    <li class="breadcrumb-item active">Payment Requests</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="content-header-right col-md-3 col-12 d-md-block d-none">
+                    <div class="mb-1">
+                        <a href="{{ route('request.payment.create') }}" class="btn btn-primary">
+                            <i data-feather="plus" class="me-1"></i> Add Payment Request
+                        </a>
+                    </div>
+                </div>
+            </div>
+
             <div class="row" id="table-striped">
                 <div class="col-12">
                     <div class="card">
-                        <div class="card-header d-inline-flex mt-50">
+                        <div class="card-header d-flex justify-content-between align-items-center mt-50">
                             <h4 class="card-title">Payment Requests</h4>
-                            <button class="dt-button add-new btn btn-primary" type="button" data-bs-toggle="modal"
-                                data-bs-target="#salary-modal" onclick="clearModalForm()">Add Payment request</button>
+                            <div class="d-flex gap-2">
+                                <button class="btn btn-outline-primary btn-sm" onclick="exportToExcel()">
+                                    <i class="fas fa-file-excel me-1"></i> Export Excel
+                                </button>
+                                <button class="btn btn-outline-success btn-sm" onclick="exportToPDF()">
+                                    <i class="fas fa-file-pdf me-1"></i> Export PDF
+                                </button>
+                            </div>
                         </div>
-                        <div class="card-body"></div>
+                        <div class="card-body">
+                            <!-- Summary Statistics -->
+                            <div class="row mb-3">
+                                <div class="col-md-3">
+                                    <div class="card bg-light-primary">
+                                        <div class="card-body">
+                                            <div class="d-flex align-items-center">
+                                                <div class="avatar bg-primary rounded me-2">
+                                                    <div class="avatar-content">
+                                                        <i data-feather="file-text" class="text-white"></i>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <h4 class="mb-0">{{ $requests->count() }}</h4>
+                                                    <small class="text-muted">Total Requests</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="card bg-light-success">
+                                        <div class="card-body">
+                                            <div class="d-flex align-items-center">
+                                                <div class="avatar bg-success rounded me-2">
+                                                    <div class="avatar-content">
+                                                        <i data-feather="check-circle" class="text-white"></i>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <h4 class="mb-0">{{ $requests->where('is_approved', 1)->count() }}</h4>
+                                                    <small class="text-muted">Approved Requests</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="card bg-light-warning">
+                                        <div class="card-body">
+                                            <div class="d-flex align-items-center">
+                                                <div class="avatar bg-warning rounded me-2">
+                                                    <div class="avatar-content">
+                                                        <i data-feather="clock" class="text-white"></i>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <h4 class="mb-0">{{ $requests->where('is_approved', 0)->count() }}</h4>
+                                                    <small class="text-muted">Pending Requests</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="card bg-light-info">
+                                        <div class="card-body">
+                                            <div class="d-flex align-items-center">
+                                                <div class="avatar bg-info rounded me-2">
+                                                    <div class="avatar-content">
+                                                        <i data-feather="dollar-sign" class="text-white"></i>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <h4 class="mb-0">${{ number_format($requests->sum('amount'), 0) }}</h4>
+                                                    <small class="text-muted">Total Amount</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="table-responsive">
-                            <table class="table table-striped">
+                            <table class="table table-striped" id="loan-table">
                                 <thead>
                                     <tr>
                                         <th>Employee</th>
-                                        <th>Salary Amount</th>
                                         <th>Request Type</th>
                                         <th>Amount Requested</th>
                                         <th>Requested Date</th>
-                                        <th>Is Approved</th>
+                                        <th>Status</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
@@ -32,125 +131,73 @@
                                     @forelse ($requests as $request)
                                         <tr>
                                             <td>
-                                                {{ $request?->employee?->first_name }}
-                                                {{ $request?->employee?->last_name }}
-                                            </td>
-                                            <td>
-                                                {{ $request?->employee?->salary?->amount ?? 'N/A' }}
-                                            </td>
-                                            <td>
-                                                {{ $request?->type?->label() ?? 'N/A' }}
-                                            </td>
-                                            <td>
-                                                {{ $request?->amount ?? 'N/A' }}
-                                            </td>
-                                            <td>
-                                                {{ $request?->created_at->format('d M Y') ?? 'N/A' }}
-                                            </td>
-                                            <td>
-                                                {{ $request?->is_approved->label() ?? 'N/A' }}
-                                            </td>
-                                            <td>
-                                                <div class="dropdown">
-                                                    <button type="button"
-                                                        class="btn btn-sm dropdown-toggle hide-arrow py-0 waves-effect waves-float waves-light"
-                                                        data-bs-toggle="dropdown">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="14"
-                                                            height="14" viewBox="0 0 24 24" fill="none"
-                                                            stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                                            stroke-linejoin="round" class="feather feather-more-vertical">
-                                                            <circle cx="12" cy="12" r="1"></circle>
-                                                            <circle cx="12" cy="5" r="1"></circle>
-                                                            <circle cx="12" cy="19" r="1"></circle>
-                                                        </svg>
-                                                    </button>
-                                                    <div class="dropdown-menu dropdown-menu-end">
-                                                        <a class="dropdown-item" href="javascript:void(0)"
-                                                            data-bs-toggle="modal" data-bs-target="#salary-modal"
-                                                            onclick="editSalary({{ $request }})">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="14"
-                                                                height="14" viewBox="0 0 24 24" fill="none"
-                                                                stroke="currentColor" stroke-width="2"
-                                                                stroke-linecap="round" stroke-linejoin="round"
-                                                                class="feather feather-edit-2 me-50">
-                                                                <path
-                                                                    d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z">
-                                                                </path>
-                                                            </svg>
-                                                            <span>Edit</span>
-                                                        </a>
-
-                                                        @if (auth()->user() && auth()->user()->hasRole('admin'))
-                                                            @if ($request->is_approved?->value == \App\Enum\RequestIsApproved::NO->value)
-                                                                <form
-                                                                    action="{{ route('request.payment.status.update', $request->id) }}"
-                                                                    method="POST" style="display:inline;">
-                                                                    @csrf
-                                                                    <button class="dropdown-item" type="submit">
-                                                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                                                            width="14" height="14"
-                                                                            viewBox="0 0 24 24" fill="none"
-                                                                            stroke="currentColor" stroke-width="2"
-                                                                            stroke-linecap="round" stroke-linejoin="round"
-                                                                            class="feather feather-check-circle me-50">
-                                                                            <path d="M9 11l3 3L22 4"></path>
-                                                                            <circle cx="12" cy="12" r="10">
-                                                                            </circle>
-                                                                        </svg>
-                                                                        <span>Approve</span>
-                                                                    </button>
-                                                                </form>
-                                                            @else
-                                                                <form
-                                                                    action="{{ route('request.payment.status.update', $request->id) }}"
-                                                                    method="POST" style="display:inline;">
-                                                                    @csrf
-                                                                    <button class="dropdown-item" type="submit">
-                                                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                                                            width="14" height="14"
-                                                                            viewBox="0 0 24 24" fill="none"
-                                                                            stroke="currentColor" stroke-width="2"
-                                                                            stroke-linecap="round" stroke-linejoin="round"
-                                                                            class="feather feather-x-circle me-50">
-                                                                            <circle cx="12" cy="12" r="10">
-                                                                            </circle>
-                                                                            <line x1="15" y1="9"
-                                                                                x2="9" y2="15"></line>
-                                                                            <line x1="9" y1="9"
-                                                                                x2="15" y2="15"></line>
-                                                                        </svg>
-                                                                        <span>Reject</span>
-                                                                    </button>
-                                                                </form>
-                                                            @endif
-                                                        @endif
-
-                                                        <form action="{{ route('request.payment.delete', $request->id) }}"
-                                                            method="POST" style="display:inline;">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button class="dropdown-item" type="submit">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" width="14"
-                                                                    height="14" viewBox="0 0 24 24" fill="none"
-                                                                    stroke="currentColor" stroke-width="2"
-                                                                    stroke-linecap="round" stroke-linejoin="round"
-                                                                    class="feather feather-trash me-50">
-                                                                    <polyline points="3 6 5 6 21 6"></polyline>
-                                                                    <path
-                                                                        d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
-                                                                    </path>
-                                                                </svg>
-                                                                <span>Delete</span>
-                                                            </button>
-                                                        </form>
+                                                <div class="d-flex align-items-center">
+                                                    <div class="avatar rounded me-2">
+                                                        <div class="avatar-content">
+                                                            <i data-feather="user" class="font-medium-3"></i>
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <div class="fw-bolder">{{ $request->employee->first_name ?? 'N/A' }} {{ $request->employee->last_name ?? 'N/A' }}</div>
+                                                        <small class="text-muted">{{ $request->employee->email ?? 'N/A' }}</small>
                                                     </div>
                                                 </div>
                                             </td>
-
+                                            <td>
+                                                <span class="badge bg-light-primary">{{ $request->type->label() ?? 'N/A' }}</span>
+                                            </td>
+                                            <td>
+                                                <span class="text-primary fw-bolder">${{ number_format($request->amount, 2) }}</span>
+                                            </td>
+                                            <td>
+                                                <span class="text-muted">{{ $request->created_at->format('M d, Y') }}</span>
+                                            </td>
+                                            <td>
+                                                {!! $request->status_badge !!}
+                                            </td>
+                                            <td>
+                                                <div class="dropdown">
+                                                    <button type="button" class="btn btn-sm dropdown-toggle hide-arrow py-0 waves-effect waves-float waves-light" data-bs-toggle="dropdown">
+                                                        <i data-feather="more-vertical" class="font-medium-3"></i>
+                                                    </button>
+                                                    <div class="dropdown-menu dropdown-menu-end">
+                                                        <a href="{{ route('request.payment.show', $request->id) }}" class="dropdown-item">
+                                                            <i data-feather="eye" class="me-50"></i>
+                                                            <span>View Details</span>
+                                                        </a>
+                                                        @if(!$request->employee->hasRole('admin'))
+                                                        <a href="{{ route('request.payment.edit', $request->id) }}" class="dropdown-item">
+                                                            <i data-feather="edit" class="me-50"></i>
+                                                            <span>Edit</span>
+                                                        </a>
+                                                        @endif
+                                                        @if(auth()->user() && auth()->user()->hasRole('admin'))
+                                                            @if($request->is_approved->value == 0)
+                                                            <a href="#" class="dropdown-item approve-request-btn" data-request-id="{{ $request->id }}">
+                                                                <i data-feather="check-circle" class="me-50"></i>
+                                                                <span>Approve</span>
+                                                            </a>
+                                                            @else
+                                                            <a href="#" class="dropdown-item reject-request-btn" data-request-id="{{ $request->id }}">
+                                                                <i data-feather="x-circle" class="me-50"></i>
+                                                                <span>Reject</span>
+                                                            </a>
+                                                            @endif
+                                                        @endif
+                                                        @if(!$request->employee->hasRole('admin'))
+                                                        <div class="dropdown-divider"></div>
+                                                        <a href="#" class="dropdown-item text-danger delete-request-btn" data-request-id="{{ $request->id }}">
+                                                            <i data-feather="trash-2" class="me-50"></i>
+                                                            <span>Delete</span>
+                                                        </a>
+                                                        @endif
+                                                    </div>
+                                                </div>
+                                            </td>
                                         </tr>
                                     @empty
                                         <tr>
-                                            <td colspan="7" class="text-center">No records found.</td>
+                                            <td colspan="6" class="text-center">No payment requests found.</td>
                                         </tr>
                                     @endforelse
                                 </tbody>
@@ -161,53 +208,115 @@
             </div>
         </div>
     </div>
-
-    <!-- Modal for Adding and Editing Salary -->
-    <div class="modal modal-slide-in new-salary-modal fade" id="salary-modal" data-bs-backdrop="static"
-        data-bs-keyboard="false">
-        <div class="modal-dialog">
-            <form id="salary-form" method="POST" class="add-new-salary modal-content pt-0" novalidate>
-                @csrf
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">×</button>
-                <div class="modal-header mb-1">
-                    <h5 class="modal-title" id="exampleModalLabel">Add Payment Request</h5>
-                </div>
-                <div class="modal-body flex-grow-1">
-                    <div class="mb-1">
-                        <label class="form-label" for="employee_id">Employee</label>
-                        <select class="form-control" id="employee_id" name="employee_id" required>
-                            <option value="" selected disabled>Select Employee</option>
-                            @foreach ($allUsers as $user)
-                                <option value="{{ $user->id }}">{{ $user->first_name }} {{ $user->last_name }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    <div class="mb-1">
-                        <label class="form-label" for="amount">Amount</label>
-                        <input type="number" class="form-control" id="amount" name="amount" required>
-                    </div>
-
-                    <div class="mb-1">
-                        <label class="form-label" for="type">Type</label>
-                        {{-- If type has fixed options, replace with a select dropdown like below --}}
-                        <select class="form-control" id="type" name="type" required>
-                            <option value="" disabled selected>Select Type</option>
-                            @foreach ($types as $type)
-                                <option value="{{ $type?->value }}">{{ $type?->label() }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    <button type="submit" class="btn btn-primary me-1">Submit</button>
-                    <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    @push('scripts')
-        <script src="{{ asset('files/js/loan.js') }}"></script>
-    @endpush
 @endsection
+
+@push('scripts')
+<script>
+function exportToExcel() {
+    // Implementation for Excel export
+    alert('Excel export functionality will be implemented here');
+}
+
+function exportToPDF() {
+    // Implementation for PDF export
+    alert('PDF export functionality will be implemented here');
+}
+
+// Initialize DataTable
+$(document).ready(function() {
+    $('#loan-table').DataTable({
+        pageLength: 25,
+        order: [[3, 'desc']], // Sort by requested date descending
+        responsive: true,
+        dom: 'Bfrtip',
+        buttons: [
+            'copy', 'csv', 'excel', 'pdf', 'print'
+        ]
+    });
+
+    // Delete request functionality
+    $('.delete-request-btn').on('click', function(e) {
+        e.preventDefault();
+        const requestId = $(this).data('request-id');
+        
+        if (confirm('Are you sure you want to delete this payment request? This action cannot be undone.')) {
+            $.ajax({
+                url: `/request/payment/${requestId}`,
+                method: 'DELETE',
+                data: {
+                    _token: $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(response) {
+                    showToast('success', response.success);
+                    setTimeout(function() {
+                        window.location.reload();
+                    }, 1000);
+                },
+                error: function(xhr) {
+                    showToast('error', xhr.responseJSON?.error || 'An error occurred while deleting the request.');
+                }
+            });
+        }
+    });
+
+    // Approve request functionality
+    $('.approve-request-btn').on('click', function(e) {
+        e.preventDefault();
+        const requestId = $(this).data('request-id');
+        
+        if (confirm('Are you sure you want to approve this payment request?')) {
+            $.ajax({
+                url: `/request/payment/update/status/${requestId}`,
+                method: 'POST',
+                data: {
+                    _token: $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(response) {
+                    showToast('success', response.success);
+                    setTimeout(function() {
+                        window.location.reload();
+                    }, 1000);
+                },
+                error: function(xhr) {
+                    showToast('error', xhr.responseJSON?.error || 'An error occurred while approving the request.');
+                }
+            });
+        }
+    });
+
+    // Reject request functionality
+    $('.reject-request-btn').on('click', function(e) {
+        e.preventDefault();
+        const requestId = $(this).data('request-id');
+        
+        if (confirm('Are you sure you want to reject this payment request?')) {
+            $.ajax({
+                url: `/request/payment/update/status/${requestId}`,
+                method: 'POST',
+                data: {
+                    _token: $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(response) {
+                    showToast('success', response.success);
+                    setTimeout(function() {
+                        window.location.reload();
+                    }, 1000);
+                },
+                error: function(xhr) {
+                    showToast('error', xhr.responseJSON?.error || 'An error occurred while rejecting the request.');
+                }
+            });
+        }
+    });
+});
+
+// Toast notification function
+function showToast(type, message) {
+    if (typeof toastr !== 'undefined') {
+        toastr[type](message);
+    } else {
+        alert(message);
+    }
+}
+</script>
+@endpush

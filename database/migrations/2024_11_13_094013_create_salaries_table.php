@@ -16,10 +16,17 @@ return new class extends Migration
             // $table->foreignId('employee_id')->constrained()->onDelete('cascade');
             $table->unsignedBigInteger('employee_id');
             $table->foreign('employee_id')->references('id')->on('users');
-            $table->date('date');
-            $table->decimal('amount', 10, 2);
+            $table->integer('month'); // 1-12
+            $table->integer('year'); // 2024, 2025, etc.
+            $table->decimal('base_amount', 10, 2); // Base salary amount
+            $table->decimal('final_amount', 10, 2); // Final amount after deductions/additions
+            $table->date('payment_date')->nullable(); // When salary was/will be paid
+            $table->enum('status', ['pending', 'paid', 'cancelled'])->default('pending');
             $table->string('description')->nullable();
             $table->timestamps();
+            
+            // Ensure one salary record per employee per month per year
+            $table->unique(['employee_id', 'month', 'year'], 'unique_employee_month_year');
         });
     }
 

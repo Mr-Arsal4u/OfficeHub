@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AttendanceRequest;
 use App\Services\AttendanceServiceService;
+use Illuminate\Support\Facades\Auth;
 
 class AttendanceController extends Controller
 {
@@ -29,7 +30,7 @@ class AttendanceController extends Controller
 
             $today = Carbon::today()->toDateString();
 
-            $employees = User::with(['attendances' => function ($query) use ($today) {
+            $employees = User::where('id', '!=', Auth::id())->with(['attendances' => function ($query) use ($today) {
                 $query->whereDate('date', $today);
             }])->get();
 
@@ -109,7 +110,7 @@ class AttendanceController extends Controller
     public function filterByDate(Request $request)
     {
         $date = $request->date;
-        $employees = User::with(['attendances' => function ($query) use ($date) {
+        $employees = User::where('id', '!=', Auth::id())->with(['attendances' => function ($query) use ($date) {
             $query->whereDate('date', $date);
         }])->get();
 
@@ -119,22 +120,49 @@ class AttendanceController extends Controller
     public function updateAll(Request $request)
     {
         $status = $request->input('status');
-        $today = Carbon::today()->toDateString();
+        $date = $request->input('date', Carbon::today()->toDateString());
 
-        $employees = User::all();
-
-        foreach ($employees as $employee) {
-            Attendance::updateOrCreate(
-                [
-                    'employee_id' => $employee->id,
-                    'date' => $today
-                ],
-                [
-                    'status' => $status
-                ]
-            );
+        // Validate status
+        if (!in_array($status, ['present', 'absent', 'leave'])) {
+            return response()->json(['error' => 'Invalid status provided.'], 422);
         }
 
-        return response()->json(['message' => 'Attendance updated successfully.']);
+        // Check if Sunday
+        $carbonDate = Carbon::parse($date);
+        if ($carbonDate->isSunday()) {
+            return response()->json(['error' => 'Attendance cannot be added on Sunday.'], 422);
+        }
+
+        // Check if date is in the future
+        if ($carbonDate->isFuture()) {
+            return response()->json(['error' => 'Cannot set attendance for future dates.'], 422);
+        }
+
+        try {
+            $employees = User::where('id', '!=', Auth::id())->get();
+
+            if ($employees->isEmpty()) {
+                return response()->json(['error' => 'No employees found.'], 404);
+            }
+
+            foreach ($employees as $employee) {
+                Attendance::updateOrCreate(
+                    [
+                        'employee_id' => $employee->id,
+                        'date' => $date
+                    ],
+                    [
+                        'status' => $status,
+                        'check_in_time' => $status === 'present' ? '09:00:00' : null,
+                        'check_out_time' => $status === 'present' ? '17:00:00' : null
+                    ]
+                );
+            }
+
+            return response()->json(['success' => 'All employees marked as ' . ucfirst($status) . ' for ' . $date]);
+        } catch (\Exception $e) {
+            Log::error('Error updating all attendance: ' . $e->getMessage());
+            return response()->json(['error' => 'An error occurred while updating attendance.'], 500);
+        }
     }
 }

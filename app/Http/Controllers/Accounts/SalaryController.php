@@ -3,15 +3,17 @@
 namespace App\Http\Controllers\Accounts;
 
 use App\Models\Salary;
+use App\Models\Loan;
 use Illuminate\Http\Request;
 use App\Services\SalaryService;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SalaryRequest;
+use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 
 class SalaryController extends Controller
 {
-
     protected $salaryService;
 
     public function __construct(SalaryService $salaryService)
@@ -21,53 +23,116 @@ class SalaryController extends Controller
 
     public function index()
     {
+        $salaries = $this->salaryService->getSalaries();
+        return view('accounts.salary.index', compact('salaries'));
+    }
+
+    public function create()
+    {
+        $employees = User::where('id', '!=', Auth::id())->get();
+        return view('accounts.salary.create', compact('employees'));
+    }
+
+    public function store(SalaryRequest $request)
+    {
         try {
-            $salaries = $this->salaryService->getSalaries();
-            $employees = $this->salaryService->getEmployees();
-            return view('accounts.salary.index', compact('salaries', 'employees'));
+            $salary = $this->salaryService->storeSalary($request->validated());
+            return redirect()->route('salary.index')->with('success', 'Salary created successfully.');
+        } catch (\Exception $e) {
+            return back()->withInput()->with('error', 'Error: ' . $e->getMessage());
+        }
+    }
+
+    public function show($id)
+    {
+        try {
+            $salary = $this->salaryService->getSalaryWithPayments($id);
+            return view('accounts.salary.show', compact('salary'));
         } catch (\Exception $e) {
             return back()->with('error', 'Error: ' . $e->getMessage());
         }
     }
 
-    public function store(Request $request)
+    public function edit($id)
     {
         try {
-            Salary::updateOrCreate(
-                ['employee_id' => $request->employee_id],
-                [
-                    'amount' => $request->amount ?? null,
-                    'date' => $request->date ?? null,
-                    'description' => $request->description ?? null,
-                ]
-            );
-            return response()->json(['success' => 'Salary created successfully.'], 201);
+            $salary = $this->salaryService->getSalaryWithPayments($id);
+            $employees = User::where('id', '!=', Auth::id())->get();
+            return view('accounts.salary.edit', compact('salary', 'employees'));
         } catch (\Exception $e) {
-            Log::error($e->getMessage());
+            return back()->with('error', 'Error: ' . $e->getMessage());
         }
     }
-
 
     public function update(SalaryRequest $request, $id)
     {
         try {
-            $this->salaryService->updateSalary($request->all(), $id);
-            return response()->json(['success' => 'Salary updated successfully']);
-            // return back()->with('success', 'Salary updated successfully');
+            $updatedSalary = $this->salaryService->updateSalary($request->validated(), $id);
+            return redirect()->route('salary.index')->with('success', 'Salary updated successfully');
         } catch (\Exception $e) {
-            return back()->with('error', 'Error: ' . $e->getMessage());
+            return back()->withInput()->with('error', 'Error: ' . $e->getMessage());
         }
     }
-
-
 
     public function destroy($id)
     {
         try {
             $this->salaryService->deleteSalary($id);
-            return back()->with('success', 'Salary deleted successfully');
+            return response()->json(['success' => 'Salary deleted successfully']);
         } catch (\Exception $e) {
-            return back()->with('error', 'Error: ' . $e->getMessage());
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+
+    public function markAsPaid(Request $request, $id)
+    {
+        try {
+            $paymentDate = $request->input('payment_date', now());
+            $salary = $this->salaryService->markSalaryAsPaid($id, $paymentDate);
+            return response()->json(['success' => 'Salary marked as paid successfully', 'salary' => $salary], 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+
+    public function getEmployeeLoans($employeeId)
+    {
+        try {
+            $loans = Loan::where('employee_id', $employeeId)
+                ->where('is_approved', 1)
+                ->whereDoesntHave('salaryPayments')
+                ->get();
+            
+            return response()->json(['loans' => $loans]);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+
+    public function checkDuplicate(Request $request)
+    {
+        try {
+            $employeeId = $request->input('employee_id');
+            $month = $request->input('month');
+            $year = $request->input('year');
+            $salaryId = $request->input('salary_id'); // For updates
+
+            $query = Salary::where([
+                'employee_id' => $employeeId,
+                'month' => $month,
+                'year' => $year
+            ]);
+
+            // Exclude current record if updating
+            if ($salaryId) {
+                $query->where('id', '!=', $salaryId);
+            }
+
+            $exists = $query->exists();
+
+            return response()->json(['exists' => $exists]);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
         }
     }
 }
