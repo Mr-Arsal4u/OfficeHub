@@ -61,7 +61,7 @@
                             <div class="list-item d-flex align-items-start">
                                 <div class="me-1">
                                     <div class="avatar"><img
-                                            src="{{ asset('Admin-panel/app-assets/images/portrait/small/avatar-s-15.jpg') }}"
+                                            src="{{ asset('admin-panel/app-assets/images/portrait/small/avatar-s-15.jpg') }}"
                                             alt="avatar" width="32" height="32"></div>
                                 </div>
                                 <div class="list-item-body flex-grow-1">
@@ -74,7 +74,7 @@
                             <div class="list-item d-flex align-items-start">
                                 <div class="me-1">
                                     <div class="avatar"><img
-                                            src="{{ asset('Admin-panel/app-assets/images/portrait/small/avatar-s-3.jpg') }}"
+                                            src="{{ asset('admin-panel/app-assets/images/portrait/small/avatar-s-3.jpg') }}"
                                             alt="avatar" width="32" height="32"></div>
                                 </div>
                                 <div class="list-item-body flex-grow-1">
@@ -158,7 +158,7 @@
                             class="user-name fw-bolder">{{ Auth::user()?->name }}</span><span
                             class="user-status">{{ Auth::user()?->roles()?->first()?->name }}</span></div><span
                         class="avatar"><img class="round"
-                            src="{{ asset('Admin-panel/app-assets/images/portrait/small/avatar-s-11.jpg') }}"
+                            src="{{ asset('admin-panel/app-assets/images/portrait/small/avatar-s-11.jpg') }}"
                             alt="avatar" height="40" width="40"><span
                             class="avatar-status-online"></span></span>
                 </a>

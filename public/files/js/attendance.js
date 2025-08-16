@@ -41,14 +41,12 @@ $(document).ready(function () {
         $('.modal-title').text('Edit Attendance');
     }
 
-
     function clearModalForm() {
         $('#attendance-form').trigger('reset');
         $('#attendance-form').attr('action', '/attendance/store');
         $('#attendance-form').attr('method', 'POST');
         $('.modal-title').text('Add New Attendance');
     }
-
 
     $('#attendance-form').on('submit', function (e) {
         e.preventDefault();
@@ -69,143 +67,125 @@ $(document).ready(function () {
                 }
             },
             error: function (xhr, status, error) {
-                // console.log(error);
-                showToast("error", error);
-            }
-<<<<<<< HEAD
-        },
-        error: function (xhr, status, error) {
-            if (xhr.status === 422) {
-                // Validation errors
-                var errors = xhr.responseJSON.errors;
-                var errorMessage = '';
-                for (var field in errors) {
-                    errorMessage += errors[field][0] + '\n';
+                if (xhr.status === 422) {
+                    // Validation errors
+                    var errors = xhr.responseJSON.errors;
+                    var errorMessage = '';
+                    for (var field in errors) {
+                        errorMessage += errors[field][0] + '\n';
+                    }
+                    showToast("error", errorMessage);
+                } else {
+                    showToast("error", "An error occurred while processing your request.");
                 }
-                showToast("error", errorMessage);
-            } else {
-                showToast("error", "An error occurred while processing your request.");
             }
-        }
-=======
         });
->>>>>>> 4ef0da928cdd35586dcfe0bbaa15378a438aa57b
     });
 
+    $('#attendance-date-filter').on('change', function () {
+        let selectedDate = $(this).val();
+        if (selectedDate) {
+            $.ajax({
+                url: '/attendance/filter-by-date',
+                type: "GET",
+                data: { date: selectedDate },
+                success: function (response) {
+                    $('#attendance-table').html(response);
+                },
+                error: function () {
+                    alert('Failed to fetch data. Please try again.');
+                }
+            });
+        }
+    });
 
-    // Unified update function
-});
-
-$('#attendance-date-filter').on('change', function () {
-    let selectedDate = $(this).val();
-    if (selectedDate) {
+    function setStatus(status) {
         $.ajax({
-            url: '/attendance/filter-by-date',
-            type: "GET",
-            data: { date: selectedDate },
-            success: function (response) {
-                $('#attendance-table').html(response);
+            url: '/attendance/update-all',
+            type: "POST",
+            data: {
+                _token: $('meta[name="csrf-token"]').attr('content'),
+                status: status
             },
-            error: function () {
-                alert('Failed to fetch data. Please try again.');
+            success: function (response) {
+                window.location.reload();
+                showToast("success", response.success);
+            },
+            error: function (xhr) {
+                alert('Something went wrong');
+            }
+        });
+    }
+
+    $('.status-dropdown').on('change', function () {
+        let employeeId = $(this).data('employee-id');
+        let status = $(this).val();
+
+        updateAttendance(employeeId, { status: status });
+    });
+
+    // Update check-in
+    $('.check-in-input').on('change', function () {
+        let employeeId = $(this).data('employee-id');
+        let checkInTime = $(this).val();
+
+        updateAttendance(employeeId, { check_in_time: checkInTime });
+    });
+
+    // Update check-out
+    $('.check-out-input').on('change', function () {
+        let employeeId = $(this).data('employee-id');
+        let checkOutTime = $(this).val();
+
+        updateAttendance(employeeId, { check_out_time: checkOutTime });
+    });
+
+    // Status dropdown change
+    $(document).on('change', '.status-dropdown', function () {
+        let employeeId = $(this).data('employee-id');
+        let status = $(this).val();
+
+        updateAttendance(employeeId, { status: status });
+    });
+
+    // Check-in input
+    $(document).on('change', '.check-in-input', function () {
+        let employeeId = $(this).data('employee-id');
+        let checkInTime = $(this).val();
+
+        updateAttendance(employeeId, { check_in_time: checkInTime });
+    });
+
+    // Check-out input
+    $(document).on('change', '.check-out-input', function () {
+        let employeeId = $(this).data('employee-id');
+        let checkOutTime = $(this).val();
+
+        updateAttendance(employeeId, { check_out_time: checkOutTime });
+    });
+
+    function updateAttendance(employeeId, data) {
+        let date = $('#attendance-date-filter').val();
+
+        if (date) {
+            data.date = date;
+        }
+
+        $.ajax({
+            url: '/attendance/update/ajax',
+            type: 'POST',
+            data: {
+                _token: $('meta[name="csrf-token"]').attr('content'),
+                employee_id: employeeId,
+                ...data
+            },
+            success: function (res) {
+                showToast("success", res.success);
+                window.location.reload();
+            },
+            error: function (err) {
+                console.error('Error updating attendance');
             }
         });
     }
 });
-
-
-function setStatus(status) {
-    $.ajax({
-        // url: "{{ route('attendance.update.all') }}",
-        url: '/attendance/update-all',
-        type: "POST",
-        data: {
-            // _token: "{{ csrf_token() }}",
-            _token: $('meta[name="csrf-token"]').attr('content'),
-            status: status
-        },
-        success: function (response) {
-            window.location.reload();
-            showToast("success", response.success);
-
-        },
-        error: function (xhr) {
-            alert('Something went wrong');
-        }
-    });
-}
-
-$('.status-dropdown').on('change', function () {
-    let employeeId = $(this).data('employee-id');
-    let status = $(this).val();
-
-    updateAttendance(employeeId, { status: status });
-});
-
-// Update check-in
-$('.check-in-input').on('change', function () {
-    let employeeId = $(this).data('employee-id');
-    let checkInTime = $(this).val();
-
-    updateAttendance(employeeId, { check_in_time: checkInTime });
-});
-
-// Update check-out
-$('.check-out-input').on('change', function () {
-    let employeeId = $(this).data('employee-id');
-    let checkOutTime = $(this).val();
-
-    updateAttendance(employeeId, { check_out_time: checkOutTime });
-});
-
-
-// Status dropdown change
-$(document).on('change', '.status-dropdown', function () {
-    let employeeId = $(this).data('employee-id');
-    let status = $(this).val();
-
-    updateAttendance(employeeId, { status: status });
-});
-
-// Check-in input
-$(document).on('change', '.check-in-input', function () {
-    let employeeId = $(this).data('employee-id');
-    let checkInTime = $(this).val();
-
-    updateAttendance(employeeId, { check_in_time: checkInTime });
-});
-
-// Check-out input
-$(document).on('change', '.check-out-input', function () {
-    let employeeId = $(this).data('employee-id');
-    let checkOutTime = $(this).val();
-
-    updateAttendance(employeeId, { check_out_time: checkOutTime });
-});
-
-
-function updateAttendance(employeeId, data) {
-    let date = $('#attendance-date-filter').val();
-
-    if (date) {
-        data.date = date;
-    }
-
-    $.ajax({
-        url: '/attendance/update/ajax',
-        type: 'POST',
-        data: {
-            _token: $('meta[name="csrf-token"]').attr('content'),
-            employee_id: employeeId,
-            ...data
-        },
-        success: function (res) {
-            showToast("success", res.success);
-            window.location.reload();
-        },
-        error: function (err) {
-            
-            console.error('Error updating attendance');
-        }
-    });
-}

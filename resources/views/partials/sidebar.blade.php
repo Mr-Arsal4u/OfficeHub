@@ -123,10 +123,6 @@
                                 stroke-linejoin="round" class="feather feather-circle">
                                 <circle cx="12" cy="12" r="10"></circle>
                             </svg><span class="menu-item text-truncate" data-i18n="Expenses">Reports</span></a></li>
-<<<<<<< HEAD
-                    
-=======
->>>>>>> 4ef0da928cdd35586dcfe0bbaa15378a438aa57b
                 </ul>
             </li>
 

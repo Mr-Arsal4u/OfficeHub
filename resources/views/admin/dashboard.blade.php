@@ -21,7 +21,7 @@
                                     <a href="#">$48.9k</a>
                                 </h3>
                                 <button type="button" class="btn btn-primary">View Sales</button>
-                                {{-- <img src="{{ asset('Admin-panel/app-assets/images/illustration/badge.svg') }}"
+                                {{-- <img src="{{ asset('admin-panel/app-assets/images/illustration/badge.svg') }}"
                                     class="congratulation-medal" alt="Medal Pic" /> --}}
                             </div>
                         </div>
@@ -221,7 +221,7 @@
                                                     <div class="d-flex align-items-center">
                                                         <div class="avatar rounded">
                                                             <div class="avatar-content">
-                                                                <img src="{{ asset('Admin-panel/app-assets/images/icons/toolbox.svg') }}"
+                                                                <img src="{{ asset('admin-panel/app-assets/images/icons/toolbox.svg') }}"
                                                                     alt="Toolbar svg" />
                                                             </div>
                                                         </div>
@@ -263,7 +263,7 @@
                                                     <div class="d-flex align-items-center">
                                                         <div class="avatar rounded">
                                                             <div class="avatar-content">
-                                                                <img src="{{ asset('Admin-panel/app-assets/images/icons/parachute.svg') }}"
+                                                                <img src="{{ asset('admin-panel/app-assets/images/icons/parachute.svg') }}"
                                                                     alt="Parachute svg" />
                                                             </div>
                                                         </div>
@@ -305,7 +305,7 @@
                                                     <div class="d-flex align-items-center">
                                                         <div class="avatar rounded">
                                                             <div class="avatar-content">
-                                                                <img src="{{ asset('Admin-panel/app-assets/images/icons/brush.svg') }}"
+                                                                <img src="{{ asset('admin-panel/app-assets/images/icons/brush.svg') }}"
                                                                     alt="Brush svg" />
                                                             </div>
                                                         </div>
@@ -346,7 +346,7 @@
                                                     <div class="d-flex align-items-center">
                                                         <div class="avatar rounded">
                                                             <div class="avatar-content">
-                                                                <img src="{{ asset('Admin-panel/app-assets/images/icons/star.svg') }}"
+                                                                <img src="{{ asset('admin-panel/app-assets/images/icons/star.svg') }}"
                                                                     alt="Star svg" />
                                                             </div>
                                                         </div>
@@ -388,7 +388,7 @@
                                                     <div class="d-flex align-items-center">
                                                         <div class="avatar rounded">
                                                             <div class="avatar-content">
-                                                                <img src="{{ asset('Admin-panel/app-assets/images/icons/book.svg') }}"
+                                                                <img src="{{ asset('admin-panel/app-assets/images/icons/book.svg') }}"
                                                                     alt="Book svg" />
                                                             </div>
                                                         </div>
@@ -430,7 +430,7 @@
                                                     <div class="d-flex align-items-center">
                                                         <div class="avatar rounded">
                                                             <div class="avatar-content">
-                                                                <img src="{{ asset('Admin-panel/app-assets/images/icons/rocket.svg') }}"
+                                                                <img src="{{ asset('admin-panel/app-assets/images/icons/rocket.svg') }}"
                                                                     alt="Rocket svg" />
                                                             </div>
                                                         </div>
@@ -471,7 +471,7 @@
                                                     <div class="d-flex align-items-center">
                                                         <div class="avatar rounded">
                                                             <div class="avatar-content">
-                                                                <img src="{{ asset('Admin-panel/app-assets/images/icons/speaker.svg') }}"
+                                                                <img src="{{ asset('admin-panel/app-assets/images/icons/speaker.svg') }}"
                                                                     alt="Speaker svg" />
                                                             </div>
                                                         </div>
@@ -518,7 +518,7 @@
                     <div class="col-lg-4 col-md-6 col-12">
                         <div class="card card-developer-meetup">
                             <div class="meetup-img-wrapper rounded-top text-center">
-                                <img src="{{ asset('Admin-panel/app-assets/images/illustration/email.svg') }}" alt="Meeting Pic"
+                                <img src="{{ asset('admin-panel/app-assets/images/illustration/email.svg') }}" alt="Meeting Pic"
                                     height="170" />
                             </div>
                             <div class="card-body">
@@ -557,27 +557,27 @@
                                 <div class="avatar-group">
                                     <div data-bs-toggle="tooltip" data-popup="tooltip-custom"
                                         data-bs-placement="bottom" title="Billy Hopkins" class="avatar pull-up">
-                                        <img src="{{ asset('Admin-panel/app-assets/images/portrait/small/avatar-s-9.jpg') }}"
+                                        <img src="{{ asset('admin-panel/app-assets/images/portrait/small/avatar-s-9.jpg') }}"
                                             alt="Avatar" width="33" height="33" />
                                     </div>
                                     <div data-bs-toggle="tooltip" data-popup="tooltip-custom"
                                         data-bs-placement="bottom" title="Amy Carson" class="avatar pull-up">
-                                        <img src="{{ asset('Admin-panel/app-assets/images/portrait/small/avatar-s-6.jpg') }}"
+                                        <img src="{{ asset('admin-panel/app-assets/images/portrait/small/avatar-s-6.jpg') }}"
                                             alt="Avatar" width="33" height="33" />
                                     </div>
                                     <div data-bs-toggle="tooltip" data-popup="tooltip-custom"
                                         data-bs-placement="bottom" title="Brandon Miles" class="avatar pull-up">
-                                        <img src="{{ asset('Admin-panel/app-assets/images/portrait/small/avatar-s-8.jpg') }}"
+                                        <img src="{{ asset('admin-panel/app-assets/images/portrait/small/avatar-s-8.jpg') }}"
                                             alt="Avatar" width="33" height="33" />
                                     </div>
                                     <div data-bs-toggle="tooltip" data-popup="tooltip-custom"
                                         data-bs-placement="bottom" title="Daisy Weber" class="avatar pull-up">
-                                        <img src="{{ asset('Admin-panel/app-assets/images/portrait/small/avatar-s-20.jpg') }}"
+                                        <img src="{{ asset('admin-panel/app-assets/images/portrait/small/avatar-s-20.jpg') }}"
                                             alt="Avatar" width="33" height="33" />
                                     </div>
                                     <div data-bs-toggle="tooltip" data-popup="tooltip-custom"
                                         data-bs-placement="bottom" title="Jenny Looper" class="avatar pull-up">
-                                        <img src="{{ asset('Admin-panel/app-assets/images/portrait/small/avatar-s-20.jpg') }}"
+                                        <img src="{{ asset('admin-panel/app-assets/images/portrait/small/avatar-s-20.jpg') }}"
                                             alt="Avatar" width="33" height="33" />
                                     </div>
                                     <h6 class="align-self-center cursor-pointer ms-50 mb-0">+42</h6>
@@ -608,7 +608,7 @@
                             <div class="card-body">
                                 <div class="browser-states">
                                     <div class="d-flex">
-                                        <img src="{{ asset('Admin-panel/app-assets/images/icons/google-chrome.png') }}"
+                                        <img src="{{ asset('admin-panel/app-assets/images/icons/google-chrome.png') }}"
                                             class="rounded me-1" height="30" alt="Google Chrome" />
                                         <h6 class="align-self-center mb-0">Google Chrome</h6>
                                     </div>
@@ -619,7 +619,7 @@
                                 </div>
                                 <div class="browser-states">
                                     <div class="d-flex">
-                                        <img src="{{ asset('Admin-panel/app-assets/images/icons/mozila-firefox.png') }}"
+                                        <img src="{{ asset('admin-panel/app-assets/images/icons/mozila-firefox.png') }}"
                                             class="rounded me-1" height="30" alt="Mozila Firefox" />
                                         <h6 class="align-self-center mb-0">Mozila Firefox</h6>
                                     </div>
@@ -630,7 +630,7 @@
                                 </div>
                                 <div class="browser-states">
                                     <div class="d-flex">
-                                        <img src="{{ asset('Admin-panel/app-assets/images/icons/apple-safari.png') }}"
+                                        <img src="{{ asset('admin-panel/app-assets/images/icons/apple-safari.png') }}"
                                             class="rounded me-1" height="30" alt="Apple Safari" />
                                         <h6 class="align-self-center mb-0">Apple Safari</h6>
                                     </div>
@@ -641,7 +641,7 @@
                                 </div>
                                 <div class="browser-states">
                                     <div class="d-flex">
-                                        <img src="{{ asset('Admin-panel/app-assets/images/icons/internet-explorer.png') }}"
+                                        <img src="{{ asset('admin-panel/app-assets/images/icons/internet-explorer.png') }}"
                                             class="rounded me-1" height="30" alt="Internet Explorer" />
                                         <h6 class="align-self-center mb-0">Internet Explorer</h6>
                                     </div>
@@ -652,7 +652,7 @@
                                 </div>
                                 <div class="browser-states">
                                     <div class="d-flex">
-                                        <img src="{{ asset('Admin-panel/app-assets/images/icons/opera.png') }}" class="rounded me-1"
+                                        <img src="{{ asset('admin-panel/app-assets/images/icons/opera.png') }}" class="rounded me-1"
                                             height="30" alt="Opera Mini" />
                                         <h6 class="align-self-center mb-0">Opera Mini</h6>
                                     </div>

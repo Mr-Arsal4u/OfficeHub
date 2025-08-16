@@ -25,7 +25,7 @@ class ReportController extends Controller
      */
     public function ai()
     {
-        return view('Admin.reports.ai_chat');
+        return view('admin.reports.ai_chat');
     }
 
     /**
@@ -78,7 +78,7 @@ class ReportController extends Controller
             ]);
         }
 
-        return view('Admin.report.details', compact('employee', 'startDate', 'endDate', 'attendanceSummary', 'monthlySalary'));
+        return view('admin.report.details', compact('employee', 'startDate', 'endDate', 'attendanceSummary', 'monthlySalary'));
     }
 
     /**

@@ -28,18 +28,15 @@
                                 <tbody>
                                     @forelse ($salaries as $salary)
                                         <tr>
-<<<<<<< HEAD
                                             <td>{{ optional($salary->employee)->first_name ?? 'N/A' }} {{ optional($salary->employee)->last_name ?? 'N/A' }}</td>
                                             <td>{{ $salary->amount }}</td>
                                             <td>{{$salary->description}}</td>
-=======
                                             <td>{{ optional($salary->employee)->first_name ?? 'N/A' }}
                                                 {{ optional($salary->employee)->last_name ?? 'N/A' }}</td>
                                             <td>{{ $salary->date }}</td>
                                             <td>{{ $salary->amount }}</td>
                                             <td>{{ $salary->description }}</td>
                                             {{-- <td>{{ $salary->bonus ?? 'N/A' }}</td> --}}
->>>>>>> 4ef0da928cdd35586dcfe0bbaa15378a438aa57b
                                             <td>
                                                 <div class="dropdown">
                                                     <button type="button"
