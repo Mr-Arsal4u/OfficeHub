@@ -66,8 +66,17 @@ $('#attendance-form').on('submit', function (e) {
             }
         },
         error: function (xhr, status, error) {
-            // console.log(error);
-            showToast("error", error);  
+            if (xhr.status === 422) {
+                // Validation errors
+                var errors = xhr.responseJSON.errors;
+                var errorMessage = '';
+                for (var field in errors) {
+                    errorMessage += errors[field][0] + '\n';
+                }
+                showToast("error", errorMessage);
+            } else {
+                showToast("error", "An error occurred while processing your request.");
+            }
         }
     });
 });

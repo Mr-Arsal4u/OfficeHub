@@ -1,0 +1,42 @@
+/* Custom styles for sidebar active states */
+.main-menu-content .nav-item.has-sub.sidebar-group-active > a {
+    background-color: rgba(115, 103, 240, 0.08) !important;
+    color: #7367f0 !important;
+}
+
+.main-menu-content .nav-item.has-sub.open > a {
+    background-color: rgba(115, 103, 240, 0.08) !important;
+    color: #7367f0 !important;
+}
+
+.main-menu-content li.active > a {
+    background-color: rgba(115, 103, 240, 0.08) !important;
+    color: #7367f0 !important;
+}
+
+.main-menu-content .menu-content li.active > a {
+    background-color: #7367f0 !important;
+    color: #ffffff !important;
+    font-weight: 600 !important;
+    box-shadow: 0 2px 4px rgba(115, 103, 240, 0.2) !important;
+}
+
+.main-menu-content .menu-content li.active > a:hover {
+    background-color: #5e50ee !important;
+    color: #ffffff !important;
+}
+
+/* Ensure parent menu items stay highlighted when child is active */
+.main-menu-content .nav-item.has-sub.sidebar-group-active > a {
+    background-color: rgba(115, 103, 240, 0.08) !important;
+    color: #7367f0 !important;
+}
+
+/* Ensure smooth transitions for menu toggles */
+.main-menu-content .nav-item.has-sub > a {
+    transition: all 0.3s ease;
+}
+
+.main-menu-content .menu-content {
+    transition: all 0.3s ease;
+}

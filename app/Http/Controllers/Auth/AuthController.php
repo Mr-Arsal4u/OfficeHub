@@ -19,6 +19,6 @@ class AuthController extends Controller
 
     public function dashboard()
     {
-        return view('admin.dashboard');
+        return view('Admin.dashboard');
     }
 }

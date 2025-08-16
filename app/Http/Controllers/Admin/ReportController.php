@@ -16,7 +16,7 @@ class ReportController extends Controller
     public function index()
     {
         $employees = Employee::all();
-        return view('admin.report.index', compact('employees'));
+        return view('Admin.report.index', compact('employees'));
     }
 
     /**
@@ -24,7 +24,7 @@ class ReportController extends Controller
      */
     public function ai()
     {
-        return view('admin.reports.ai_chat');
+        return view('Admin.reports.ai_chat');
     }
 
     /**
@@ -48,21 +48,36 @@ class ReportController extends Controller
      */
     public function show(string $id)
     {
-        $employee = Employee::where('id', $id)->first();
+        $employee = Employee::with('salary')->where('id', $id)->first();
 
-        $startDate = request()->start_date ?? Carbon::now()->startOfMonth();
-        $endDate = request()->end_date ?? Carbon::now()->endOfMonth();
+        $startDate = Carbon::parse(request()->start_date ?? Carbon::now()->startOfMonth());
+
+        $endDate = Carbon::parse(request()->end_date ?? Carbon::now()->endOfMonth());
+
 
         $attendanceSummary = Attendance::where('employee_id', $employee->id)
             ->whereBetween('date', [$startDate, $endDate])
             ->selectRaw("
         SUM(CASE WHEN status = 'present' THEN 1 ELSE 0 END) as present_days,
         SUM(CASE WHEN status = 'absent' THEN 1 ELSE 0 END) as absent_days,
-        SUM(CASE WHEN status = 'leave' THEN 1 ELSE 0 END) as leave_days
-    ")
-            ->first();
+        SUM(CASE WHEN status = 'leave' THEN 1 ELSE 0 END) as leave_days")->first();
 
-        return view('admin.report.details', compact('employee', 'startDate', 'endDate', 'attendanceSummary'));
+        $dailySalary = $employee->salary?->amount ?? 0;
+        $presentDays = $attendanceSummary->present_days ?? 0;
+
+        $monthlySalary = $dailySalary * $presentDays;
+
+        if (request()->ajax()) {
+            return response()->json([
+                'present_days' => $attendanceSummary->present_days ?? 0,
+                'absent_days' => $attendanceSummary->absent_days ?? 0,
+                'leave_days' => $attendanceSummary->leave_days ?? 0,
+                'formatted_range' => $startDate->format('M d') . ' - ' . $endDate->format('M d, Y'),
+                'monthlySalary' => $monthlySalary,
+            ]);
+        }
+
+        return view('Admin.report.details', compact('employee', 'startDate', 'endDate', 'attendanceSummary', 'monthlySalary'));
     }
 
     /**

@@ -71,7 +71,7 @@
                     <div class="bs-stepper-content shadow-none">
                         <div id="create-app-details" class="content" role="tabpanel" aria-labelledby="create-app-details-trigger">
                             <h5>Application Name</h5>
-                            <input class="form-control" type="text" placeholder="Vuexy Admin" />
+                            <input class="form-control" type="text" placeholder="OfficeNexus Admin" />
 
                             <h5 class="mt-2 pt-1">Category</h5>
                             <ul class="list-group list-group-flush">

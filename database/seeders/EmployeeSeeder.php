@@ -16,13 +16,12 @@ class EmployeeSeeder extends Seeder
     {
         $user = User::first();
         Employee::create([
-            'first_name' => 'John',
-            'last_name' => 'Doe',
-            'email' => 'john.doe@example.com',
+            'first_name' => 'Ahmad',
+            'last_name' => 'Sikandar',
+            'email' => 'ahmad.test@example.com',
             'phone' => '1234567890',
             'position' => 'Admin',
             'department' => 'Management',
-            'salary' => 50000,
             'hire_date' => now(),
             'user_id' => $user->id, // link to the user
         ]);

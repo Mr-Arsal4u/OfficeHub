@@ -27,6 +27,7 @@ $('#salary-form').on('submit', function (e) {
         method: $(this).attr('method'),
         data: formData,
         success: function (response) {
+            console.log('here');
             if (response.success) {
                 $('#salary-modal').modal('hide');
                 showToast('success', response.success);

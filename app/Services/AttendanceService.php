@@ -35,6 +35,15 @@ class AttendanceService
 
     public function store($data)
     {
+        // Check for existing attendance for the same employee on the same date
+        $existingAttendance = Attendance::where('employee_id', $data['employee_id'])
+            ->where('date', $data['date'])
+            ->first();
+            
+        if ($existingAttendance) {
+            throw new \Exception('Attendance for this employee on this date already exists.');
+        }
+        
         return Attendance::create($data);
     }
 

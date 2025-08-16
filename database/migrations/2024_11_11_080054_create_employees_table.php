@@ -19,7 +19,6 @@ return new class extends Migration
             $table->string('phone')->nullable();
             $table->string('position');
             $table->string('department');
-            $table->decimal('salary', 10, 2);
             $table->date('hire_date');
             $table->foreignId('user_id')->nullable()->constrained()->onDelete('set null');
             $table->timestamps();

@@ -7,33 +7,34 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=0,minimal-ui">
         <meta name="description"
-            content="Vuexy admin is super flexible, powerful, clean &amp; modern responsive bootstrap 4 admin template with unlimited possibilities.">
+            content="OfficeNexus Admin is super flexible, powerful, clean &amp; modern responsive bootstrap 4 Admin template with unlimited possibilities.">
         <meta name="keywords"
-            content="admin template, Vuexy admin template, dashboard template, flat admin template, responsive admin template, web app">
+            content="Admin template, OfficeNexus Admin template, dashboard template, flat Admin template, responsive Admin template, web app">
         <meta name="author" content="PIXINVENT">
         <title>Dashboard - OfficeNexus</title>
 
-        <link rel="apple-touch-icon" href="{{ asset('admin-panel/app-assets/images/ico/apple-icon-120.png') }}">
+        <link rel="apple-touch-icon" href="{{ asset('Admin-panel/app-assets/images/ico/apple-icon-120.png') }}">
         <link rel="shortcut icon" type="image/x-icon"
-            href="{{ asset('admin-panel/app-assets/images/ico/favicon.ico') }}">
+            href="{{ asset('Admin-panel/app-assets/images/ico/favicon.ico') }}">
         <link
             href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500;1,600"
             rel="stylesheet">
-        <link rel="stylesheet" type="text/css" href="{{ asset('admin-panel/app-assets/vendors/css/vendors.min.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ asset('Admin-panel/app-assets/vendors/css/vendors.min.css') }}">
         <link rel="stylesheet" type="text/css"
-            href="{{ asset('admin-panel/app-assets/vendors/css/extensions/toastr.min.css') }}">
+            href="{{ asset('Admin-panel/app-assets/vendors/css/extensions/toastr.min.css') }}">
 
-        <link rel="stylesheet" type="text/css" href="{{ asset('admin-panel/app-assets/css/bootstrap.css') }}">
-        <link rel="stylesheet" type="text/css" href="{{ asset('admin-panel/app-assets/css/bootstrap-extended.css') }}">
-        <link rel="stylesheet" type="text/css" href="{{ asset('admin-panel/app-assets/css/components.css') }}">
-        <link rel="stylesheet" type="text/css" href="{{ asset('admin-panel/app-assets/css/themes/dark-layout.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ asset('Admin-panel/app-assets/css/bootstrap.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ asset('Admin-panel/app-assets/css/bootstrap-extended.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ asset('Admin-panel/app-assets/css/components.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ asset('Admin-panel/app-assets/css/themes/dark-layout.css') }}">
         <link rel="stylesheet" type="text/css"
-            href="{{ asset('admin-panel/app-assets/css/core/menu/menu-types/vertical-menu.css') }}">
+            href="{{ asset('Admin-panel/app-assets/css/core/menu/menu-types/vertical-menu.css') }}">
         <link rel="stylesheet" type="text/css"
-            href="{{ asset('admin-panel/app-assets/css/plugins/extensions/ext-component-toastr.css') }}">
+            href="{{ asset('Admin-panel/app-assets/css/plugins/extensions/ext-component-toastr.css') }}">
         <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
-        <link rel="stylesheet" type="text/css" href="{{ asset('admin-panel/app-assets/css') }}/apages/modal-create-app.css">
-    {{-- <link rel="stylesheet" type="text/css" href="{{ asset('admin-panel/app-assets/css') }}/assets/css/style.css"> --}}
+        <link rel="stylesheet" type="text/css" href="{{ asset('Admin-panel/app-assets/css') }}/apages/modal-create-app.css">
+        <link rel="stylesheet" type="text/css" href="{{ asset('files/css/sidebar-active.css') }}">
+    {{-- <link rel="stylesheet" type="text/css" href="{{ asset('Admin-panel/app-assets/css') }}/assets/css/style.css"> --}}
 
         <script>
             var currentLocalStorageLayout = localStorage.getItem('light-layout-current-skin') || 'light-layout';
@@ -64,7 +65,7 @@
             <li class="auto-suggestion"><a class="d-flex align-items-center justify-content-between w-100"
                     href="app-file-manager.html">
                     <div class="d-flex">
-                        <div class="me-75"><img src="{{ asset('admin-panel/app-assets/images/icons/xls.png') }}"
+                        <div class="me-75"><img src="{{ asset('Admin-panel/app-assets/images/icons/xls.png') }}"
                                 alt="png" height="32"></div>
                         <div class="search-data">
                             <p class="search-data-title mb-0">Two new item submitted</p><small
@@ -76,7 +77,7 @@
             <li class="auto-suggestion"><a class="d-flex align-items-center justify-content-between w-100"
                     href="app-file-manager.html">
                     <div class="d-flex">
-                        <div class="me-75"><img src="{{ asset('admin-panel/app-assets/images/icons/jpg.png') }}"
+                        <div class="me-75"><img src="{{ asset('Admin-panel/app-assets/images/icons/jpg.png') }}"
                                 alt="png" height="32"></div>
                         <div class="search-data">
                             <p class="search-data-title mb-0">52 JPG file Generated</p><small class="text-muted">FontEnd
@@ -87,7 +88,7 @@
             <li class="auto-suggestion"><a class="d-flex align-items-center justify-content-between w-100"
                     href="app-file-manager.html">
                     <div class="d-flex">
-                        <div class="me-75"><img src="{{ asset('admin-panel/app-assets/images/icons/pdf.png') }}"
+                        <div class="me-75"><img src="{{ asset('Admin-panel/app-assets/images/icons/pdf.png') }}"
                                 alt="png" height="32"></div>
                         <div class="search-data">
                             <p class="search-data-title mb-0">25 PDF File Uploaded</p><small class="text-muted">Digital
@@ -98,7 +99,7 @@
             <li class="auto-suggestion"><a class="d-flex align-items-center justify-content-between w-100"
                     href="app-file-manager.html">
                     <div class="d-flex">
-                        <div class="me-75"><img src="{{ asset('admin-panel/app-assets/images/icons/doc.png') }}"
+                        <div class="me-75"><img src="{{ asset('Admin-panel/app-assets/images/icons/doc.png') }}"
                                 alt="png" height="32"></div>
                         <div class="search-data">
                             <p class="search-data-title mb-0">Anna_Strong.doc</p><small class="text-muted">Web
@@ -113,7 +114,7 @@
                     href="app-user-view-account.html">
                     <div class="d-flex align-items-center">
                         <div class="avatar me-75"><img
-                                src="{{ asset('admin-panel/app-assets/images/portrait/small/avatar-s-8.jpg') }}"
+                                src="{{ asset('Admin-panel/app-assets/images/portrait/small/avatar-s-8.jpg') }}"
                                 alt="png" height="32"></div>
                         <div class="search-data">
                             <p class="search-data-title mb-0">John Doe</p><small class="text-muted">UI
@@ -125,7 +126,7 @@
                     href="app-user-view-account.html">
                     <div class="d-flex align-items-center">
                         <div class="avatar me-75"><img
-                                src="{{ asset('admin-panel/app-assets/images/portrait/small/avatar-s-1.jpg') }}"
+                                src="{{ asset('Admin-panel/app-assets/images/portrait/small/avatar-s-1.jpg') }}"
                                 alt="png" height="32"></div>
                         <div class="search-data">
                             <p class="search-data-title mb-0">Michal Clark</p><small class="text-muted">FontEnd
@@ -137,7 +138,7 @@
                     href="app-user-view-account.html">
                     <div class="d-flex align-items-center">
                         <div class="avatar me-75"><img
-                                src="{{ asset('admin-panel/app-assets/images/portrait/small/avatar-s-14.jpg') }}"
+                                src="{{ asset('Admin-panel/app-assets/images/portrait/small/avatar-s-14.jpg') }}"
                                 alt="png" height="32"></div>
                         <div class="search-data">
                             <p class="search-data-title mb-0">Milena Gibson</p><small class="text-muted">Digital
@@ -150,7 +151,7 @@
                     href="app-user-view-account.html">
                     <div class="d-flex align-items-center">
                         <div class="avatar me-75"><img
-                                src="{{ asset('admin-panel/app-assets/images/portrait/small/avatar-s-6.jpg') }}"
+                                src="{{ asset('Admin-panel/app-assets/images/portrait/small/avatar-s-6.jpg') }}"
                                 alt="png" height="32"></div>
                         <div class="search-data">
                             <p class="search-data-title mb-0">Anna Strong</p><small class="text-muted">Web
@@ -184,14 +185,15 @@
         @include('partials.footer')
         <!-- END: Footer-->
 
-        <script src="{{ asset('admin-panel/app-assets/vendors/js/vendors.min.js') }}"></script>
-        <script src="{{ asset('admin-panel/app-assets/vendors/js/charts/apexcharts.min.js') }}"></script>
-        <script src="{{ asset('admin-panel/app-assets/vendors/js/extensions/toastr.min.js') }}"></script>
-        <script src="{{ asset('admin-panel/app-assets/js/core/app-menu.js') }}"></script>
-        <script src="{{ asset('admin-panel/app-assets/js/core/app.js') }}"></script>
-        <script src="{{ asset('admin-panel/app-assets/js/scripts/pages/dashboard-ecommerce.js') }}"></script>
+        <script src="{{ asset('Admin-panel/app-assets/vendors/js/vendors.min.js') }}"></script>
+        <script src="{{ asset('Admin-panel/app-assets/vendors/js/charts/apexcharts.min.js') }}"></script>
+        <script src="{{ asset('Admin-panel/app-assets/vendors/js/extensions/toastr.min.js') }}"></script>
+        <script src="{{ asset('Admin-panel/app-assets/js/core/app-menu.js') }}"></script>
+        <script src="{{ asset('Admin-panel/app-assets/js/core/app.js') }}"></script>
+        <script src="{{ asset('Admin-panel/app-assets/js/scripts/pages/dashboard-ecommerce.js') }}"></script>
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-        <script src="{{ asset('admin-panel/app-assets/js/scripts/pages/modal-create-app.js') }}"></script>
+        <script src="{{ asset('Admin-panel/app-assets/js/scripts/pages/modal-create-app.js') }}"></script>
+        <script src="{{ asset('files/js/sidebar-active.js') }}"></script>
 
         <script>
             $(window).on('load', function() {

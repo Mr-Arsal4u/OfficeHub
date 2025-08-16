@@ -14,25 +14,25 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        // $adminRole = Role::firstOrCreate(['name' => 'Admin']);
+        // $AdminRole = Role::firstOrCreate(['name' => 'Admin']);
         // $hrRole = Role::firstOrCreate(['name' => 'HR']);
         // $accountRole = Role::firstOrCreate(['name' => 'Accounts']);
         // $salesRole = Role::firstOrCreate(['name' => 'Sales']);
 
         // // Create 5 users per role
-        // User::factory(5)->create()->each(function ($user) use ($adminRole, $hrRole, $accountRole, $salesRole) {
-        //     $user->assignRole($adminRole);
+        // User::factory(5)->create()->each(function ($user) use ($AdminRole, $hrRole, $accountRole, $salesRole) {
+        //     $user->assignRole($AdminRole);
         //     $user->assignRole($hrRole);
         //     $user->assignRole($accountRole);
         //     $user->assignRole($salesRole);
         // });
-        $adminRole = Role::firstOrCreate(['name' => 'Admin']);
+        $AdminRole = Role::firstOrCreate(['name' => 'Admin']);
         $user = User::create([
             'name' => 'Admin',
-            'email' => 'superadmin@gmail.com',
+            'email' => 'superAdmin@gmail.com',
             'password' => bcrypt('root@123'),
 
         ]);
-        $user->assignRole($adminRole);
+        $user->assignRole($AdminRole);
     }
 }

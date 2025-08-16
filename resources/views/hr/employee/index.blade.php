@@ -40,7 +40,7 @@
                                             <td>{{ $employee->phone ?? 'N/A' }}</td>
                                             <td>{{ $employee->position ?? 'N/A' }}</td>
                                             <td>{{ $employee->department ?? 'N/A' }}</td>
-                                            <td>{{ $employee->salary ?? 'N/A' }}</td>
+                                            <td>{{ $employee->salary?->amount ?? 'N/A' }}</td>
                                             <td>{{ $employee->hire_date ?? 'N/A' }}</td>
                                             <td>{{ optional($employee->user)->name ?? 'No User' }}</td>
                                             <td>

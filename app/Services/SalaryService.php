@@ -20,13 +20,13 @@ class SalaryService
 
     public function storeSalary($data) 
     {
+        // dd($data);   
         return Salary::updateOrCreate(
             ['employee_id' => $data['employee_id']],
             [
-                'amount' => $data['amount'],
-                'date' => $data['date'],
-                'bonus' => $data['bonus'],
-                'description' => $data['description'],
+                'amount' => $data['amount']?? null,
+                // 'date' => $data['date'] ?? null ,
+                'description' => $data['description']?? null,
             ]
         );
     }

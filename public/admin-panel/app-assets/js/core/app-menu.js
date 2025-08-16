@@ -3,7 +3,7 @@
   Description: Menu navigation, custom scrollbar, hover scroll bar, multilevel menu
   initialization and manipulations
   ----------------------------------------------------------------------------------------
-  Item Name: Vuexy  - Vuejs, HTML & Laravel Admin Dashboard Template
+  Item Name: OfficeNexus  - Vuejs, HTML & Laravel Admin Dashboard Template
   Author: Pixinvent
   Author URL: hhttp://www.themeforest.net/user/pixinvent
 ==========================================================================================*/
@@ -822,7 +822,7 @@
     },
 
     /**
-     * Ensure an admin submenu is within the visual viewport.
+     * Ensure an Admin submenu is within the visual viewport.
      * @param {jQuery} $menuItem The parent menu item containing the submenu.
      */
 

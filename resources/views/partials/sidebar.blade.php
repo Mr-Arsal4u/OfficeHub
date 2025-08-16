@@ -31,9 +31,9 @@
                 </ul>
             </li> --}}
 
-            <li class="nav-item"><a class="d-flex align-items-center" href="{{ route('dashboard') }}"><i
+            <li class="nav-item"><a class="d-flex align-items-center" href="{{ route('dashboard') }}" data-route="dashboard"><i
                         data-feather="home"></i><span class="menu-title text-truncate"
-                        data-i18n="eCommerce">Dasboard</span></a>
+                        data-i18n="eCommerce">Dashboard</span></a>
             </li>
 
             {{-- <li class=" nav-item"><a class="d-flex align-items-center" href="#"><i data-feather="folder"></i><span
@@ -46,7 +46,7 @@
                 </a>
                 <ul class="menu-content">
                     <li>
-                        <a class="d-flex align-items-center" href="{{ route('employees.index') }}">
+                        <a class="d-flex align-items-center" href="{{ route('employees.index') }}" data-route="employees.index">
                             <i data-feather="user"></i>
                             <span class="menu-item text-truncate" data-i18n="Employees">Employees</span>
                         </a>
@@ -58,7 +58,7 @@
                         </a> --}}
                     </li>
                     <li>
-                        <a class="d-flex align-items-center" href="{{ route('attendance.index') }}">
+                        <a class="d-flex align-items-center" href="{{ route('attendance.index') }}" data-route="attendance.index">
                             <i data-feather="users"></i>
                             <span class="menu-item text-truncate" data-i18n="Users">Attendance</span>
                         </a>
@@ -88,13 +88,13 @@
                     <span class="menu-title text-truncate" data-i18n="Manage Finance">Manage Finance</span>
                 </a>
                 <ul class="menu-content">
-                    <li><a class="d-flex align-items-center" href="{{ route('expense.index') }}"><svg
+                    <li><a class="d-flex align-items-center" href="{{ route('expense.index') }}" data-route="expense.index"><svg
                                 xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                 stroke-linejoin="round" class="feather feather-circle">
                                 <circle cx="12" cy="12" r="10"></circle>
                             </svg><span class="menu-item text-truncate" data-i18n="Expenses">Expenses</span></a></li>
-                    <li><a class="d-flex align-items-center" href="{{ route('salary.index') }}"><svg
+                    <li><a class="d-flex align-items-center" href="{{ route('salary.index') }}" data-route="salary.index"><svg
                                 xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                 stroke-linejoin="round" class="feather feather-circle">
@@ -117,18 +117,13 @@
                     <span class="menu-title text-truncate" data-i18n="Manage Finance">Reports</span>
                 </a>
                 <ul class="menu-content">
-                    <li><a class="d-flex align-items-center" href="{{ route('reports.index') }}"><svg
+                    <li><a class="d-flex align-items-center" href="{{ route('reports.index') }}" data-route="reports.index"><svg
                                 xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                 stroke-linejoin="round" class="feather feather-circle">
                                 <circle cx="12" cy="12" r="10"></circle>
                             </svg><span class="menu-item text-truncate" data-i18n="Expenses">Reports</span></a></li>
-                    <li><a class="d-flex align-items-center" href="{{ route('reports.ai') }}"><svg
-                                xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" class="feather feather-circle">
-                                <circle cx="12" cy="12" r="10"></circle>
-                            </svg><span class="menu-item text-truncate" data-i18n="Salaries">Ask Ai</span></a></li>
+                    
                 </ul>
             </li>
 

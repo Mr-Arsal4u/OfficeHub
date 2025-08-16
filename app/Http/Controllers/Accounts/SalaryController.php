@@ -52,6 +52,8 @@ class SalaryController extends Controller
         }
     }
 
+
+
     public function destroy($id)
     {
         try {

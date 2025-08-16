@@ -20,10 +20,8 @@
                                 <thead>
                                     <tr>
                                         <th>Employee</th>
-                                        <th>Date</th>
                                         <th>Salary Amount</th>
                                         <th>Description</th>
-                                        <th>Bonus</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
@@ -31,10 +29,8 @@
                                     @forelse ($salaries as $salary)
                                         <tr>
                                             <td>{{ optional($salary->employee)->first_name ?? 'N/A' }} {{ optional($salary->employee)->last_name ?? 'N/A' }}</td>
-                                            <td>{{ $salary->date }}</td>
                                             <td>{{ $salary->amount }}</td>
                                             <td>{{$salary->description}}</td>
-                                            {{-- <td>{{ $salary->bonus ?? 'N/A' }}</td> --}}
                                             <td>
                                                 <div class="dropdown">
                                                     <button type="button"
@@ -118,10 +114,6 @@
                                 <option value="{{ $employee->id }}">{{ $employee->first_name }} {{ $employee->last_name }}</option>
                             @endforeach
                         </select>
-                    </div>
-                    <div class="mb-1">
-                        <label class="form-label" for="date">Date</label>
-                        <input type="date" class="form-control" id="date" name="date" required>
                     </div>
                     <div class="mb-1">
                         <label class="form-label" for="amount">Salary Amount</label>
