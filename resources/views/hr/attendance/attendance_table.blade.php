@@ -7,7 +7,7 @@
                 $attendance = $employee->attendances->where('date', now()->toDateString())->first();
             }
         @endphp
-        <td>{{ $employee->first_name ?? 'N/A' }} {{ $employee->last_name ?? 'N/A' }}
+        <td>{{ $employee->first_name ?? '' }} {{ $employee->last_name ?? '' }}
         </td>
         <td>
             @if (isset($date) && $date != null)

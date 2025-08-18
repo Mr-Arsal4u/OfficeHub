@@ -27,6 +27,13 @@ class UserSeeder extends Seeder
         //     $user->assignRole($salesRole);
         // });
         $AdminRole = Role::firstOrCreate(['name' => 'Admin']);
+
+        $hrRole = Role::firstOrCreate(['name' => 'HR']);
+
+        $accountRole = Role::firstOrCreate(['name' => 'Accounts']);
+        
+        $salesRole = Role::firstOrCreate(['name' => 'Sales']);
+
         $user = User::create([
             'first_name' => 'Admin',
             'email' => 'superadmin@gmail.com',

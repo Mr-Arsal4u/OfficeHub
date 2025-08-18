@@ -27,12 +27,11 @@
                                         <th>Department</th>
                                         <th>Salary</th>
                                         <th>Hire Date</th>
-                                        <th>User</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($employees as $employee)
+                                    @forelse ($employees as $employee)
                                         <tr>
                                             <td>{{ $employee->first_name ?? 'N/A' }}</td>
                                             <td>{{ $employee->last_name ?? 'N/A' }}</td>
@@ -42,7 +41,6 @@
                                             <td>{{ $employee->department ?? 'N/A' }}</td>
                                             <td>{{ $employee->salary?->amount ?? 'N/A' }}</td>
                                             <td>{{ $employee->hire_date ?? 'N/A' }}</td>
-                                            <td>{{ optional($employee->user)->name ?? 'No User' }}</td>
                                             <td>
                                                 <div class="dropdown">
                                                     <button type="button"
@@ -103,7 +101,11 @@
                                                 </div>
                                             </td>
                                         </tr>
-                                    @endforeach
+                                    @empty
+                                        <tr>
+                                            <td colspan="12" class="text-center">No employees found.</td>
+                                        </tr>
+                                    @endforelse
                                 </tbody>                                
                             </table>
                         </div>

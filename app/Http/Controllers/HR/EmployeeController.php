@@ -13,7 +13,10 @@ class EmployeeController extends Controller
     public function index()
     {
         // Get all employees except the authenticated user
-        $employees = User::where('id', '!=', Auth::id())->latest()->get();
+        $employees = User::where('id', '!=', Auth::id())
+            ->role(['HR', 'Accounts', 'Sales'])
+            ->latest()
+            ->get();
         $roles = Role::all();
         return view('hr.employee.index', compact('employees', 'roles'));
     }
@@ -46,7 +49,7 @@ class EmployeeController extends Controller
             if ($User->hasRole('admin')) {
                 return response()->json(['error' => 'Admin users cannot be edited.'], 403);
             }
-            
+
             $User->update($request->all());
             return response()->json(['success' => 'User updated successfully.'], 200);
         } catch (\Exception $e) {
@@ -61,7 +64,7 @@ class EmployeeController extends Controller
             if ($User->hasRole('admin')) {
                 return response()->json(['error' => 'Admin users cannot be deleted.'], 403);
             }
-            
+
             $User->delete();
             return response()->json(['success' => 'User deleted successfully.'], 200);
         } catch (\Exception $e) {
