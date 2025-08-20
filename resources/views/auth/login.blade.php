@@ -41,10 +41,6 @@
                         </div>
                     </div>
                 </form>
-                <p class="w-100 text-center">&mdash; Don't Have An Account?
-                    <a href="{{ route('register') }}">Register Now</a>
-                    &mdash;
-                </p>
             </div>
         </div>
     </div>
