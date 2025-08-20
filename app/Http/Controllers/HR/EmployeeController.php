@@ -51,7 +51,7 @@ class EmployeeController extends Controller
     {
         try {
             // Prevent editing admin users
-            if ($User->hasRole('admin') && (!Auth::user()->hasRole('admin'))) {
+            if ($User->hasRole('Admin') && (!Auth::user()->hasRole('Admin'))) {
                 return response()->json(['error' => 'Admin users cannot be edited.'], 403);
             }
 
@@ -69,7 +69,7 @@ class EmployeeController extends Controller
     {
         try {
             // Prevent deleting admin users
-            if ($User->hasRole('admin')) {
+            if ($User->hasRole('Admin')) {
                 return response()->json(['error' => 'Admin users cannot be deleted.'], 403);
             }
 

@@ -82,7 +82,7 @@ class RequestController extends Controller
             $loan = Loan::findOrFail($id);
             
             // Prevent editing requests for admin users
-            if ($loan->employee && $loan->employee->hasRole('admin')) {
+            if ($loan->employee && $loan->employee->hasRole('Admin')) {
                 return back()->withInput()->with('error', 'Admin user requests cannot be edited.');
             }
             
@@ -103,7 +103,7 @@ class RequestController extends Controller
             $loan = Loan::findOrFail($id);
             
             // Prevent deleting requests for admin users
-            if ($loan->employee && $loan->employee->hasRole('admin')) {
+            if ($loan->employee && $loan->employee->hasRole('Admin')) {
                 return response()->json(['error' => 'Admin user requests cannot be deleted.'], 403);
             }
             
@@ -123,7 +123,7 @@ class RequestController extends Controller
         try {
             // Check if user is admin (superadmin functionality)
             $user = Auth::user();
-            if (!$user || !$user->hasRole('admin')) {
+            if (!$user || !$user->hasRole('Admin')) {
                 return response()->json(['error' => 'Only admin can approve payment requests.'], 403);
             }
 

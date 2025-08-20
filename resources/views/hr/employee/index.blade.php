@@ -58,7 +58,7 @@
                                                         </svg>
                                                     </button>
                                                     <div class="dropdown-menu dropdown-menu-end">
-                                                        @if (!$employee->hasRole('admin'))
+                                                        @if (!$employee->hasRole('Admin'))
                                                             <a class="dropdown-item" href="javascript:void(0)"
                                                                 data-bs-toggle="modal" data-bs-target="#modals-slide-in"
                                                                 onclick="editEmployee({{ $employee }})">

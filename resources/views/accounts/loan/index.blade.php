@@ -48,7 +48,7 @@
                                                 </div>
                                                 <div>
                                                     <h4 class="mb-0">{{ $requests->count() }}</h4>
-                                                    <small class="text-muted">Total Requests</small>
+                                                    <small class="text-bold">Total Requests</small>
                                                 </div>
                                             </div>
                                         </div>
@@ -64,8 +64,10 @@
                                                     </div>
                                                 </div>
                                                 <div>
-                                                    <h4 class="mb-0">{{ $requests->where('is_approved', 1)->count() }}</h4>
-                                                    <small class="text-muted">Approved Requests</small>
+                                                    <h4 class="mb-0">
+                                                        {{ $requests->where('is_approved', \App\Enum\RequestIsApproved::YES)->count() }}
+                                                    </h4>
+                                                    <small class="text-bold">Approved Requests</small>
                                                 </div>
                                             </div>
                                         </div>
@@ -81,8 +83,10 @@
                                                     </div>
                                                 </div>
                                                 <div>
-                                                    <h4 class="mb-0">{{ $requests->where('is_approved', 0)->count() }}</h4>
-                                                    <small class="text-muted">Pending Requests</small>
+                                                    <h4 class="mb-0">
+                                                        {{ $requests->where('is_approved', \App\Enum\RequestIsApproved::NO)->count() }}
+                                                    </h4>
+                                                    <small class="text-bold">Pending Requests</small>
                                                 </div>
                                             </div>
                                         </div>
@@ -98,8 +102,9 @@
                                                     </div>
                                                 </div>
                                                 <div>
-                                                    <h4 class="mb-0">${{ number_format($requests->sum('amount'), 0) }}</h4>
-                                                    <small class="text-muted">Total Amount</small>
+                                                    <h4 class="mb-0">${{ number_format($requests->sum('amount'), 0) }}
+                                                    </h4>
+                                                    <small class="text-bold">Total Amount</small>
                                                 </div>
                                             </div>
                                         </div>
@@ -130,58 +135,70 @@
                                                         </div>
                                                     </div>
                                                     <div>
-                                                        <div class="fw-bolder">{{ $request->employee->first_name ?? 'N/A' }} {{ $request->employee->last_name ?? 'N/A' }}</div>
-                                                        <small class="text-muted">{{ $request->employee->email ?? 'N/A' }}</small>
+                                                        <div class="fw-bolder">{{ $request->employee->first_name ?? 'N/A' }}
+                                                            {{ $request->employee->last_name ?? 'N/A' }}</div>
+                                                        <small
+                                                            class="text-bold">{{ $request->employee->email ?? 'N/A' }}</small>
                                                     </div>
                                                 </div>
                                             </td>
                                             <td>
-                                                <span class="badge bg-light-primary">{{ $request->type->label() ?? 'N/A' }}</span>
+                                                <span class="text-bold">{{ $request->type->label() ?? 'N/A' }}</span>
                                             </td>
                                             <td>
-                                                <span class="text-primary fw-bolder">${{ number_format($request->amount, 2) }}</span>
+                                                <span
+                                                    class="text-primary fw-bolder">${{ number_format($request->amount, 2) }}</span>
                                             </td>
                                             <td>
-                                                <span class="text-muted">{{ $request->created_at->format('M d, Y') }}</span>
+                                                <span class="text-bold">{{ $request->created_at->format('M d, Y') }}</span>
                                             </td>
                                             <td>
-                                                {!! $request->status_badge !!}
+                                                <span class="text-bold">
+                                                    {{ $request->is_approved?->label() }}</span>
                                             </td>
                                             <td>
                                                 <div class="dropdown">
-                                                    <button type="button" class="btn btn-sm dropdown-toggle hide-arrow py-0 waves-effect waves-float waves-light" data-bs-toggle="dropdown">
+                                                    <button type="button"
+                                                        class="btn btn-sm dropdown-toggle hide-arrow py-0 waves-effect waves-float waves-light"
+                                                        data-bs-toggle="dropdown">
                                                         <i data-feather="more-vertical" class="font-medium-3"></i>
                                                     </button>
                                                     <div class="dropdown-menu dropdown-menu-end">
-                                                        <a href="{{ route('request.payment.show', $request->id) }}" class="dropdown-item">
+                                                        <a href="{{ route('request.payment.show', $request->id) }}"
+                                                            class="dropdown-item">
                                                             <i data-feather="eye" class="me-50"></i>
                                                             <span>View Details</span>
                                                         </a>
-                                                        @if(!$request->employee->hasRole('admin'))
-                                                        <a href="{{ route('request.payment.edit', $request->id) }}" class="dropdown-item">
-                                                            <i data-feather="edit" class="me-50"></i>
-                                                            <span>Edit</span>
-                                                        </a>
+                                                        @if (!$request->employee->hasRole('Admin'))
+                                                            <a href="{{ route('request.payment.edit', $request->id) }}"
+                                                                class="dropdown-item">
+                                                                <i data-feather="edit" class="me-50"></i>
+                                                                <span>Edit</span>
+                                                            </a>
                                                         @endif
-                                                        @if(auth()->user() && auth()->user()->hasRole('Admin'))
-                                                            @if($request->is_approved->value == 0)
-                                                            <a href="#" class="dropdown-item approve-request-btn" data-request-id="{{ $request->id }}">
-                                                                <i data-feather="check-circle" class="me-50"></i>
-                                                                <span>Approve</span>
-                                                            </a>
+                                                        @if (auth()->user() && auth()->user()->hasRole('Admin'))
+                                                            @if ($request->is_approved->value == 0)
+                                                                <a href="#" class="dropdown-item approve-request-btn"
+                                                                    data-request-id="{{ $request->id }}">
+                                                                    <i data-feather="check-circle" class="me-50"></i>
+                                                                    <span>Approve</span>
+                                                                </a>
                                                             @else
-                                                            <a href="#" class="dropdown-item reject-request-btn" data-request-id="{{ $request->id }}">
-                                                                <i data-feather="x-circle" class="me-50"></i>
-                                                                <span>Reject</span>
-                                                            </a>
+                                                                <a href="#" class="dropdown-item reject-request-btn"
+                                                                    data-request-id="{{ $request->id }}">
+                                                                    <i data-feather="x-circle" class="me-50"></i>
+                                                                    <span>Reject</span>
+                                                                </a>
                                                             @endif
                                                         @endif
-                                                        @if(!$request->employee->hasRole('admin'))
-                                                        <div class="dropdown-divider"></div>
-                                                        <a href="#" class="dropdown-item text-danger delete-request-btn" data-request-id="{{ $request->id }}">
-                                                            <i data-feather="trash-2" class="me-50"></i>
-                                                            <span>Delete</span>
-                                                        </a>
+                                                        @if (!$request->employee->hasRole('Admin'))
+                                                            <div class="dropdown-divider"></div>
+                                                            <a href="#"
+                                                                class="dropdown-item text-danger delete-request-btn"
+                                                                data-request-id="{{ $request->id }}">
+                                                                <i data-feather="trash-2" class="me-50"></i>
+                                                                <span>Delete</span>
+                                                            </a>
                                                         @endif
                                                     </div>
                                                 </div>
@@ -203,112 +220,117 @@
 @endsection
 
 @push('scripts')
-<script>
-function exportToExcel() {
-    // Implementation for Excel export
-    alert('Excel export functionality will be implemented here');
-}
-
-function exportToPDF() {
-    // Implementation for PDF export
-    alert('PDF export functionality will be implemented here');
-}
-
-// Initialize DataTable
-$(document).ready(function() {
-    $('#loan-table').DataTable({
-        pageLength: 25,
-        order: [[3, 'desc']], // Sort by requested date descending
-        responsive: true,
-        dom: 'Bfrtip',
-        buttons: [
-            'copy', 'csv', 'excel', 'pdf', 'print'
-        ]
-    });
-
-    // Delete request functionality
-    $('.delete-request-btn').on('click', function(e) {
-        e.preventDefault();
-        const requestId = $(this).data('request-id');
-        
-        if (confirm('Are you sure you want to delete this payment request? This action cannot be undone.')) {
-            $.ajax({
-                url: `/request/payment/${requestId}`,
-                method: 'DELETE',
-                data: {
-                    _token: $('meta[name="csrf-token"]').attr('content')
-                },
-                success: function(response) {
-                    showToast('success', response.success);
-                    setTimeout(function() {
-                        window.location.reload();
-                    }, 1000);
-                },
-                error: function(xhr) {
-                    showToast('error', xhr.responseJSON?.error || 'An error occurred while deleting the request.');
-                }
-            });
+    <script>
+        function exportToExcel() {
+            // Implementation for Excel export
+            alert('Excel export functionality will be implemented here');
         }
-    });
 
-    // Approve request functionality
-    $('.approve-request-btn').on('click', function(e) {
-        e.preventDefault();
-        const requestId = $(this).data('request-id');
-        
-        if (confirm('Are you sure you want to approve this payment request?')) {
-            $.ajax({
-                url: `/request/payment/update/status/${requestId}`,
-                method: 'POST',
-                data: {
-                    _token: $('meta[name="csrf-token"]').attr('content')
-                },
-                success: function(response) {
-                    showToast('success', response.success);
-                    setTimeout(function() {
-                        window.location.reload();
-                    }, 1000);
-                },
-                error: function(xhr) {
-                    showToast('error', xhr.responseJSON?.error || 'An error occurred while approving the request.');
-                }
-            });
+        function exportToPDF() {
+            // Implementation for PDF export
+            alert('PDF export functionality will be implemented here');
         }
-    });
 
-    // Reject request functionality
-    $('.reject-request-btn').on('click', function(e) {
-        e.preventDefault();
-        const requestId = $(this).data('request-id');
-        
-        if (confirm('Are you sure you want to reject this payment request?')) {
-            $.ajax({
-                url: `/request/payment/update/status/${requestId}`,
-                method: 'POST',
-                data: {
-                    _token: $('meta[name="csrf-token"]').attr('content')
-                },
-                success: function(response) {
-                    showToast('success', response.success);
-                    setTimeout(function() {
-                        window.location.reload();
-                    }, 1000);
-                },
-                error: function(xhr) {
-                    showToast('error', xhr.responseJSON?.error || 'An error occurred while rejecting the request.');
-                }
+        // Initialize DataTable
+        $(document).ready(function() {
+            $('#loan-table').DataTable({
+                pageLength: 25,
+                order: [
+                    [3, 'desc']
+                ], // Sort by requested date descending
+                responsive: true,
+                dom: 'Bfrtip',
+                buttons: [
+                    'copy', 'csv', 'excel', 'pdf', 'print'
+                ]
             });
-        }
-    });
-});
+        });
 
-// Toast notification function
-function showToast(type, message) {
-    if (typeof toastr !== 'undefined') {
-        toastr[type](message);
-    } else {
-        alert(message);
-    }
-}
-</script>
+        // Delete request functionality
+        $('.delete-request-btn').on('click', function(e) {
+            e.preventDefault();
+            const requestId = $(this).data('request-id');
+
+            if (confirm('Are you sure you want to delete this payment request? This action cannot be undone.')) {
+                $.ajax({
+                    url: `/request/payment/${requestId}`,
+                    method: 'DELETE',
+                    data: {
+                        _token: $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function(response) {
+                        showToast('success', response.success);
+                        setTimeout(function() {
+                            window.location.reload();
+                        }, 1000);
+                    },
+                    error: function(xhr) {
+                        showToast('error', xhr.responseJSON?.error ||
+                            'An error occurred while deleting the request.');
+                    }
+                });
+            }
+        });
+
+        // Approve request functionality
+        $('.approve-request-btn').on('click', function(e) {
+            e.preventDefault();
+            const requestId = $(this).data('request-id');
+
+            if (confirm('Are you sure you want to approve this payment request?')) {
+                $.ajax({
+                    url: `/request/payment/update/status/${requestId}`,
+                    method: 'POST',
+                    data: {
+                        _token: $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function(response) {
+                        showToast('success', response.success);
+                        setTimeout(function() {
+                            window.location.reload();
+                        }, 1000);
+                    },
+                    error: function(xhr) {
+                        showToast('error', xhr.responseJSON?.error ||
+                            'An error occurred while approving the request.');
+                    }
+                });
+            }
+        });
+
+        // Reject request functionality
+        $('.reject-request-btn').on('click', function(e) {
+            e.preventDefault();
+            const requestId = $(this).data('request-id');
+
+            if (confirm('Are you sure you want to reject this payment request?')) {
+                $.ajax({
+                    url: `/request/payment/update/status/${requestId}`,
+                    method: 'POST',
+                    data: {
+                        _token: $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function(response) {
+                        showToast('success', response.success);
+                        setTimeout(function() {
+                            window.location.reload();
+                        }, 1000);
+                    },
+                    error: function(xhr) {
+                        showToast('error', xhr.responseJSON?.error ||
+                            'An error occurred while rejecting the request.');
+                    }
+                });
+            }
+        });
+
+        // Toast notification function
+        function showToast(type, message) {
+            if (typeof toastr !== 'undefined') {
+                toastr[type](message);
+            } else {
+                alert(message);
+            }
+        }
+    </script>
 @endpush

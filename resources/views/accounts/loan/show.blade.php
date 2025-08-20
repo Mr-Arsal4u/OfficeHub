@@ -215,14 +215,14 @@
                                             <a href="{{ route('request.payment') }}" class="btn btn-outline-secondary">
                                                 <i data-feather="arrow-left" class="me-1"></i> Back to List
                                             </a>
-                                            @if(!$loan->employee->hasRole('admin'))
+                                            @if(!$loan->employee->hasRole('Admin'))
                                             <a href="{{ route('request.payment.edit', $loan->id) }}" class="btn btn-primary">
                                                 <i data-feather="edit" class="me-1"></i> Edit Request
                                             </a>
                                             @endif
                                         </div>
                                         <div>
-                                            @if(auth()->user() && auth()->user()->hasRole('admin'))
+                                            @if(auth()->user() && auth()->user()->hasRole('Admin'))
                                                 @if($loan->is_approved->value == 0)
                                                 <button class="btn btn-success approve-request-btn" data-request-id="{{ $loan->id }}">
                                                     <i data-feather="check-circle" class="me-1"></i> Approve Request

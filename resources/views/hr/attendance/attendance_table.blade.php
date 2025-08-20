@@ -17,7 +17,7 @@
             @endif
         </td>
         <td>
-            @if ($employee->hasRole('admin'))
+            @if ($employee->hasRole('Admin'))
                 <span class="badge bg-secondary">Admin - Read Only</span>
             @else
                 <select class="form-control status-dropdown" data-employee-id="{{ $employee->id }}">
@@ -32,7 +32,7 @@
             @endif
         </td>
         <td>
-            @if ($employee->hasRole('admin'))
+            @if ($employee->hasRole('Admin'))
                 @if ($attendance && $attendance->check_in_time)
                     <span>{{ \Carbon\Carbon::parse($attendance->check_in_time)->format('h:i A') }}</span>
                 @else
@@ -47,7 +47,7 @@
             @endif
         </td>
         <td>
-            @if ($employee->hasRole('admin'))
+            @if ($employee->hasRole('Admin'))
                 @if ($attendance && $attendance->check_out_time)
                     <span>{{ \Carbon\Carbon::parse($attendance->check_out_time)->format('h:i A') }}</span>
                 @else

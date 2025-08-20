@@ -10,8 +10,8 @@ enum RequestIsApproved: int
     public function label(): string
     {
         return match ($this) {
-            self::YES => 'Yes',
-            self::NO => 'No',
+            self::YES => 'Approved',
+            self::NO => 'Rejected',
         };
     }
 }
