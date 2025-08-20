@@ -2,11 +2,12 @@
 
 namespace App\Models;
 
+use App\Enum\LoanType;
+use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
-use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
@@ -50,5 +51,17 @@ class User extends Authenticatable
     public function paymentRequests()
     {
         return $this->hasMany(Loan::class, 'employee_id');
+    }
+
+    public function loans()
+    {
+        return $this->hasMany(Loan::class, 'employee_id', 'id')
+            ->where('type', LoanType::LOAN);
+    }
+
+    public function advance_payments()
+    {
+        return $this->hasMany(Loan::class, 'employee_id', 'id')
+            ->where('type', LoanType::ADVANCE);
     }
 }

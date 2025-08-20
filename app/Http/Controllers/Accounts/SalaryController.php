@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers\Accounts;
 
-use App\Models\Salary;
 use App\Models\Loan;
+use App\Models\User;
+use App\Models\Salary;
 use Illuminate\Http\Request;
+use App\Enum\RequestIsApproved;
 use App\Services\SalaryService;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SalaryRequest;
 use Illuminate\Support\Facades\Auth;
-use App\Models\User;
 
 class SalaryController extends Controller
 {
@@ -99,7 +100,7 @@ class SalaryController extends Controller
     {
         try {
             $loans = Loan::where('employee_id', $employeeId)
-                ->where('is_approved', 1)
+                ->where('is_approved', RequestIsApproved::YES)
                 ->whereDoesntHave('salaryPayments')
                 ->get();
             

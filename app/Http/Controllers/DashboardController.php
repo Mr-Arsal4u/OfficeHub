@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enum\RequestIsApproved;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Employee;
@@ -75,9 +76,9 @@ class DashboardController extends Controller
 
         // Loan Statistics
         $totalLoans = Loan::count();
-        $approvedLoans = Loan::where('is_approved', 1)->count();
-        $pendingLoans = Loan::where('is_approved', 0)->count();
-        $totalLoanAmount = Loan::where('is_approved', 1)->sum('amount');
+        $approvedLoans = Loan::where('is_approved', RequestIsApproved::YES)->count();
+        $pendingLoans = Loan::where('is_approved', RequestIsApproved::NO)->count();
+        $totalLoanAmount = Loan::where('is_approved', RequestIsApproved::YES)->sum('amount');
 
         // Sales Statistics (if SalesRecord model exists)
         $totalSales = 0;

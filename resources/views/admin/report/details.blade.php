@@ -202,7 +202,15 @@
                                                 <tr>
                                                     <td><strong>Active Loans:</strong></td>
                                                     <td>
-                                                        <span class="badge bg-info">{{ $employee->loans->where('is_approved', 1)->count() }} approved</span>
+                                                        <span class="badge bg-warning">{{ $employee->loans->where('is_approved', \App\Enum\RequestIsApproved::YES)->sum('amount') }} Approved</span>
+                                                    </td>
+                                                </tr>
+                                                @endif
+                                                @if($employee->advance_payments && $employee->advance_payments->count() > 0)
+                                                <tr>
+                                                    <td><strong>Active Advance Payments:</strong></td>
+                                                    <td>
+                                                        <span class="badge bg-info">{{ $employee->advance_payments->where('is_approved', \App\Enum\RequestIsApproved::YES)->sum('amount') }} Approved</span>
                                                     </td>
                                                 </tr>
                                                 @endif

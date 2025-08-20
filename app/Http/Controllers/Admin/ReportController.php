@@ -23,7 +23,7 @@ class ReportController extends Controller
             })
             ->latest()
             ->get();
-            
+
         return view('admin.report.index', compact('employees'));
     }
 
@@ -56,7 +56,7 @@ class ReportController extends Controller
      */
     public function show(string $id)
     {
-        $employee = User::where('id', $id)->first();
+        $employee = User::where('id', $id)->with('loans', 'advance_payments')->first();
 
         $startDate = Carbon::parse(request()->start_date ?? Carbon::now()->startOfMonth());
 
