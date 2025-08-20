@@ -18,9 +18,12 @@ class ReportController extends Controller
     public function index()
     {
         $employees = User::where('id', '!=', Auth::id())
-            ->role(['HR', 'Accounts', 'Sales'])
+            ->whereDoesntHave('roles', function ($q) {
+                $q->where('name', 'Admin');
+            })
             ->latest()
             ->get();
+            
         return view('admin.report.index', compact('employees'));
     }
 
