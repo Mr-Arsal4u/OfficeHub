@@ -26,14 +26,14 @@
                     <div class="card">
                         <div class="card-header d-flex justify-content-between align-items-center mt-50">
                             <h4 class="card-title">Employee Reports</h4>
-                            <div class="d-flex gap-2">
+                            {{-- <div class="d-flex gap-2">
                                 <button class="btn btn-outline-primary btn-sm" onclick="exportToExcel()">
                                     <i class="fas fa-file-excel me-1"></i> Export Excel
                                 </button>
                                 <button class="btn btn-outline-success btn-sm" onclick="exportToPDF()">
                                     <i class="fas fa-file-pdf me-1"></i> Export PDF
                                 </button>
-                            </div>
+                            </div> --}}
                         </div>
                         <div class="card-body">
                             <!-- Summary Statistics -->
@@ -180,10 +180,10 @@
                                                             <span>Salary Report</span>
                                                         </a>
                                                         <div class="dropdown-divider"></div>
-                                                        <a href="{{ route('employees.edit', $employee->id) }}" class="dropdown-item">
-                                                            <i data-feather="edit" class="me-50"></i>
-                                                            <span>Edit Employee</span>
-                                                        </a>
+                                                        {{-- <a href="{{ route('employees.edit', $employee->id) }}" class="dropdown-item"> --}}
+                                                            {{-- <i data-feather="edit" class="me-50"></i> --}}
+                                                            {{-- <span>Edit Employee</span> --}}
+                                                        {{-- </a> --}}
                                                     </div>
                                                 </div>
                                             </td>

@@ -29,6 +29,7 @@ class EmployeeRequest extends FormRequest
             'position' => 'required',
             'department' => 'required',
             'hire_date' => 'required|date',
+            'role' => 'nullable|exists:roles,name',
             // 'user_id' => 'required|int',
         ];
     }

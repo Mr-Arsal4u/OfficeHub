@@ -33,14 +33,6 @@
                     <div class="card">
                         <div class="card-header d-flex justify-content-between align-items-center mt-50">
                             <h4 class="card-title">Payment Requests</h4>
-                            <div class="d-flex gap-2">
-                                <button class="btn btn-outline-primary btn-sm" onclick="exportToExcel()">
-                                    <i class="fas fa-file-excel me-1"></i> Export Excel
-                                </button>
-                                <button class="btn btn-outline-success btn-sm" onclick="exportToPDF()">
-                                    <i class="fas fa-file-pdf me-1"></i> Export PDF
-                                </button>
-                            </div>
                         </div>
                         <div class="card-body">
                             <!-- Summary Statistics -->
@@ -171,7 +163,7 @@
                                                             <span>Edit</span>
                                                         </a>
                                                         @endif
-                                                        @if(auth()->user() && auth()->user()->hasRole('admin'))
+                                                        @if(auth()->user() && auth()->user()->hasRole('Admin'))
                                                             @if($request->is_approved->value == 0)
                                                             <a href="#" class="dropdown-item approve-request-btn" data-request-id="{{ $request->id }}">
                                                                 <i data-feather="check-circle" class="me-50"></i>

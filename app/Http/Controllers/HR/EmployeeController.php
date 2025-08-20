@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\EmployeeRequest;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class EmployeeController extends Controller
 {
@@ -14,9 +15,12 @@ class EmployeeController extends Controller
     {
         // Get all employees except the authenticated user
         $employees = User::where('id', '!=', Auth::id())
-            ->role(['HR', 'Accounts', 'Sales'])
+            ->whereDoesntHave('roles', function ($q) {
+                $q->where('name', 'Admin');
+            })
             ->latest()
             ->get();
+
         $roles = Role::all();
         return view('hr.employee.index', compact('employees', 'roles'));
     }
@@ -33,6 +37,7 @@ class EmployeeController extends Controller
             $user->assignRole($request?->role);
             return response()->json(['success' => 'User created successfully.'], 201);
         } catch (\Exception $e) {
+            Log::error($e->getMessage());
             return response()->json(['error' => 'An error occurred while creating the user.'], 500);
         }
     }
@@ -46,11 +51,14 @@ class EmployeeController extends Controller
     {
         try {
             // Prevent editing admin users
-            if ($User->hasRole('admin')) {
+            if ($User->hasRole('admin') && (!Auth::user()->hasRole('admin'))) {
                 return response()->json(['error' => 'Admin users cannot be edited.'], 403);
             }
 
             $User->update($request->all());
+            if ($request->has('role')) {
+                $User->syncRoles($request->role);
+            }
             return response()->json(['success' => 'User updated successfully.'], 200);
         } catch (\Exception $e) {
             return response()->json(['error' => 'An error occurred while updating the user.'], 500);

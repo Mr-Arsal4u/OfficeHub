@@ -26,19 +26,38 @@ class UserSeeder extends Seeder
         //     $user->assignRole($accountRole);
         //     $user->assignRole($salesRole);
         // });
+        Role::create(['name' => 'hr']);
+        Role::create(['name' => 'accounts']);
+        Role::create(['name' => 'sales']);
+        Role::create(['name' => 'manager']);
+        Role::create(['name' => 'designer']);
+        Role::create(['name' => 'supervisor']);
+        Role::create(['name' => 'analyst']);
+
+        $internRole =  Role::create(['name' => 'intern']);
+        $developerRole =  Role::create(['name' => 'developer']);
         $AdminRole = Role::firstOrCreate(['name' => 'Admin']);
 
-        $hrRole = Role::firstOrCreate(['name' => 'HR']);
-
-        $accountRole = Role::firstOrCreate(['name' => 'Accounts']);
-        
-        $salesRole = Role::firstOrCreate(['name' => 'Sales']);
-
-        $user = User::create([
+        $admin = User::create([
             'first_name' => 'Admin',
             'email' => 'superadmin@gmail.com',
             'password' => bcrypt('password'),
         ]);
-        $user->assignRole($AdminRole);
+
+        $developer = User::create([
+            'first_name' => 'Developer',
+            'email' => 'developer@gmail.com',
+            'password' => bcrypt('password'),
+        ]);
+
+        $intern = User::create([
+            'first_name' => 'Intern',
+            'email' => 'intern@gmail.com',
+            'password' => bcrypt('password'),
+        ]);
+
+        $intern->assignRole($internRole);
+        $developer->assignRole($developerRole);
+        $admin->assignRole($AdminRole);
     }
 }

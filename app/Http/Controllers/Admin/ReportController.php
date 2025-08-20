@@ -3,11 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use Carbon\Carbon;
+use App\Models\User;
 use App\Models\Employee;
 use App\Models\Attendance;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class ReportController extends Controller
 {
@@ -16,7 +17,10 @@ class ReportController extends Controller
      */
     public function index()
     {
-        $employees = User::all();
+        $employees = User::where('id', '!=', Auth::id())
+            ->role(['HR', 'Accounts', 'Sales'])
+            ->latest()
+            ->get();
         return view('admin.report.index', compact('employees'));
     }
 

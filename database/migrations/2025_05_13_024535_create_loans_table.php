@@ -17,6 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('employee_id')->nullable();
             $table->decimal('amount', 15, 2)->nullable();
             $table->string('type')->nullable();
+            $table->text('description')->nullable();
             $table->foreign('employee_id')->references('id')->on('users')->onDelete('cascade');
             $table->boolean('is_approved')->default(RequestIsApproved::NO->value)->comment('0 = No, 1 = Yes');
             $table->timestamps();

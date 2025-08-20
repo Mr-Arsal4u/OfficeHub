@@ -20,7 +20,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="content-header-right col-md-3 col-12 d-md-block d-none">
+                {{-- <div class="content-header-right col-md-3 col-12 d-md-block d-none">
                     <div class="mb-1">
                         <div class="btn-group" role="group">
                             <button type="button" class="btn btn-outline-primary" onclick="window.print()">
@@ -31,7 +31,7 @@
                             </button>
                         </div>
                     </div>
-                </div>
+                </div> --}}
             </div>
 
             <div class="row" id="table-striped">
@@ -227,13 +227,13 @@
                                                 <i data-feather="calendar" class="me-1"></i>
                                                 Attendance Summary
                                             </h5>
-                                            <div class="d-flex gap-2">
+                                            <div class="d-flex gap-4">
                                                 <input type="date" id="startDate" class="form-control form-control-sm" 
                                                     value="{{ request()->start_date ?? \Carbon\Carbon::now()->startOfMonth()->toDateString() }}">
                                                 <input type="date" id="endDate" class="form-control form-control-sm" 
                                                     value="{{ request()->end_date ?? \Carbon\Carbon::now()->endOfMonth()->toDateString() }}">
                                                 <button class="btn btn-primary btn-sm" id="filterBtn">
-                                                    <i data-feather="filter" class="me-1"></i> Filter
+                                                    <i data-feather="search" class="me-1"></i>
                                                 </button>
                                             </div>
                                         </div>

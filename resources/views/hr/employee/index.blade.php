@@ -27,6 +27,7 @@
                                         <th>Department</th>
                                         <th>Salary</th>
                                         <th>Hire Date</th>
+                                        <th>Role</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
@@ -39,8 +40,9 @@
                                             <td>{{ $employee->phone ?? 'N/A' }}</td>
                                             <td>{{ $employee->position ?? 'N/A' }}</td>
                                             <td>{{ $employee->department ?? 'N/A' }}</td>
-                                            <td>{{ $employee->salary?->amount ?? 'N/A' }}</td>
+                                            <td>{{ $employee->salary?->amount ?? 'Not added yet' }}</td>
                                             <td>{{ $employee->hire_date ?? 'N/A' }}</td>
+                                            <td>{{ $employee?->roles()->first()?->name ?? 'N/A' }}</td>
                                             <td>
                                                 <div class="dropdown">
                                                     <button type="button"
@@ -170,11 +172,11 @@
 
                     <!-- User -->
                     <div class="mb-1">
-                        <label class="form-label" for="user_id">Assign Role <span class="text-danger">*</span></label>
-                        <select class="form-control" id="user_id" name="user_id" required>
+                        <label class="form-label" for="role">Assign Role <span class="text-danger"></span></label>
+                        <select class="form-control" id="role" name="role" required>
                             <option value="" selected disabled>Select Role</option>
                             @foreach ($roles as $role)
-                                <option value="{{ $role->id }}">{{ $role->name }}</option>
+                                <option value="{{ $role?->name }}">{{ $role?->name }}</option>
                             @endforeach
                         </select>
                     </div>
