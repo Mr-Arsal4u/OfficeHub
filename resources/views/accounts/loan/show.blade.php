@@ -96,7 +96,7 @@
                                                             <i data-feather="dollar-sign" class="text-white"></i>
                                                         </div>
                                                     </div>
-                                                    <h4 class="mb-0">${{ number_format($loan->amount, 2) }}</h4>
+                                                    <h4 class="mb-0">Pkr{{ number_format($loan->amount, 2) }}</h4>
                                                     <small class="text-muted">Requested Amount</small>
                                                 </div>
                                             </div>
@@ -165,7 +165,7 @@
                                                         </tr>
                                                         <tr>
                                                             <td><strong>Amount:</strong></td>
-                                                            <td><span class="text-primary fw-bolder">${{ number_format($loan->amount, 2) }}</span></td>
+                                                            <td><span class="text-primary fw-bolder">Pkr{{ number_format($loan->amount, 2) }}</span></td>
                                                         </tr>
                                                     </table>
                                                 </div>

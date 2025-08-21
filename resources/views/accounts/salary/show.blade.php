@@ -59,11 +59,11 @@
                                         </tr>
                                         <tr>
                                             <td><strong>Base Amount:</strong></td>
-                                            <td>${{ number_format($salary->base_amount, 2) }}</td>
+                                            <td>Pkr{{ number_format($salary->base_amount, 2) }}</td>
                                         </tr>
                                         <tr>
                                             <td><strong>Final Amount:</strong></td>
-                                            <td>${{ number_format($salary->final_amount, 2) }}</td>
+                                            <td>Pkr{{ number_format($salary->final_amount, 2) }}</td>
                                         </tr>
                                         <tr>
                                             <td><strong>Status:</strong></td>
@@ -102,7 +102,7 @@
                                                 @foreach($salary->payments as $payment)
                                                 <tr>
                                                     <td>{{ $payment->payment_type_label }}</td>
-                                                    <td>${{ number_format($payment->amount, 2) }}</td>
+                                                    <td>Pkr{{ number_format($payment->amount, 2) }}</td>
                                                     <td>{{ $payment->payment_date->format('M d, Y') }}</td>
                                                     <td>{!! $payment->status_badge !!}</td>
                                                     <td>{{ $payment->notes }}</td>
@@ -133,7 +133,7 @@
                                                 @foreach($salary->loans as $loan)
                                                 <tr>
                                                     <td>{{ $loan->type->value }}</td>
-                                                    <td>${{ number_format($loan->amount, 2) }}</td>
+                                                    <td>Pkr{{ number_format($loan->amount, 2) }}</td>
                                                     <td>{!! $loan->status_badge !!}</td>
                                                     <td>{{ $loan->created_at->format('M d, Y') }}</td>
                                                 </tr>

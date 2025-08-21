@@ -104,7 +104,7 @@
                                 <div class="card">
                                     <div class="card-body pb-50">
                                         <h6>This Month's Salary</h6>
-                                        <h2 class="fw-bolder mb-1">${{ number_format($totalSalaryThisMonth ?? 0, 0) }}</h2>
+                                        <h2 class="fw-bolder mb-1">Pkr{{ number_format($totalSalaryThisMonth ?? 0, 0) }}</h2>
                                         <p class="card-text text-muted">
                                             @if(isset($salaryGrowth))
                                                 @if($salaryGrowth > 0)
@@ -125,7 +125,7 @@
                                 <div class="card card-tiny-line-stats">
                                     <div class="card-body pb-50">
                                         <h6>This Month's Expenses</h6>
-                                        <h2 class="fw-bolder mb-1">${{ number_format($totalExpensesThisMonth ?? 0, 0) }}</h2>
+                                        <h2 class="fw-bolder mb-1">Pkr{{ number_format($totalExpensesThisMonth ?? 0, 0) }}</h2>
                                         <p class="card-text text-muted">
                                             @if(isset($expenseGrowth))
                                                 @if($expenseGrowth > 0)
@@ -149,7 +149,7 @@
                                             <div class="col-6">
                                                 <h4 class="card-title mb-1">Monthly Summary</h4>
                                                 <div class="font-small-2">Current Month</div>
-                                                <h5 class="mb-1">${{ number_format(($totalSalaryThisMonth ?? 0) - ($totalExpensesThisMonth ?? 0), 0) }}</h5>
+                                                <h5 class="mb-1">Pkr{{ number_format(($totalSalaryThisMonth ?? 0) - ($totalExpensesThisMonth ?? 0), 0) }}</h5>
                                                 <p class="card-text text-muted font-small-2">
                                                     Net: Salary - Expenses
                                                 </p>
@@ -157,13 +157,13 @@
                                             <div class="col-6">
                                                 <div class="d-flex flex-column">
                                                     <div class="mb-2">
-                                                        <span class="text-success">●</span> Salary: ${{ number_format($totalSalaryThisMonth ?? 0, 0) }}
+                                                        <span class="text-success">●</span> Salary: Pkr{{ number_format($totalSalaryThisMonth ?? 0, 0) }}
                                                     </div>
                                                     <div class="mb-2">
-                                                        <span class="text-danger">●</span> Expenses: ${{ number_format($totalExpensesThisMonth ?? 0, 0) }}
+                                                        <span class="text-danger">●</span> Expenses: Pkr{{ number_format($totalExpensesThisMonth ?? 0, 0) }}
                                                     </div>
                                                     <div class="mb-2">
-                                                        <span class="text-info">●</span> Loans: ${{ number_format($totalLoanAmount ?? 0, 0) }}
+                                                        <span class="text-info">●</span> Loans: Pkr{{ number_format($totalLoanAmount ?? 0, 0) }}
                                                     </div>
                                                 </div>
                                             </div>
@@ -206,7 +206,7 @@
                                             @endfor
                                         </div>
                                     </div>
-                                    <h2 class="mb-25">${{ number_format($totalSalaryThisMonth ?? 0, 0) }}</h2>
+                                    <h2 class="mb-25">Pkr{{ number_format($totalSalaryThisMonth ?? 0, 0) }}</h2>
                                     <div class="d-flex justify-content-center">
                                         <span class="fw-bolder me-25">Pending Salaries:</span>
                                         <span>{{ $pendingSalaries ?? 0 }}</span>
@@ -323,7 +323,7 @@
                                     </div>
                                     <div class="d-flex justify-content-between mb-1">
                                         <span>Total Expenses:</span>
-                                        <span class="fw-bolder">${{ number_format($totalExpensesThisMonth ?? 0, 0) }}</span>
+                                        <span class="fw-bolder">Pkr{{ number_format($totalExpensesThisMonth ?? 0, 0) }}</span>
                                     </div>
                                     <div class="d-flex justify-content-between mb-1">
                                         <span>Active Employees:</span>
