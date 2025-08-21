@@ -47,17 +47,18 @@ class EmployeeController extends Controller
         return view('employees.edit', compact('User'));
     }
 
-    public function update(EmployeeRequest $request, User $User)
+    public function update(EmployeeRequest $request, $id)
     {
         try {
+            $user = User::findOrFail($id);
             // Prevent editing admin users
-            if ($User->hasRole('Admin') && (!Auth::user()->hasRole('Admin'))) {
+            if ($user->hasRole('Admin') && (!Auth::user()->hasRole('Admin'))) {
                 return response()->json(['error' => 'Admin users cannot be edited.'], 403);
             }
 
-            $User->update($request->all());
+            $user->update($request->validated());
             if ($request->has('role')) {
-                $User->syncRoles($request->role);
+                $user->syncRoles($request->role);
             }
             return response()->json(['success' => 'User updated successfully.'], 200);
         } catch (\Exception $e) {
@@ -65,15 +66,16 @@ class EmployeeController extends Controller
         }
     }
 
-    public function destroy(User $User)
+    public function destroy($id)
     {
         try {
+            $user = User::findOrFail($id);
+
             // Prevent deleting admin users
-            if ($User->hasRole('Admin')) {
+            if ($user->hasRole('Admin')) {
                 return response()->json(['error' => 'Admin users cannot be deleted.'], 403);
             }
-
-            $User->delete();
+            $user->delete();
             return response()->json(['success' => 'User deleted successfully.'], 200);
         } catch (\Exception $e) {
             return response()->json(['error' => 'An error occurred while deleting the user.'], 500);

@@ -20,16 +20,16 @@ class CrudUtils {
     setupFormHandlers() {
         // Employee form
         $('#employee-form').on('submit', (e) => this.handleFormSubmit(e, 'employee'));
-        
+
         // Attendance form
         $('#attendance-form').on('submit', (e) => this.handleFormSubmit(e, 'attendance'));
-        
+
         // Salary form
         $('#salary-form').on('submit', (e) => this.handleFormSubmit(e, 'salary'));
-        
+
         // Expense form
         $('#expense-form').on('submit', (e) => this.handleFormSubmit(e, 'expense'));
-        
+
         // Loan form
         $('#loan-form').on('submit', (e) => this.handleFormSubmit(e, 'loan'));
     }
@@ -38,7 +38,7 @@ class CrudUtils {
      * Add asterisks to required fields
      */
     setupRequiredFieldIndicators() {
-        $('input[required], select[required], textarea[required]').each(function() {
+        $('input[required], select[required], textarea[required]').each(function () {
             const label = $(this).prev('label');
             if (label.length && !label.text().includes('*')) {
                 label.html(label.text() + ' <span class="text-danger">*</span>');
@@ -51,7 +51,7 @@ class CrudUtils {
      */
     setupValidationErrorHandling() {
         // Clear validation errors when input changes
-        $(document).on('input change', 'input, select, textarea', function() {
+        $(document).on('input change', 'input, select, textarea', function () {
             const fieldName = $(this).attr('name');
             if (fieldName) {
                 this.clearFieldError(fieldName);
@@ -62,30 +62,69 @@ class CrudUtils {
     /**
      * Handle form submission with AJAX
      */
+    // handleFormSubmit(e, formType) {
+    //     e.preventDefault();
+
+    //     const form = $(e.target);
+    //     const submitBtn = form.find('button[type="submit"]');
+
+    //     // Prevent double submission
+    //     if (submitBtn.prop('disabled')) {
+    //         return false;
+    //     }
+
+    //     const formData = new FormData(form[0]);
+    //     const url = form.attr('action');
+    //     const method = form.attr('method');
+
+    //     // Clear previous errors
+    //     this.clearAllErrors();
+
+    //     // Show loading state and disable submit button
+    //     this.showLoadingState(form);
+
+    //     $.ajax({
+    //         url: url,
+    //         method: method,
+    //         data: formData,
+    //         processData: false,
+    //         contentType: false,
+    //         headers: {
+    //             'X-CSRF-TOKEN': this.csrfToken
+    //         },
+    //         success: (response) => {
+    //             this.handleSuccess(response, form, formType);
+    //         },
+    //         error: (xhr) => {
+    //             this.handleError(xhr, form);
+    //         },
+    //         complete: () => {
+    //             this.hideLoadingState(form);
+    //         }
+    //     });
+    // }
+
     handleFormSubmit(e, formType) {
         e.preventDefault();
-        
+
         const form = $(e.target);
         const submitBtn = form.find('button[type="submit"]');
-        
-        // Prevent double submission
-        if (submitBtn.prop('disabled')) {
-            return false;
-        }
-        
+
+        if (submitBtn.prop('disabled')) return false;
+
         const formData = new FormData(form[0]);
+
+        // If it's edit mode, ensure _method=PUT is inside FormData
+        if (form.find('input[name="_method"]').val() === 'PUT') {
+            formData.append('_method', 'PUT');
+        }
+
         const url = form.attr('action');
-        const method = form.attr('method');
-        
-        // Clear previous errors
-        this.clearAllErrors();
-        
-        // Show loading state and disable submit button
-        this.showLoadingState(form);
-        
+
+        // Always send POST, Laravel will respect _method override
         $.ajax({
             url: url,
-            method: method,
+            method: 'POST',
             data: formData,
             processData: false,
             contentType: false,
@@ -113,18 +152,18 @@ class CrudUtils {
         if (modal.length) {
             modal.modal('hide');
         }
-        
+
         // Show success message
         if (response.success) {
             showToast('success', response.success);
         }
-        
+
         // Reset form
         form[0].reset();
-        
+
         // Update table data without page reload
         this.updateTableData(formType);
-        
+
         // Reset form action for create mode
         this.resetFormAction(form, formType);
     }
@@ -151,16 +190,16 @@ class CrudUtils {
     displayValidationErrors(errors) {
         // Clear previous errors first
         this.clearAllErrors();
-        
+
         Object.keys(errors).forEach(fieldName => {
             const field = $(`[name="${fieldName}"]`);
             if (field.length) {
                 const errorMessage = errors[fieldName][0];
                 this.showFieldError(fieldName, errorMessage);
-                
+
                 // Add error class to field
                 field.addClass('is-invalid');
-                
+
                 // Scroll to first error
                 if (Object.keys(errors)[0] === fieldName) {
                     field[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -177,7 +216,7 @@ class CrudUtils {
         if (field.length) {
             // Remove existing error message
             field.siblings('.invalid-feedback').remove();
-            
+
             // Add error message
             const errorDiv = $(`<div class="invalid-feedback">${message}</div>`);
             field.after(errorDiv);
@@ -210,7 +249,7 @@ class CrudUtils {
         const submitBtn = form.find('button[type="submit"]');
         submitBtn.prop('disabled', true);
         submitBtn.html('<span class="spinner-border spinner-border-sm me-2"></span>Processing...');
-        
+
         // Disable all form inputs during submission
         form.find('input, select, textarea, button').prop('disabled', true);
     }
@@ -222,7 +261,7 @@ class CrudUtils {
         const submitBtn = form.find('button[type="submit"]');
         submitBtn.prop('disabled', false);
         submitBtn.html('Submit');
-        
+
         // Re-enable all form inputs after submission
         form.find('input, select, textarea').prop('disabled', false);
     }
@@ -233,7 +272,7 @@ class CrudUtils {
     updateTableData(formType) {
         // Get current page URL to refresh table data
         const currentUrl = window.location.pathname;
-        
+
         $.ajax({
             url: currentUrl,
             method: 'GET',
@@ -242,7 +281,7 @@ class CrudUtils {
                 const parser = new DOMParser();
                 const doc = parser.parseFromString(response, 'text/html');
                 const newTable = doc.querySelector('.table-responsive');
-                
+
                 if (newTable) {
                     $('.table-responsive').html(newTable.innerHTML);
                 }
@@ -257,7 +296,7 @@ class CrudUtils {
         const baseUrl = this.getBaseUrl(formType);
         form.attr('action', baseUrl + '/store');
         form.attr('method', 'POST');
-        
+
         // Reset modal title
         const modalTitle = form.closest('.modal').find('.modal-title');
         modalTitle.text('Add New ' + this.capitalizeFirst(formType));
@@ -290,17 +329,17 @@ class CrudUtils {
     setupEditFunction(data, formType) {
         const form = $(`#${formType}-form`);
         const modal = form.closest('.modal');
-        
+
         // Set form action for update
         const baseUrl = this.getBaseUrl(formType);
         form.attr('action', baseUrl + '/' + data.id);
         form.attr('method', 'PUT');
-        
+
         // Add method override for PUT
         if (!form.find('input[name="_method"]').length) {
             form.append('<input type="hidden" name="_method" value="PUT">');
         }
-        
+
         // Populate form fields
         Object.keys(data).forEach(key => {
             const field = form.find(`[name="${key}"]`);
@@ -308,10 +347,10 @@ class CrudUtils {
                 field.val(data[key]);
             }
         });
-        
+
         // Update modal title
         modal.find('.modal-title').text('Edit ' + this.capitalizeFirst(formType));
-        
+
         // Show modal
         modal.modal('show');
     }
@@ -341,12 +380,14 @@ class CrudUtils {
 }
 
 // Initialize CRUD utilities when document is ready
-$(document).ready(function() {
+$(document).ready(function () {
     window.crudUtils = new CrudUtils();
 });
 
 // Global functions for backward compatibility
 function editEmployee(employee) {
+    console.log(employee);
+
     window.crudUtils.setupEditFunction(employee, 'employee');
 }
 

@@ -26,12 +26,12 @@ Route::middleware('auth')->group(function () {
     Route::post('employee/store', [EmployeeController::class, 'store'])->name('employee.store');
     // Route::get('employees/{employee}', [EmployeeController::class, 'show'])->name('employees.show');
     // Route::get('employees/{employee}/edit', [EmployeeController::class, 'edit'])->name('employees.edit');
-    Route::put('employee/{employee}', [EmployeeController::class, 'update'])->name('employee.update');
+    Route::post('employee/{employee}', [EmployeeController::class, 'update'])->name('employee.update');
     Route::delete('employee/{employee}', [EmployeeController::class, 'destroy'])->name('employee.delete');
 
     Route::get('attendance', [AttendanceController::class, 'index'])->name('attendance.index');
     Route::post('attendance/store', [AttendanceController::class, 'store'])->name('attendance.store');
-    Route::put('attendance/{attendance}', [AttendanceController::class, 'update'])->name('attendance.update');
+    Route::post('attendance/{attendance}', [AttendanceController::class, 'update'])->name('attendance.update');
     Route::delete('attendance/{attendance}', [AttendanceController::class, 'destroy'])->name('attendance.delete');
     Route::post('attendance/update/ajax', [AttendanceController::class, 'updateAjax'])->name('attendance.update.ajax');
     Route::get('/attendance/filter-by-date', [AttendanceController::class, 'filterByDate'])->name('attendance.filter.by.date');
@@ -43,7 +43,7 @@ Route::middleware('auth')->group(function () {
     Route::post('salary', [SalaryController::class, 'store'])->name('salary.store');
     Route::get('salary/{salary}', [SalaryController::class, 'show'])->name('salary.show');
     Route::get('salary/{salary}/edit', [SalaryController::class, 'edit'])->name('salary.edit');
-    Route::put('salary/{salary}', [SalaryController::class, 'update'])->name('salary.update');
+    Route::post('salary/{salary}', [SalaryController::class, 'update'])->name('salary.update');
     Route::delete('salary/{salary}', [SalaryController::class, 'destroy'])->name('salary.delete');
     Route::post('salary/{salary}/mark-paid', [SalaryController::class, 'markAsPaid'])->name('salary.mark-paid');
     Route::get('salary/employee-loans/{employeeId}', [SalaryController::class, 'getEmployeeLoans'])->name('salary.employee-loans');
@@ -51,7 +51,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('expenses', [ExpenseController::class, 'index'])->name('expense.index');
     Route::post('expense/store', [ExpenseController::class, 'store'])->name('expense.store');
-    Route::put('expense/{expense}', [ExpenseController::class, 'update'])->name('expense.update');
+    Route::post('expense/{expense}', [ExpenseController::class, 'update'])->name('expense.update');
     Route::delete('expense/{expense}', [ExpenseController::class, 'destroy'])->name('expense.delete');
 
     Route::resource('reports', ReportController::class);
@@ -62,7 +62,7 @@ Route::middleware('auth')->group(function () {
     Route::post('request/payment', [RequestController::class, 'store'])->name('request.payment.store');
     Route::get('request/payment/{request}', [RequestController::class, 'show'])->name('request.payment.show');
     Route::get('request/payment/{request}/edit', [RequestController::class, 'edit'])->name('request.payment.edit');
-    Route::put('request/payment/{request}', [RequestController::class, 'update'])->name('request.payment.update');
+    Route::post('request/payment/{request}', [RequestController::class, 'update'])->name('request.payment.update');
     Route::delete('request/payment/{request}', [RequestController::class, 'destroy'])->name('request.payment.delete');
     Route::post('/request/payment/update/status/{id}', [RequestController::class, 'updateStatus'])->name('request.payment.status.update');
 });

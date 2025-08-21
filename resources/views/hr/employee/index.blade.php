@@ -12,7 +12,7 @@
                         <div class="card-header d-inline-flex mt-50">
                             <h4 class="card-title">Employees</h4>
                             <button class="dt-button add-new btn btn-primary" type="button" data-bs-toggle="modal"
-                                data-bs-target="#modals-slide-in" onclick="clearModalForm()">Add New Employee</button>
+                                data-bs-target="#modals-slide-in" onclick="clearModalForm()" id="create-employee">Add New Employee</button>
                         </div>
                         <div class="card-body "></div>
                         <div class="table-responsive">
@@ -61,7 +61,7 @@
                                                         @if (!$employee->hasRole('Admin'))
                                                             <a class="dropdown-item" href="javascript:void(0)"
                                                                 data-bs-toggle="modal" data-bs-target="#modals-slide-in"
-                                                                onclick="editEmployee({{ $employee }})">
+                                                                onclick="editEmployee({{ $employee }})" id="edit-employee">
                                                                 <svg xmlns="http://www.w3.org/2000/svg" width="14"
                                                                     height="14" viewBox="0 0 24 24" fill="none"
                                                                     stroke="currentColor" stroke-width="2"
@@ -73,7 +73,7 @@
                                                                 </svg>
                                                                 <span>Edit</span>
                                                             </a>
-                                                            <button class="dropdown-item" type="button" 
+                                                            <button class="dropdown-item" type="button"
                                                                 onclick="deleteItem('{{ route('employee.delete', $employee->id) }}', 'employee')">
                                                                 <svg xmlns="http://www.w3.org/2000/svg" width="14"
                                                                     height="14" viewBox="0 0 24 24" fill="none"
@@ -94,7 +94,8 @@
                                                                     stroke="currentColor" stroke-width="2"
                                                                     stroke-linecap="round" stroke-linejoin="round"
                                                                     class="feather feather-shield me-50">
-                                                                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                                                                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z">
+                                                                    </path>
                                                                 </svg>
                                                                 <span>Admin - Read Only</span>
                                                             </span>
@@ -108,7 +109,7 @@
                                             <td colspan="12" class="text-center">No employees found.</td>
                                         </tr>
                                     @endforelse
-                                </tbody>                                
+                                </tbody>
                             </table>
                         </div>
                     </div>
@@ -173,13 +174,20 @@
                     <!-- User -->
                     <div class="mb-1">
                         <label class="form-label" for="role">Assign Role <span class="text-danger"></span></label>
-                        <select class="form-control" id="role" name="role" required>
+                        <select class="form-control" id="role" name="role">
                             <option value="" selected disabled>Select Role</option>
                             @foreach ($roles as $role)
                                 <option value="{{ $role?->name }}">{{ $role?->name }}</option>
                             @endforeach
                         </select>
                     </div>
+
+                    <!-- Sales Amount -->
+                    <div class="mb-1" id="sale-amount-field">
+                        <label class="form-label" for="sale_amount">Sales Amount</label>
+                        <input type="text" class="form-control" id="sale_amount" name="sale_amount">
+                    </div>
+
 
                     <button type="submit"
                         class="btn btn-primary me-1 data-submit waves-effect waves-float waves-light">Submit</button>

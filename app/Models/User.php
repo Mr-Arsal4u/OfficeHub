@@ -22,6 +22,7 @@ class User extends Authenticatable
         'position',
         'department',
         'hire_date',
+        'sale_amount'
     ];
 
 
