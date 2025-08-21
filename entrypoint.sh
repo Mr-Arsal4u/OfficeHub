@@ -43,7 +43,7 @@ catch (Exception $e) { exit(1); }'; do
 done
 
 # Run migrations automatically (dev/demo convenience)
-php artisan migrate --force || true
+php artisan migrate --seed --force || true
 
 # Hand off to Apache
 exec "$@"

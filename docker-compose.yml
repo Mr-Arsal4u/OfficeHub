@@ -6,7 +6,7 @@ services:
     ports:
       - "8080:80"         # App available at http://localhost:8080
     volumes:
-      - .:/var/www/html   # Mount your code
+      - ./:/var/www/html    # Mount Laravel project root
     environment:
       # These are optional; Laravel will mainly use your .env file.
       APP_ENV: local

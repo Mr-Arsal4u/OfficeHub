@@ -16,8 +16,8 @@ WORKDIR /var/www/html
 # Install Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-# Entrypoint to auto-setup app (key, storage perms, migrate)
-COPY ./entrypoint.sh /usr/local/bin/entrypoint.sh
+# ✅ Fix: copy entrypoint from docker/ folder
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
 ENTRYPOINT ["entrypoint.sh"]
