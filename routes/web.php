@@ -36,7 +36,7 @@ Route::middleware('auth')->group(function () {
     Route::post('attendance/update/ajax', [AttendanceController::class, 'updateAjax'])->name('attendance.update.ajax');
     Route::get('/attendance/filter-by-date', [AttendanceController::class, 'filterByDate'])->name('attendance.filter.by.date');
     // Route::get('/attendance/mark-attendance', [AttendanceController::class, 'markAttendance'])->name('attendance.mark');
-    Route::post('/attendance/update-all', [AttendanceController::class, 'updateAll'])->name('attendance.update.all');
+    Route::post('/attendance/update/all', [AttendanceController::class, 'updateAll'])->name('attendance.update.all');
 
     Route::get('salaries', [SalaryController::class, 'index'])->name('salary.index');
     Route::get('salary/create', [SalaryController::class, 'create'])->name('salary.create');

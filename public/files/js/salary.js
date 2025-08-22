@@ -28,7 +28,7 @@ function loadEmployeeLoans(employeeId) {
                 loanDetails = '<ul class="mb-0">';
                 response.loans.forEach(function(loan) {
                     totalApprovedAmount += parseFloat(loan.amount);
-                    loanDetails += '<li><strong>' + loan.type + ':</strong> $' + parseFloat(loan.amount).toFixed(2) + '</li>';
+                    loanDetails += '<li><strong>' + loan.type + ':</strong> Pkr' + parseFloat(loan.amount).toFixed(2) + '</li>';
                 });
                 loanDetails += '</ul>';
                 
@@ -69,9 +69,9 @@ function updateCalculationSummary() {
     const approvedLoans = parseFloat($('#approved_loans').val()) || 0;
     const totalAmount = baseAmount + approvedLoans;
     
-    $('#summary-base').text('$' + baseAmount.toFixed(2));
-    $('#summary-loans').text('$' + approvedLoans.toFixed(2));
-    $('#summary-total').text('$' + totalAmount.toFixed(2));
+    $('#summary-base').text('Pkr' + baseAmount.toFixed(2));
+    $('#summary-loans').text('Pkr' + approvedLoans.toFixed(2));
+    $('#summary-total').text('Pkr' + totalAmount.toFixed(2));
     
     // Show summary if there are values
     if (baseAmount > 0 || approvedLoans > 0) {

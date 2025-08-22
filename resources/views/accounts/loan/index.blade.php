@@ -102,7 +102,7 @@
                                                     </div>
                                                 </div>
                                                 <div>
-                                                    <h4 class="mb-0">${{ number_format($requests->sum('amount'), 0) }}
+                                                    <h4 class="mb-0">Pkr{{ number_format($requests->sum('amount'), 0) }}
                                                     </h4>
                                                     <small class="text-bold">Total Amount</small>
                                                 </div>
@@ -147,7 +147,7 @@
                                             </td>
                                             <td>
                                                 <span
-                                                    class="text-primary fw-bolder">${{ number_format($request->amount, 2) }}</span>
+                                                    class="text-primary fw-bolder">Pkr{{ number_format($request->amount, 2) }}</span>
                                             </td>
                                             <td>
                                                 <span class="text-bold">{{ $request->created_at->format('M d, Y') }}</span>

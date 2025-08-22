@@ -16,6 +16,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('employee_id')->nullable();
             $table->decimal('amount', 15, 2)->nullable();
+            $table->decimal('refund_percentage', 15, 2)->nullable()->default(0);
             $table->string('type')->nullable();
             $table->text('description')->nullable();
             $table->foreign('employee_id')->references('id')->on('users')->onDelete('cascade');

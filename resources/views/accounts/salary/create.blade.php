@@ -102,7 +102,7 @@
                                         <div class="mb-3">
                                             <label class="form-label" for="base_amount">Base Amount <span class="text-danger">*</span></label>
                                             <div class="input-group">
-                                                <span class="input-group-text">$</span>
+                                                <span class="input-group-text">Pkr</span>
                                                 <input type="number" step="0.01" class="form-control @error('base_amount') is-invalid @enderror" 
                                                     id="base_amount" name="base_amount" value="{{ old('base_amount') }}" required>
                                             </div>
@@ -115,7 +115,7 @@
                                         <div class="mb-3">
                                             <label class="form-label" for="approved_loans">Approved Loans/Advances</label>
                                             <div class="input-group">
-                                                <span class="input-group-text">$</span>
+                                                <span class="input-group-text">Pkr</span>
                                                 <input type="number" step="0.01" class="form-control" id="approved_loans" 
                                                     name="approved_loans" value="0" readonly>
                                                 <button type="button" class="btn btn-outline-secondary" id="refresh-loans" title="Refresh loan information">
@@ -129,7 +129,7 @@
                                         <div class="mb-3">
                                             <label class="form-label" for="final_amount">Final Amount <span class="text-danger">*</span></label>
                                             <div class="input-group">
-                                                <span class="input-group-text">$</span>
+                                                <span class="input-group-text">Pkr</span>
                                                 <input type="number" step="0.01" class="form-control @error('final_amount') is-invalid @enderror" 
                                                     id="final_amount" name="final_amount" value="{{ old('final_amount') }}" required>
                                             </div>

@@ -102,7 +102,7 @@
                                                 </div>
                                                 <div>
                                                     <h4 class="mb-0">
-                                                        ${{ number_format($salaries->sum('final_amount'), 0) }}</h4>
+                                                        Pkr{{ number_format($salaries->sum('final_amount'), 0) }}</h4>
                                                     <small class="text-muted">Total Amount</small>
                                                 </div>
                                             </div>
@@ -148,11 +148,11 @@
                                             </td>
                                             <td>
                                                 <span
-                                                    class="text-success fw-bolder">${{ number_format($salary->base_amount, 2) }}</span>
+                                                    class="text-success fw-bolder">Pkr{{ number_format($salary->base_amount, 2) }}</span>
                                             </td>
                                             <td>
                                                 <span
-                                                    class="text-primary fw-bolder">${{ number_format($salary->final_amount, 2) }}</span>
+                                                    class="text-primary fw-bolder">Pkr{{ number_format($salary->final_amount, 2) }}</span>
                                             </td>
                                             <td>
                                                 {!! $salary->status_badge !!}

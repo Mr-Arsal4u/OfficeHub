@@ -25,6 +25,7 @@ class LoanRequest extends FormRequest
             'employee_id' => 'required|exists:users,id',
             'type' => 'required|in:advance,loan',
             'amount' => 'required|numeric|min:0.01',
+            'refund_percentage'=>'nullable|numeric|min:0',
             'description' => 'nullable|string|max:1000',
         ];
     }

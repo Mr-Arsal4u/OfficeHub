@@ -75,7 +75,7 @@
                                         <div class="card-body text-center">
                                             <i data-feather="dollar-sign" class="font-large-2 text-warning mb-1"></i>
                                             <h5 class="card-title">Salary</h5>
-                                            <p class="card-text">${{ number_format($monthlySalary ?? 0, 0) }}</p>
+                                            <p class="card-text">Pkr{{ number_format($monthlySalary ?? 0, 0) }}</p>
                                             <small class="text-muted">This month's salary</small>
                                         </div>
                                     </div>
@@ -176,7 +176,7 @@
                                                     <td width="40%"><strong>Base Salary:</strong></td>
                                                     <td>
                                                         <span class="text-success fw-bolder">
-                                                            ${{ number_format($employee->salary?->base_amount ?? 0, 2) }}
+                                                            Pkr{{ number_format($employee->salary?->base_amount ?? 0, 2) }}
                                                         </span>
                                                     </td>
                                                 </tr>
@@ -206,7 +206,7 @@
                                                     <td><strong>Monthly Salary:</strong></td>
                                                     <td>
                                                         <span class="text-primary fw-bolder">
-                                                            ${{ number_format($monthlySalary ?? 0, 2) }}
+                                                            Pkr{{ number_format($monthlySalary ?? 0, 2) }}
                                                         </span>
                                                     </td>
                                                 </tr>
@@ -214,7 +214,7 @@
                                                     <td><strong>Sales Amount:</strong></td>
                                                     <td>
                                                         <span class="text-primary fw-bolder">
-                                                            ${{ $employee->sale_amount ? number_format($employee->sale_amount, 2) : '0' }}
+                                                            Pkr{{ $employee->sale_amount ? number_format($employee->sale_amount, 2) : '0' }}
                                                         </span>
                                                     </td>
                                                 </tr>

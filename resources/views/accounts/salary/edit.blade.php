@@ -48,7 +48,6 @@
 
                             <form action="{{ route('salary.update', $salary->id) }}" method="POST" id="salary-form">
                                 @csrf
-                                @method('PUT')
                                 
                                 <div class="row">
                                     <div class="col-md-6">
@@ -110,7 +109,7 @@
                                         <div class="mb-3">
                                             <label class="form-label" for="base_amount">Base Amount <span class="text-danger">*</span></label>
                                             <div class="input-group">
-                                                <span class="input-group-text">$</span>
+                                                <span class="input-group-text">Pkr</span>
                                                 <input type="number" step="0.01" class="form-control @error('base_amount') is-invalid @enderror" 
                                                     id="base_amount" name="base_amount" 
                                                     value="{{ old('base_amount', $salary->base_amount) }}" required>
@@ -124,7 +123,7 @@
                                         <div class="mb-3">
                                             <label class="form-label" for="approved_loans">Approved Loans/Advances</label>
                                             <div class="input-group">
-                                                <span class="input-group-text">$</span>
+                                                <span class="input-group-text">Pkr</span>
                                                 <input type="number" step="0.01" class="form-control" id="approved_loans" 
                                                     name="approved_loans" value="0" readonly>
                                                 <button type="button" class="btn btn-outline-secondary" id="refresh-loans" title="Refresh loan information">
@@ -138,7 +137,7 @@
                                         <div class="mb-3">
                                             <label class="form-label" for="final_amount">Final Amount <span class="text-danger">*</span></label>
                                             <div class="input-group">
-                                                <span class="input-group-text">$</span>
+                                                <span class="input-group-text">Pkr</span>
                                                 <input type="number" step="0.01" class="form-control @error('final_amount') is-invalid @enderror" 
                                                     id="final_amount" name="final_amount" 
                                                     value="{{ old('final_amount', $salary->final_amount) }}" required>
@@ -202,13 +201,13 @@
                                         <h6><i class="fas fa-calculator me-1"></i>Salary Calculation Summary</h6>
                                         <div class="row">
                                             <div class="col-md-4">
-                                                <strong>Base Salary:</strong> <span id="summary-base">$0.00</span>
+                                                <strong>Base Salary:</strong> <span id="summary-base">Pkr0.00</span>
                                             </div>
                                             <div class="col-md-4">
-                                                <strong>Approved Loans:</strong> <span id="summary-loans">$0.00</span>
+                                                <strong>Approved Loans:</strong> <span id="summary-loans">Pkr0.00</span>
                                             </div>
                                             <div class="col-md-4">
-                                                <strong>Total Amount:</strong> <span id="summary-total">$0.00</span>
+                                                <strong>Total Amount:</strong> <span id="summary-total">Pkr0.00</span>
                                             </div>
                                         </div>
                                     </div>

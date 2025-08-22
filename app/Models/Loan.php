@@ -13,6 +13,7 @@ class Loan extends Model
         'amount',
         'type',
         'is_approved',
+        'refund_percentage',
         'description',
     ];
 
