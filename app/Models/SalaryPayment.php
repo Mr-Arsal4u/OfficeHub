@@ -26,7 +26,7 @@ class SalaryPayment extends Model
 
     public function salary()
     {
-        return $this->belongsTo(Salary::class);
+        return $this->belongsTo(Salary::class, 'salary_id');
     }
 
     public function loan()

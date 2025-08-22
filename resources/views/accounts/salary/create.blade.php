@@ -202,6 +202,8 @@
                                         </div>
                                     </div>
                                 </div>
+                                
+                                <input type="hidden" id="loan_deductions" value="0">
 
                                 <!-- Duplicate Warning -->
                                 <div class="mb-3" id="duplicate-warning" style="display: none;">

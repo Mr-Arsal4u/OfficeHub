@@ -38,8 +38,13 @@ class Employee extends Model
         return $this->hasMany(SalesRecord::class);
     }
 
-    public function attendances() {
+    public function attendances()
+    {
         return $this->hasMany(Attendance::class);
     }
 
+    public function latestSalary()
+    {
+        return $this->hasOne(Salary::class, 'employee_id')->latestOfMany('id');
+    }
 }

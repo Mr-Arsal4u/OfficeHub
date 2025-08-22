@@ -139,12 +139,12 @@
                                                             {{ optional($salary->employee)->first_name ?? 'N/A' }}
                                                             {{ optional($salary->employee)->last_name ?? 'N/A' }}</div>
                                                         <small
-                                                            class="text-muted">{{ optional($salary->employee)->email ?? 'N/A' }}</small>
+                                                            class="text-bold">{{ optional($salary->employee)->email ?? 'N/A' }}</small>
                                                     </div>
                                                 </div>
                                             </td>
                                             <td>
-                                                <span class="badge bg-light-primary">{{ $salary->formatted_period }}</span>
+                                                <span class="text-bold fw-bolder">{{ $salary->formatted_period }}</span>
                                             </td>
                                             <td>
                                                 <span
@@ -155,7 +155,8 @@
                                                     class="text-primary fw-bolder">Pkr{{ number_format($salary->final_amount, 2) }}</span>
                                             </td>
                                             <td>
-                                                {!! $salary->status_badge !!}
+                                               <span
+                                                    class="text-bold fw-bolder"> {!! $salary->status !!} </span>
                                             </td>
                                             <td>
                                                 @if ($salary->payment_date)

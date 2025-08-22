@@ -172,14 +172,63 @@
                                         </div>
                                         <div class="card-body">
                                             <table class="table table-borderless">
+                                                @php
+                                                    $latestSalary = \App\Models\Salary::where(
+                                                        'employee_id',
+                                                        $employee->id,
+                                                    )
+                                                        ->orderByDesc('id')
+                                                        ->first();
+
+                                                    // pending repayments ke loans ke refund_percentage
+                                                    $pendingRepayments = \App\Models\SalaryPayment::whereHas(
+                                                        'salary',
+                                                        function ($q) use ($employee) {
+                                                            $q->where('employee_id', $employee->id);
+                                                        },
+                                                    )
+                                                        ->where('status', 'pending')
+                                                        ->with('loan')
+                                                        ->get();
+
+                                                    $percentages = $pendingRepayments
+                                                        ->pluck('loan.refund_percentage')
+                                                        ->filter()
+                                                        ->toArray();
+                                                    $totalPercentage = array_sum($percentages);
+                                                @endphp
+
                                                 <tr>
-                                                    <td width="40%"><strong>Base Salary:</strong></td>
+                                                    <td width="40%"><strong>Current Salary:</strong></td>
                                                     <td>
-                                                        <span class="text-success fw-bolder">
-                                                            Pkr{{ number_format($employee->salary?->base_amount ?? 0, 2) }}
+                                                        <span class="fw-bolder">
+                                                            PKR {{ number_format($latestSalary?->base_amount ?? 0, 2) }}
                                                         </span>
                                                     </td>
                                                 </tr>
+
+                                                <tr>
+                                                    <td><strong>Applied Loan %:</strong></td>
+                                                    <td>
+                                                        @if (!empty($percentages))
+                                                            {{ implode(' + ', $percentages) }}%
+                                                            <span class="text-muted">(Total:
+                                                                {{ $totalPercentage }}%)</span>
+                                                        @else
+                                                            <span class="text-muted">No loan applied</span>
+                                                        @endif
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td width="40%"><strong>After Deduction:</strong></td>
+                                                    <td>
+                                                        <span class="fw-bolder">
+                                                            PKR {{ number_format($latestSalary?->final_amount ?? 0, 2) }}
+                                                        </span>
+                                                    </td>
+                                                </tr>
+
                                                 <tr>
                                                     <td><strong>Current Status:</strong></td>
                                                     <td>
@@ -220,7 +269,7 @@
                                                 </tr>
                                                 @if ($employee->loans && $employee->loans->count() > 0)
                                                     <tr>
-                                                        <td><strong>Active Loans:</strong></td>
+                                                        <td><strong>Active Loan Amount:</strong></td>
                                                         <td>
                                                             <span
                                                                 class="badge bg-warning">{{ $employee->loans->where('is_approved', \App\Enum\RequestIsApproved::YES)->sum('amount') }}

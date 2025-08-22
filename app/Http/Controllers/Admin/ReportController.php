@@ -74,6 +74,10 @@ class ReportController extends Controller
         $presentDays = $attendanceSummary->present_days ?? 0;
 
         $monthlySalary = $dailySalary * $presentDays;
+        
+        // $monthlySalary = ($dailySalary * $presentDays) - ($employee->loans->sum('amount') + $employee->advance_payments->sum('amount'));
+
+        // $monthlySalary = $employee->salary?->latest()/-final_amount ?? 0;
 
         if (request()->ajax()) {
             return response()->json([

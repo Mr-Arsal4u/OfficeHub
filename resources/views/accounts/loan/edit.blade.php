@@ -13,7 +13,8 @@
                             <div class="breadcrumb-wrapper">
                                 <ol class="breadcrumb">
                                     <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-                                    <li class="breadcrumb-item"><a href="{{ route('request.payment') }}">Payment Requests</a></li>
+                                    <li class="breadcrumb-item"><a href="{{ route('request.payment') }}">Payment
+                                            Requests</a></li>
                                     <li class="breadcrumb-item active">Edit</li>
                                 </ol>
                             </div>
@@ -41,26 +42,30 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            @if(session('error'))
+                            @if (session('error'))
                                 <div class="alert alert-danger">
                                     {{ session('error') }}
                                 </div>
                             @endif
 
-                            <form action="{{ route('request.payment.update', $loan->id) }}" method="POST" id="payment-request-form">
+                            <form action="{{ route('request.payment.update', $loan->id) }}" method="POST"
+                                id="payment-request-form">
                                 @csrf
                                 @method('PUT')
-                                
+
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="mb-3">
-                                            <label class="form-label" for="employee_id">Employee <span class="text-danger">*</span></label>
-                                            <select class="form-control @error('employee_id') is-invalid @enderror" id="employee_id" name="employee_id" required>
+                                            <label class="form-label" for="employee_id">Employee <span
+                                                    class="text-danger">*</span></label>
+                                            <select class="form-control @error('employee_id') is-invalid @enderror"
+                                                id="employee_id" name="employee_id" required>
                                                 <option value="" disabled>Select Employee</option>
                                                 @foreach ($employees as $employee)
-                                                    <option value="{{ $employee->id }}" 
-                                                        {{ (old('employee_id', $loan->employee_id) == $employee->id) ? 'selected' : '' }}>
-                                                        {{ $employee->first_name }} {{ $employee->last_name }} ({{ $employee->email }})
+                                                    <option value="{{ $employee->id }}"
+                                                        {{ old('employee_id', $loan->employee_id) == $employee->id ? 'selected' : '' }}>
+                                                        {{ $employee->first_name }} {{ $employee->last_name }}
+                                                        ({{ $employee->email }})
                                                     </option>
                                                 @endforeach
                                             </select>
@@ -71,12 +76,14 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="mb-3">
-                                            <label class="form-label" for="type">Request Type <span class="text-danger">*</span></label>
-                                            <select class="form-control @error('type') is-invalid @enderror" id="type" name="type" required>
+                                            <label class="form-label" for="type">Request Type <span
+                                                    class="text-danger">*</span></label>
+                                            <select class="form-control @error('type') is-invalid @enderror" id="type"
+                                                name="type" required>
                                                 <option value="" disabled>Select Type</option>
                                                 @foreach ($types as $type)
-                                                    <option value="{{ $type->value }}" 
-                                                        {{ (old('type', $loan->type->value) == $type->value) ? 'selected' : '' }}>
+                                                    <option value="{{ $type->value }}"
+                                                        {{ old('type', $loan->type->value) == $type->value ? 'selected' : '' }}>
                                                         {{ $type->label() }}
                                                     </option>
                                                 @endforeach
@@ -89,24 +96,48 @@
                                 </div>
 
                                 <div class="row">
+
                                     <div class="col-md-6">
                                         <div class="mb-3">
-                                            <label class="form-label" for="amount">Amount <span class="text-danger">*</span></label>
+                                            <label class="form-label" for="amount">Amount <span
+                                                    class="text-danger">*</span></label>
                                             <div class="input-group">
-                                                <span class="input-group-text">$</span>
-                                                <input type="number" step="0.01" class="form-control @error('amount') is-invalid @enderror" 
-                                                    id="amount" name="amount" value="{{ old('amount', $loan->amount) }}" required>
+                                                <span class="input-group-text">Pkr</span>
+                                                <input type="number" step="0.01"
+                                                    class="form-control @error('amount') is-invalid @enderror"
+                                                    id="amount" name="amount"
+                                                    value="{{ old('amount', $loan->amount) }}" required>
                                             </div>
                                             @error('amount')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
                                         </div>
                                     </div>
+
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label" for="refund_percentage">Refund Percentage (If
+                                                Any)</label>
+                                            <div class="input-group">
+                                                <span class="input-group-text">%</span>
+                                                <input type="number" step="0.01"
+                                                    class="form-control @error('refund_percentage') is-invalid @enderror"
+                                                    id="refund_percentage" max="100" min="0"
+                                                    name="refund_percentage"
+                                                    value="{{ old('refund_percentage', $loan->refund_percentage ?? '') }}"
+                                                    required>
+                                            </div>
+                                            @error('refund_percentage')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             <label class="form-label" for="description">Description</label>
-                                            <textarea name="description" class="form-control @error('description') is-invalid @enderror" 
-                                                id="description" cols="10" rows="3" placeholder="Enter reason for payment request...">{{ old('description', $loan->description ?? '') }}</textarea>
+                                            <textarea name="description" class="form-control @error('description') is-invalid @enderror" id="description"
+                                                cols="10" rows="3" placeholder="Enter reason for payment request...">{{ old('description', $loan->description ?? '') }}</textarea>
                                             @error('description')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
@@ -132,48 +163,48 @@
 @endsection
 
 @push('scripts')
-<script>
-$(document).ready(function() {
-    // Disable submit button after click to prevent double submission
-    $('#payment-request-form').on('submit', function() {
-        const submitBtn = $('#submit-btn');
-        submitBtn.prop('disabled', true);
-        submitBtn.html('<i class="fas fa-spinner fa-spin me-1"></i> Updating...');
-        
-        // Re-enable after 5 seconds if form submission fails
-        setTimeout(function() {
-            submitBtn.prop('disabled', false);
-            submitBtn.html('<i data-feather="save" class="me-1"></i> Update Request');
-        }, 5000);
-    });
+    <script>
+        $(document).ready(function() {
+            // Disable submit button after click to prevent double submission
+            $('#payment-request-form').on('submit', function() {
+                const submitBtn = $('#submit-btn');
+                submitBtn.prop('disabled', true);
+                submitBtn.html('<i class="fas fa-spinner fa-spin me-1"></i> Updating...');
 
-    // Form validation
-    $('#payment-request-form').on('submit', function(e) {
-        const employeeId = $('#employee_id').val();
-        const type = $('#type').val();
-        const amount = $('#amount').val();
+                // Re-enable after 5 seconds if form submission fails
+                setTimeout(function() {
+                    submitBtn.prop('disabled', false);
+                    submitBtn.html('<i data-feather="save" class="me-1"></i> Update Request');
+                }, 5000);
+            });
 
-        if (!employeeId || !type || !amount) {
-            e.preventDefault();
-            showToast('error', 'Please fill in all required fields.');
-            return false;
+            // Form validation
+            $('#payment-request-form').on('submit', function(e) {
+                const employeeId = $('#employee_id').val();
+                const type = $('#type').val();
+                const amount = $('#amount').val();
+
+                if (!employeeId || !type || !amount) {
+                    e.preventDefault();
+                    showToast('error', 'Please fill in all required fields.');
+                    return false;
+                }
+
+                if (parseFloat(amount) <= 0) {
+                    e.preventDefault();
+                    showToast('error', 'Amount must be greater than zero.');
+                    return false;
+                }
+            });
+        });
+
+        // Toast notification function
+        function showToast(type, message) {
+            if (typeof toastr !== 'undefined') {
+                toastr[type](message);
+            } else {
+                alert(message);
+            }
         }
-
-        if (parseFloat(amount) <= 0) {
-            e.preventDefault();
-            showToast('error', 'Amount must be greater than zero.');
-            return false;
-        }
-    });
-});
-
-// Toast notification function
-function showToast(type, message) {
-    if (typeof toastr !== 'undefined') {
-        toastr[type](message);
-    } else {
-        alert(message);
-    }
-}
-</script>
+    </script>
 @endpush

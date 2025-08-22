@@ -25,7 +25,7 @@ class LoanRequest extends FormRequest
             'employee_id' => 'required|exists:users,id',
             'type' => 'required|in:advance,loan',
             'amount' => 'required|numeric|min:0.01',
-            'refund_percentage'=>'nullable|numeric|min:0',
+            'refund_percentage' => 'nullable|numeric|min:0',
             'description' => 'nullable|string|max:1000',
         ];
     }
@@ -43,6 +43,8 @@ class LoanRequest extends FormRequest
             'amount.required' => 'Amount is required.',
             'amount.numeric' => 'Amount must be a valid number.',
             'amount.min' => 'Amount must be greater than zero.',
+            'refund_percentage.numeric' => 'Refund percentage must be a valid number.',
+            'refund_percentage.min' => 'Refund percentage cannot be negative.',
         ];
     }
 }

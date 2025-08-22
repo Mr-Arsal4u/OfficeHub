@@ -13,7 +13,8 @@
                             <div class="breadcrumb-wrapper">
                                 <ol class="breadcrumb">
                                     <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-                                    <li class="breadcrumb-item"><a href="{{ route('request.payment') }}">Payment Requests</a></li>
+                                    <li class="breadcrumb-item"><a href="{{ route('request.payment') }}">Payment
+                                            Requests</a></li>
                                     <li class="breadcrumb-item active">Details</li>
                                 </ol>
                             </div>
@@ -58,7 +59,8 @@
                                                             </div>
                                                         </div>
                                                         <div>
-                                                            <h6 class="mb-0">{{ $loan->employee->first_name }} {{ $loan->employee->last_name }}</h6>
+                                                            <h6 class="mb-0">{{ $loan->employee->first_name }}
+                                                                {{ $loan->employee->last_name }}</h6>
                                                             <small class="text-muted">{{ $loan->employee->email }}</small>
                                                         </div>
                                                     </div>
@@ -161,11 +163,21 @@
                                                         </tr>
                                                         <tr>
                                                             <td><strong>Request Type:</strong></td>
-                                                            <td><span class="badge bg-light-primary">{{ $loan->type->label() }}</span></td>
+                                                            <td><span
+                                                                    class="badge bg-light-primary">{{ $loan->type->label() }}</span>
+                                                            </td>
                                                         </tr>
                                                         <tr>
                                                             <td><strong>Amount:</strong></td>
-                                                            <td><span class="text-primary fw-bolder">Pkr{{ number_format($loan->amount, 2) }}</span></td>
+                                                            <td><span
+                                                                    class="text-primary fw-bolder">Pkr{{ number_format($loan->amount, 2) }}</span>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><strong>Refund Percentage:</strong></td>
+                                                            <td><span
+                                                                    class="text-warning fw-bolder">%{{ number_format($loan->refund_percentage, 2) }}</span>
+                                                            </td>
                                                         </tr>
                                                     </table>
                                                 </div>
@@ -192,19 +204,19 @@
                             </div>
 
                             <!-- Description -->
-                            @if($loan->description)
-                            <div class="row mb-3">
-                                <div class="col-12">
-                                    <h5 class="mb-3">
-                                        <i data-feather="message-square" class="me-2"></i>Description
-                                    </h5>
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <p class="mb-0">{{ $loan->description }}</p>
+                            @if ($loan->description)
+                                <div class="row mb-3">
+                                    <div class="col-12">
+                                        <h5 class="mb-3">
+                                            <i data-feather="message-square" class="me-2"></i>Description
+                                        </h5>
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <p class="mb-0">{{ $loan->description }}</p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
                             @endif
 
                             <!-- Action Buttons -->
@@ -215,22 +227,25 @@
                                             <a href="{{ route('request.payment') }}" class="btn btn-outline-secondary">
                                                 <i data-feather="arrow-left" class="me-1"></i> Back to List
                                             </a>
-                                            @if(!$loan->employee->hasRole('Admin'))
-                                            <a href="{{ route('request.payment.edit', $loan->id) }}" class="btn btn-primary">
-                                                <i data-feather="edit" class="me-1"></i> Edit Request
-                                            </a>
+                                            @if (!$loan->employee->hasRole('Admin'))
+                                                <a href="{{ route('request.payment.edit', $loan->id) }}"
+                                                    class="btn btn-primary">
+                                                    <i data-feather="edit" class="me-1"></i> Edit Request
+                                                </a>
                                             @endif
                                         </div>
                                         <div>
-                                            @if(auth()->user() && auth()->user()->hasRole('Admin'))
-                                                @if($loan->is_approved->value == 0)
-                                                <button class="btn btn-success approve-request-btn" data-request-id="{{ $loan->id }}">
-                                                    <i data-feather="check-circle" class="me-1"></i> Approve Request
-                                                </button>
+                                            @if (auth()->user() && auth()->user()->hasRole('Admin'))
+                                                @if ($loan->is_approved->value == 0)
+                                                    <button class="btn btn-success approve-request-btn"
+                                                        data-request-id="{{ $loan->id }}">
+                                                        <i data-feather="check-circle" class="me-1"></i> Approve Request
+                                                    </button>
                                                 @else
-                                                <button class="btn btn-warning reject-request-btn" data-request-id="{{ $loan->id }}">
-                                                    <i data-feather="x-circle" class="me-1"></i> Reject Request
-                                                </button>
+                                                    <button class="btn btn-warning reject-request-btn"
+                                                        data-request-id="{{ $loan->id }}">
+                                                        <i data-feather="x-circle" class="me-1"></i> Reject Request
+                                                    </button>
                                                 @endif
                                             @endif
                                         </div>
@@ -246,66 +261,68 @@
 @endsection
 
 @push('scripts')
-<script>
-$(document).ready(function() {
-    // Approve request functionality
-    $('.approve-request-btn').on('click', function(e) {
-        e.preventDefault();
-        const requestId = $(this).data('request-id');
-        
-        if (confirm('Are you sure you want to approve this payment request?')) {
-            $.ajax({
-                url: `/request/payment/update/status/${requestId}`,
-                method: 'POST',
-                data: {
-                    _token: $('meta[name="csrf-token"]').attr('content')
-                },
-                success: function(response) {
-                    showToast('success', response.success);
-                    setTimeout(function() {
-                        window.location.reload();
-                    }, 1000);
-                },
-                error: function(xhr) {
-                    showToast('error', xhr.responseJSON?.error || 'An error occurred while approving the request.');
+    <script>
+        $(document).ready(function() {
+            // Approve request functionality
+            $('.approve-request-btn').on('click', function(e) {
+                e.preventDefault();
+                const requestId = $(this).data('request-id');
+
+                if (confirm('Are you sure you want to approve this payment request?')) {
+                    $.ajax({
+                        url: `/request/payment/update/status/${requestId}`,
+                        method: 'POST',
+                        data: {
+                            _token: $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function(response) {
+                            showToast('success', response.success);
+                            setTimeout(function() {
+                                window.location.reload();
+                            }, 1000);
+                        },
+                        error: function(xhr) {
+                            showToast('error', xhr.responseJSON?.error ||
+                                'An error occurred while approving the request.');
+                        }
+                    });
                 }
             });
-        }
-    });
 
-    // Reject request functionality
-    $('.reject-request-btn').on('click', function(e) {
-        e.preventDefault();
-        const requestId = $(this).data('request-id');
-        
-        if (confirm('Are you sure you want to reject this payment request?')) {
-            $.ajax({
-                url: `/request/payment/update/status/${requestId}`,
-                method: 'POST',
-                data: {
-                    _token: $('meta[name="csrf-token"]').attr('content')
-                },
-                success: function(response) {
-                    showToast('success', response.success);
-                    setTimeout(function() {
-                        window.location.reload();
-                    }, 1000);
-                },
-                error: function(xhr) {
-                    showToast('error', xhr.responseJSON?.error || 'An error occurred while rejecting the request.');
+            // Reject request functionality
+            $('.reject-request-btn').on('click', function(e) {
+                e.preventDefault();
+                const requestId = $(this).data('request-id');
+
+                if (confirm('Are you sure you want to reject this payment request?')) {
+                    $.ajax({
+                        url: `/request/payment/update/status/${requestId}`,
+                        method: 'POST',
+                        data: {
+                            _token: $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function(response) {
+                            showToast('success', response.success);
+                            setTimeout(function() {
+                                window.location.reload();
+                            }, 1000);
+                        },
+                        error: function(xhr) {
+                            showToast('error', xhr.responseJSON?.error ||
+                                'An error occurred while rejecting the request.');
+                        }
+                    });
                 }
             });
-        }
-    });
-});
+        });
 
-// Toast notification function
-function showToast(type, message) {
-    if (typeof toastr !== 'undefined') {
-        toastr[type](message);
-    } else {
-        alert(message);
-    }
-}
-</script>
+        // Toast notification function
+        function showToast(type, message) {
+            if (typeof toastr !== 'undefined') {
+                toastr[type](message);
+            } else {
+                alert(message);
+            }
+        }
+    </script>
 @endpush

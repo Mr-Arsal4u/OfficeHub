@@ -6,6 +6,7 @@ use App\Models\Loan;
 use App\Models\User;
 use App\Models\Salary;
 use Illuminate\Http\Request;
+use App\Models\SalaryPayment;
 use App\Enum\RequestIsApproved;
 use App\Services\SalaryService;
 use Illuminate\Support\Facades\Log;
@@ -103,8 +104,18 @@ class SalaryController extends Controller
                 ->where('is_approved', RequestIsApproved::YES)
                 ->whereDoesntHave('salaryPayments')
                 ->get();
-            
-            return response()->json(['loans' => $loans]);
+
+            $pendingRepayments = SalaryPayment::whereHas('salary', function ($q) use ($employeeId) {
+                $q->where('employee_id', $employeeId);
+            })
+                ->where('status', 'pending')
+                ->with('loan')
+                ->get();
+
+            return response()->json([
+                'loans' => $loans,
+                'pendingRepayments' => $pendingRepayments
+            ]);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }

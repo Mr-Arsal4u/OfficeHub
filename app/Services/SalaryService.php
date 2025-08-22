@@ -131,8 +131,8 @@ class SalaryService
                 'amount' => $loan->amount,
                 'payment_type' => 'loan_repayment',
                 'payment_date' => $data['payment_date'],
-                'status' => 'completed',
-                'notes' => 'Loan repayment for ' . $loan->type->value . ' loan'
+                'status' => 'pending',
+                'notes' => 'Loan repayment for ' . $loan->type->value 
             ]);
         }
 
