@@ -171,10 +171,11 @@ $(document).ready(function () {
                 employee_id: employeeId,
                 ...data
             },
+            
             success: function (res) {
                 showToast("success", res.success || 'Attendance updated.');
                 // If you want to avoid full reloads, remove the next line:
-                window.location.reload();
+                // window.location.reload();
             },
             error: function (err) {
                 console.error('Error updating attendance', err);
@@ -204,7 +205,7 @@ function setStatus(status) {
     $buttons.prop('disabled', true).html('<i class="fas fa-spinner fa-spin me-1"></i> Updating...');
 
     $.ajax({
-        url: '/attendance/update-all',
+        url: '/attendance/update/all',
         type: "POST",
         data: {
             _token: $('meta[name="csrf-token"]').attr('content'),
@@ -227,14 +228,14 @@ function setStatus(status) {
 
             // Re-enable all buttons and restore their labels
             $buttons.prop('disabled', false).each(function () {
-                const $btn = $(this);
-                if ($btn.text().toLowerCase().includes('present')) {
-                    $btn.html('<i class="fas fa-check-circle me-1"></i> All Present');
-                } else if ($btn.text().toLowerCase().includes('absent')) {
-                    $btn.html('<i class="fas fa-times-circle me-1"></i> All Absent');
-                } else {
-                    $btn.html('<i class="fas fa-calendar-minus me-1"></i> All Leave');
-                }
+                // const $btn = $(this);
+                // if ($btn.text().toLowerCase().includes('present')) {
+                //     $btn.html('<i class="fas fa-check-circle me-1"></i> All Present');
+                // } else if ($btn.text().toLowerCase().includes('absent')) {
+                //     $btn.html('<i class="fas fa-times-circle me-1"></i> All Absent');
+                // } else {
+                //     $btn.html('<i class="fas fa-calendar-minus me-1"></i> All Leave');
+                // }
             });
         }
     });
